@@ -207,7 +207,7 @@ enum KeyFlag : int32_t
     Key_Mod_Option_Right    = Key_Mod_Alt_Right
 };
 
-class Modifiers
+class GLOBAL_HOTKEY_API Modifiers
 {
 public:
     constexpr inline Modifiers() noexcept {}
@@ -215,6 +215,10 @@ public:
     constexpr inline Modifiers(int32_t modifiers) noexcept : data_(modifiers) {}
     constexpr inline Modifiers(const std::initializer_list<ModifierFlag>& modifiers) noexcept
         : data_(initializerListHelper_(modifiers.begin(), modifiers.end())) {}
+    Modifiers(const std::string& str, char connector = '+') noexcept { *this = fromString(str, connector); }
+
+    static Modifiers fromString(const std::string& str, char connector = '+') noexcept;
+    std::string toString(char connector = '+') const noexcept;
 
     constexpr inline int32_t value() const noexcept { return data_; }
     constexpr inline operator int32_t() const noexcept { return data_; }
@@ -260,13 +264,17 @@ private:
     int32_t data_ = 0;
 };
 
-class Key
+class GLOBAL_HOTKEY_API Key
 {
 public:
     constexpr inline Key() noexcept {}
     constexpr inline Key(KeyFlag key) noexcept : data_(key) {}
     constexpr inline Key(char key) noexcept : data_(toUpper_(key)) {}
     constexpr inline Key(int32_t key) noexcept : data_(key) {}
+    Key(const std::string& str) noexcept { *this = fromString(str); }
+
+    static Key fromString(const std::string& str) noexcept;
+    std::string toString() const noexcept;
 
     constexpr inline int32_t value() const noexcept { return data_; }
     constexpr inline operator int32_t() const noexcept { return data_; }
@@ -295,17 +303,6 @@ private:
 
     int32_t data_ = 0;
 };
-
-// For preserve the constexpr properties of Modifiers and Key classes,
-// the following functions are implemented as global functions.
-
-GLOBAL_HOTKEY_API std::string modifiersToString(const Modifiers& modifiers, char connector = '+') noexcept;
-
-GLOBAL_HOTKEY_API std::string keyToString(const Key& key) noexcept;
-
-GLOBAL_HOTKEY_API Modifiers modifiersFromString(const std::string& str, char connector = '+') noexcept;
-
-GLOBAL_HOTKEY_API Key keyFromString(const std::string& str) noexcept;
 
 }
 

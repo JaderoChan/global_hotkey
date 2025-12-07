@@ -55,24 +55,24 @@ static std::string modifierFlagString(ModifierFlag flag) noexcept
     }
 }
 
-GLOBAL_HOTKEY_API std::string modifiersToString(const Modifiers& modifiers, char connector) noexcept
+std::string Modifiers::toString(char connector) noexcept
 {
     std::string rslt;
     std::string connectorStr(1, connector);
 
-    if (modifiers.has(META))
+    if (has(META))
         rslt += modifierFlagString(META);
-    if (modifiers.has(CTRL))
+    if (has(CTRL))
         rslt += (!rslt.empty() ? connectorStr : "") + modifierFlagString(CTRL);
-    if (modifiers.has(ALT))
+    if (has(ALT))
         rslt += (!rslt.empty() ? connectorStr : "") + modifierFlagString(ALT);
-    if (modifiers.has(SHIFT))
+    if (has(SHIFT))
         rslt += (!rslt.empty() ? connectorStr : "") + modifierFlagString(SHIFT);
 
     return rslt;
 }
 
-GLOBAL_HOTKEY_API std::string keyToString(const Key& key) noexcept
+std::string Key::toString() noexcept
 {
     switch (key)
     {
@@ -280,7 +280,7 @@ static int modifierFlagFromString(const std::string& str) noexcept
     return 0;
 }
 
-GLOBAL_HOTKEY_API Modifiers modifiersFromString(const std::string& str, char connector) noexcept
+Modifiers Modifiers::fromString(const std::string& str, char connector) noexcept
 {
     std::stringstream ss;
     ss << str;
@@ -291,7 +291,7 @@ GLOBAL_HOTKEY_API Modifiers modifiersFromString(const std::string& str, char con
     return rslt;
 }
 
-GLOBAL_HOTKEY_API Key keyFromString(const std::string& str) noexcept
+Key Key::fromString(const std::string& str) noexcept
 {
     if (str.empty())
         return Key();
