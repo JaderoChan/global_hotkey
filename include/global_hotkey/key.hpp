@@ -213,8 +213,8 @@ public:
     constexpr inline Modifiers() noexcept {}
     constexpr inline Modifiers(ModifierFlag modifier) noexcept : data_(modifier) {}
     constexpr inline Modifiers(int32_t modifiers) noexcept : data_(modifiers) {}
-    constexpr inline Modifiers(const std::initializer_list<ModifierFlag>& modifiers) noexcept
-        : data_(initializerListHelper_(modifiers.begin(), modifiers.end())) {}
+    constexpr inline Modifiers(const std::initializer_list<ModifierFlag>& modifiers) noexcept :
+        data_(initializerListHelper_(modifiers.begin(), modifiers.end())) {}
     Modifiers(const std::string& str, char connector = '+') noexcept { *this = fromString(str, connector); }
 
     static Modifiers fromString(const std::string& str, char connector = '+') noexcept;

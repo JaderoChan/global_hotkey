@@ -13,8 +13,8 @@ HookGlobalHotkeyManager& HookGlobalHotkeyManager::getInstance()
     return instance;
 }
 
-HookGlobalHotkeyManager::HookGlobalHotkeyManager()
-    : GlobalHotkeyManager(std::unique_ptr<GHMPrivate>(new HookGHMPrivate()))
+HookGlobalHotkeyManager::HookGlobalHotkeyManager() :
+    GlobalHotkeyManager(std::unique_ptr<GHMPrivate>(new HookGHMPrivate()))
 {}
 
 HookGlobalHotkeyManager::~HookGlobalHotkeyManager() = default;

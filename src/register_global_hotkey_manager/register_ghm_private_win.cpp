@@ -14,8 +14,8 @@
 namespace gbhk
 {
 
-RegisterGHMPrivateWin::RegisterGHMPrivateWin()
-    : regUnregRc_(0),
+RegisterGHMPrivateWin::RegisterGHMPrivateWin() :
+    regUnregRc_(0),
     hotkeyIndex_(0)
 {}
 

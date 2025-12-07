@@ -14,10 +14,10 @@ class GLOBAL_HOTKEY_API KeyCombination
 {
 public:
     constexpr inline KeyCombination() noexcept = default;
-    constexpr inline KeyCombination(const Modifiers& modifiers, const Key& key) noexcept
-        : mod_(modifiers), key_(key) {}
-    constexpr inline explicit KeyCombination(int64_t toCombinedValue) noexcept
-        : mod_((int32_t) (toCombinedValue >> 32)), key_((int32_t) toCombinedValue) {}
+    constexpr inline KeyCombination(const Modifiers& modifiers, const Key& key) noexcept :
+        mod_(modifiers), key_(key) {}
+    constexpr inline explicit KeyCombination(int64_t toCombinedValue) noexcept :
+        mod_((int32_t) (toCombinedValue >> 32)), key_((int32_t) toCombinedValue) {}
     KeyCombination(const std::string& str) noexcept { *this = fromString(str); }
 
     static KeyCombination fromString(const std::string& str, char connector = '+') noexcept;

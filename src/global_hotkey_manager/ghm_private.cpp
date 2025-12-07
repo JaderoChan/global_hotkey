@@ -5,8 +5,8 @@
 namespace gbhk
 {
 
-GHMPrivate::GHMPrivate()
-    : runningState_(RS_FREE),
+GHMPrivate::GHMPrivate() :
+    runningState_(RS_FREE),
     runningRc_(0),
     workerThreadId_(std::thread::id())
 {}
