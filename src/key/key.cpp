@@ -55,7 +55,7 @@ static std::string modifierFlagString(ModifierFlag flag) noexcept
     }
 }
 
-std::string Modifiers::toString(char connector) noexcept
+std::string Modifiers::toString(char connector) const noexcept
 {
     std::string rslt;
     std::string connectorStr(1, connector);
@@ -72,9 +72,9 @@ std::string Modifiers::toString(char connector) noexcept
     return rslt;
 }
 
-std::string Key::toString() noexcept
+std::string Key::toString() const noexcept
 {
-    switch (key)
+    switch (data_)
     {
         // Number keys
         case Key_0:                 return "0";
