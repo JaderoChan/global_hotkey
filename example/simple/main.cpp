@@ -70,18 +70,27 @@ int main()
 
     int rc = ghm.start();
     if (rc != gbhk::RC_SUCCESS)
+    {
+        ghm.stop();
         THROW_RT_ERR("Failed to start the Global Hotkey Manager: ", rc);
+    }
     printf("Success to start the GHM!\n");
 
     rc = ghm.add(hotkey1, &hotkeyTriggered1);
     if (rc != gbhk::RC_SUCCESS)
+    {
+        ghm.stop();
         THROW_RT_ERR("Failed to add the hotkey 1: ", rc);
+    }
     printf("Success to add the hotkey: [%s]\n", hotkey1.toString().c_str());
 
     // The hotkey 2 is auto repeat.
     rc = ghm.add(hotkey2, &hotkeyTriggered2, true);
     if (rc != gbhk::RC_SUCCESS)
+    {
+        ghm.stop();
         THROW_RT_ERR("Failed to add the hotkey 2: ", rc);
+    }
     printf("Success to add the hotkey: [%s] (auto repeat)\n", hotkey2.toString().c_str());
 
     std::atomic<bool> shouldClose(false);
@@ -93,7 +102,10 @@ int main()
         cv.notify_one();
     });
     if (rc != gbhk::RC_SUCCESS)
+    {
+        ghm.stop();
         THROW_RT_ERR("Failed to add the hotkey: ", rc);
+    }
     printf("Success to add the hotkey: [%s]\n", hotkey3.toString().c_str());
     printf("Press the [%s] to exit!\n\n", hotkey3.toString().c_str());
 
