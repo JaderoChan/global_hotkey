@@ -18,7 +18,7 @@ public:
         : mod_(modifiers), key_(key) {}
     constexpr inline explicit KeyCombination(int64_t toCombinedValue) noexcept
         : mod_((int32_t) (toCombinedValue >> 32)), key_((int32_t) toCombinedValue) {}
-    explicit KeyCombination(const std::string& str) { *this = fromString(str); }
+    KeyCombination(const std::string& str) { *this = fromString(str); }
 
     static KeyCombination fromString(const std::string& str, char connector = '+') noexcept;
     std::string toString(char connector = '+', bool showKeyValue = false) const noexcept;
