@@ -296,7 +296,7 @@ private:
     int32_t data_ = 0;
 };
 
-// To preserve the constexpr properties of Modifiers and Key classes,
+// For preserve the constexpr properties of Modifiers and Key classes,
 // the following functions are implemented as global functions.
 
 GLOBAL_HOTKEY_API std::string modifiersToString(const Modifiers& modifiers, char connector = '+') noexcept;
