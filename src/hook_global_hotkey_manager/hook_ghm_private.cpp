@@ -75,7 +75,6 @@ void HookGHMPrivate::work()
         Key key = ev.data;
         if (ev.type == ET_KEY_PRESSED)
         {
-            pressedKey = key;
             if (key == Key_Mod_Meta || key == Key_Mod_Meta_Left || key == Key_Mod_Meta_Right)
                 pressedMod = pressedMod.add(META);
             else if (key == Key_Mod_Ctrl || key == Key_Mod_Ctrl_Left || key == Key_Mod_Ctrl_Right)
@@ -84,12 +83,12 @@ void HookGHMPrivate::work()
                 pressedMod = pressedMod.add(ALT);
             else if (key == Key_Mod_Shift || key == Key_Mod_Shift_Left || key == Key_Mod_Shift_Right)
                 pressedMod = pressedMod.add(SHIFT);
+            else
+                pressedKey = key;
         }
         // ev.type == ET_KEY_RELEASED
         else
         {
-            if (pressedKey == key)
-                pressedKey = 0;
             if (key == Key_Mod_Meta || key == Key_Mod_Meta_Left || key == Key_Mod_Meta_Right)
                 pressedMod = pressedMod.remove(META);
             else if (key == Key_Mod_Ctrl || key == Key_Mod_Ctrl_Left || key == Key_Mod_Ctrl_Right)
@@ -98,6 +97,8 @@ void HookGHMPrivate::work()
                 pressedMod = pressedMod.remove(ALT);
             else if (key == Key_Mod_Shift || key == Key_Mod_Shift_Left || key == Key_Mod_Shift_Right)
                 pressedMod = pressedMod.remove(SHIFT);
+            else if (pressedKey == key)
+                pressedKey = 0;
         }
 
         KeyCombination currKc(pressedMod, pressedKey);
