@@ -143,7 +143,7 @@ ghm.stop();      // 结束热键管理器。
 
 不可以。**Linux**下的`Register GHM`依赖于**X11**。
 
-## 🔔 注意点
+## 🔔 注意
 
 - MacOS系统下的`Register GHM`暂不支持。
 
