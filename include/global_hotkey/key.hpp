@@ -215,7 +215,8 @@ public:
     constexpr inline Modifiers(int32_t modifiers) noexcept : data_(modifiers) {}
     constexpr inline Modifiers(const std::initializer_list<ModifierFlag>& modifiers) noexcept :
         data_(initializerListHelper_(modifiers.begin(), modifiers.end())) {}
-    Modifiers(const std::string& str, char connector = '+') noexcept { *this = fromString(str, connector); }
+    Modifiers(const std::string& str, char connector = '+') noexcept
+    { *this = std::move(fromString(str, connector)); }
 
     static Modifiers fromString(const std::string& str, char connector = '+') noexcept;
     std::string toString(char connector = '+') const noexcept;
@@ -271,7 +272,7 @@ public:
     constexpr inline Key(KeyFlag key) noexcept : data_(key) {}
     constexpr inline Key(char key) noexcept : data_(toUpper_(key)) {}
     constexpr inline Key(int32_t key) noexcept : data_(key) {}
-    Key(const std::string& str) noexcept { *this = fromString(str); }
+    Key(const std::string& str) noexcept { *this = std::move(fromString(str)); }
 
     static Key fromString(const std::string& str) noexcept;
     std::string toString() const noexcept;
