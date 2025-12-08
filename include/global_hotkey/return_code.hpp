@@ -32,11 +32,12 @@ inline std::string getReturnCodeMsg(int rc) noexcept
         case RC_SUCCESS:
             return "Success";
         case RC_BAD_TIMING:
-            return "When GHM is not yet running, perform operations such as add and remove hotkeys";
+            return "Can't perform stop, add, remove, replace and the like functions before the GHM is start";
         case RC_BAD_THREAD:
-            return "Perform operations such as add and remove in the worker thread of GHM";
+            return "Can't perform stop, add, remove, replace and the like functions on the worker thread \
+(usually is the hotkey callback functions)";
         default:
-            return "A return value depends on the platform or framwork " + std::to_string(rc);
+            return "A return value depends on the platform or framwork: " + std::to_string(rc);
     }
 }
 
