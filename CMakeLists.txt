@@ -83,6 +83,12 @@ elseif(LINUX)
     endif()
 endif()
 
+set(GLOBAL_HOTKEY_SHARED GLOBAL_HOTKEY_BUILD_SHARED)
+configure_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/templates/config.hpp.in
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/global_hotkey/config.hpp
+)
+
 if(GLOBAL_HOTKEY_BUILD_SHARED)
     add_library(${PROJECT_NAME} SHARED ${SRC})
     target_compile_definitions(${PROJECT_NAME} PUBLIC GLOBAL_HOTKEY_BUILD_SHARED)
@@ -95,13 +101,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
     $<INSTALL_INTERFACE:include>
 )
 
-if(GLOBAL_HOTKEY_DISABLE_REGISTER)
-    target_compile_definitions(${PROJECT_NAME} PUBLIC GLOBAL_HOTKEY_DISABLE_REGISTER)
-endif()
-
-if(GLOBAL_HOTKEY_DISABLE_HOOK)
-    target_compile_definitions(${PROJECT_NAME} PUBLIC GLOBAL_HOTKEY_DISABLE_HOOK)
-else()
+if(NOT GLOBAL_HOTKEY_DISABLE_HOOK)
     include(FetchContent)
     FetchContent_Declare(
         kbdt
@@ -198,22 +198,22 @@ set(LIB_DIR ${CMAKE_INSTALL_LIBDIR})
 
 include(CMakePackageConfigHelpers)
 write_basic_package_version_file(
-    ${PROJECT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
     VERSION ${PROJECT_VERSION}
     COMPATIBILITY SameMajorVersion
 )
 
 configure_package_config_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/cmake/${PROJECT_NAME}Config.cmake.in
-    ${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
     PATH_VARS INCLUDE_DIRS LIB_DIR
     INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
 )
 
 install(
     FILES
-    ${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
-    ${PROJECT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
 )
 

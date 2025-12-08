@@ -1,6 +1,8 @@
 #ifndef GLOBAL_HOTKEY_DEF_HPP
 #define GLOBAL_HOTKEY_DEF_HPP
 
+#include "config.hpp"
+
 #ifdef _MSVC_LANG
     #define GLOBAL_HOTKEY_CPPVERS     _MSVC_LANG
 #else

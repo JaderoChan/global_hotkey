@@ -1,6 +1,8 @@
 #ifndef GLOBAL_HOTKEY_REGISTER_GLOBAL_HOTKEY_MANAGER_HPP
 #define GLOBAL_HOTKEY_REGISTER_GLOBAL_HOTKEY_MANAGER_HPP
 
+#include "def.hpp"
+
 #ifndef GLOBAL_HOTKEY_DISABLE_REGISTER
 
 #include "global_hotkey_manager.hpp"
