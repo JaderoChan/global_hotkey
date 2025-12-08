@@ -18,6 +18,8 @@ public:
     /// @brief Start the `Global Hotkey Manager`.
     int start();
     /// @brief Stop the `Global Hotkey Manager`.
+    /// @attention Can't be performed on the worker thread,
+    /// that is you can't perform this function in the hotkey callback.
     int stop();
     /// @brief Add a hotkey to the `Global Hotkey Manager`.
     /// @param kc The hotkey you will add.
@@ -28,16 +30,20 @@ public:
     int add(const KeyCombination& kc, const std::function<void ()>& fn, bool autoRepeat = false);
     /// @brief Remove a hotkey from the `Global Hotkey Manager`.
     /// @param kc The hotkey you will remove.
+    /// @attention Must be performed after #start().
     int remove(const KeyCombination& kc);
     /// @brief Remove all hotkey in the `Global Hotkey Manager`.
+    /// @attention Must be performed after #start().
     int removeAll();
     /// @brief Replace a old hotkey with a new hotkey.
     /// @param oldKc The old hotkey.
     /// @param newKc The new hotkey.
     /// @attention If the newKc is failed to add, the oldKc still will be remove.
+    /// @attention Must be performed after #start().
     int replace(const KeyCombination& oldKc, const KeyCombination& newKc);
     /// @brief Set whether the hotkey is auto repeat.
     /// @sa #add() #isAutoRepeat()
+    /// @attention Must be performed after #start().
     int setAutoRepeat(const KeyCombination& kc, bool autoRepeat);
     /// @brief Check whether the hotkey given is exists in the `Global Hotkey Manager`.
     /// @param kc The hotkey you will check.
