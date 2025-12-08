@@ -117,6 +117,7 @@ endif()
 if(WIN32)
     message(STATUS "${GLOBAL_HOTKEY_MSG_PREFIX} Windows platform detected.")
     set(CMAKE_STATIC_LIBRARY_SUFFIX ".lib")
+    set(CMAKE_IMPORT_LIBRARY_SUFFIX ".lib")
 endif()
 
 if(APPLE)
