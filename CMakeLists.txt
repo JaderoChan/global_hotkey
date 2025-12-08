@@ -86,12 +86,12 @@ elseif(LINUX)
 endif()
 
 configure_file(
-    set(GLOBAL_HOTKEY_SHARED GLOBAL_HOTKEY_BUILD_SHARED)
     ${CMAKE_CURRENT_SOURCE_DIR}/cmake/templates/config.hpp.in
     ${CMAKE_CURRENT_SOURCE_DIR}/include/global_hotkey/config.hpp
 )
 
 if(GLOBAL_HOTKEY_BUILD_SHARED)
+    set(GLOBAL_HOTKEY_SHARED)
     add_library(${PROJECT_NAME} SHARED ${SRC})
     target_compile_definitions(${PROJECT_NAME} PUBLIC GLOBAL_HOTKEY_BUILD_SHARED)
 else()
