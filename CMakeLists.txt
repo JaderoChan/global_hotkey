@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.25)
 
-project(global_hotkey VERSION 1.2.1 LANGUAGES CXX)
+project(global_hotkey VERSION 1.2.2 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -85,18 +85,18 @@ elseif(LINUX)
     endif()
 endif()
 
+if(GLOBAL_HOTKEY_BUILD_SHARED)
+    set(GLOBAL_HOTKEY_SHARED TRUE)
+    add_library(${PROJECT_NAME} SHARED ${SRC})
+    target_compile_definitions(${PROJECT_NAME} PRIVATE GLOBAL_HOTKEY_BUILD_SHARED)
+else()
+    add_library(${PROJECT_NAME} STATIC ${SRC})
+endif()
+
 configure_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/cmake/templates/config.hpp.in
     ${CMAKE_CURRENT_SOURCE_DIR}/include/global_hotkey/config.hpp
 )
-
-if(GLOBAL_HOTKEY_BUILD_SHARED)
-    set(GLOBAL_HOTKEY_SHARED)
-    add_library(${PROJECT_NAME} SHARED ${SRC})
-    target_compile_definitions(${PROJECT_NAME} PUBLIC GLOBAL_HOTKEY_BUILD_SHARED)
-else()
-    add_library(${PROJECT_NAME} STATIC ${SRC})
-endif()
 
 target_include_directories(${PROJECT_NAME} PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
