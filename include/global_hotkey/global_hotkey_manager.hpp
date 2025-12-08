@@ -24,6 +24,7 @@ public:
     /// @param fn The callback function triggered when hotkey is actived.
     /// @param autoRepeat Whether the hotkey automatically repeat the callback function
     /// when it's held down continuously.
+    /// @attention Must be performed after #start().
     int add(const KeyCombination& kc, const std::function<void ()>& fn, bool autoRepeat = false);
     /// @brief Remove a hotkey from the `Global Hotkey Manager`.
     /// @param kc The hotkey you will remove.
@@ -46,6 +47,7 @@ public:
     /// @sa #setAutoRepeat()
     bool isAutoRepeat(const KeyCombination& kc) const;
     /// @brief Whether the `Global Hotkey Manager` is running.
+    /// @note thread-safe.
     bool isRunning() const;
     /// @brief Fetch all hotkey in the `Global Hotkey Manager`.
     std::vector<KeyCombination> getAll() const;
