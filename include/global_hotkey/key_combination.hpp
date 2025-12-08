@@ -20,6 +20,8 @@ public:
         mod_((int32_t) (toCombinedValue >> 32)), key_((int32_t) toCombinedValue) {}
     KeyCombination(const std::string& str, char connector = '+') noexcept
     { *this = std::move(fromString(str, '+')); }
+    KeyCombination(const char* str, char connector = '+') noexcept :
+        KeyCombination(std::string(str), connector) {}
 
     static KeyCombination fromString(const std::string& str, char connector = '+') noexcept;
     std::string toString(char connector = '+', bool showKeyValue = false) const noexcept;
