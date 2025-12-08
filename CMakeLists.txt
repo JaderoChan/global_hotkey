@@ -85,8 +85,8 @@ elseif(LINUX)
     endif()
 endif()
 
-set(GLOBAL_HOTKEY_SHARED GLOBAL_HOTKEY_BUILD_SHARED)
 configure_file(
+    set(GLOBAL_HOTKEY_SHARED GLOBAL_HOTKEY_BUILD_SHARED)
     ${CMAKE_CURRENT_SOURCE_DIR}/cmake/templates/config.hpp.in
     ${CMAKE_CURRENT_SOURCE_DIR}/include/global_hotkey/config.hpp
 )
