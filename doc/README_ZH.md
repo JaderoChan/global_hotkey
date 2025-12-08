@@ -30,7 +30,7 @@
 
 ## 依赖
 
-[Keyboard Tool](https://github/JaderoChan/keyboard_tool)
+[Keyboard Tool](https://github.com/JaderoChan/keyboard_tool)
 
 ## 🔧 如何编译？
 

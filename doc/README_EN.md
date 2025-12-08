@@ -30,7 +30,7 @@
 
 ## Dependence
 
-[Keyboard Tool](https://github/JaderoChan/keyboard_tool)
+[Keyboard Tool](https://github.com/JaderoChan/keyboard_tool)
 
 ## 🔧 How to Build?
 
