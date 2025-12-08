@@ -34,7 +34,7 @@ inline std::string getReturnCodeMsg(int rc) noexcept
         case RC_BAD_TIMING:
             return "Can't perform stop, add, remove, replace and the like functions before the GHM is start";
         case RC_BAD_THREAD:
-            return "Can't perform stop, add, remove, replace and the like functions on the worker thread \
+            return "Can't perform stop, add, remove, replace and the like functions in the worker thread \
 (usually is the hotkey callback functions)";
         default:
             return "A return value depends on the platform or framwork: " + std::to_string(rc);
