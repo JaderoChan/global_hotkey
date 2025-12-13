@@ -44,7 +44,7 @@ RegisterGHMPrivateX11::RegisterGHMPrivateX11() :
     regUnregKc_(KeyCombination())
 {}
 
-RegisterGHMPrivateX11::~RegisterGHMPrivateX11() { stop(); }
+RegisterGHMPrivateX11::~RegisterGHMPrivateX11() { uninitialize(); }
 
 int RegisterGHMPrivateX11::doBeforeThreadRun()
 {

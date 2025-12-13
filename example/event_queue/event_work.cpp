@@ -11,7 +11,7 @@ static char buf[BUF_SIZE];
 
 void exitWork()
 {
-    int rc = GHM.stop();
+    int rc = GHM.uninitialize();
     if (rc == RC_SUCCESS)
         printf("Success to exit!\n");
     else

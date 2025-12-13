@@ -19,7 +19,7 @@ RegisterGHMPrivateWin::RegisterGHMPrivateWin() :
     hotkeyIndex_(0)
 {}
 
-RegisterGHMPrivateWin::~RegisterGHMPrivateWin() { stop(); }
+RegisterGHMPrivateWin::~RegisterGHMPrivateWin() { uninitialize(); }
 
 int RegisterGHMPrivateWin::doBeforeThreadEnd()
 {

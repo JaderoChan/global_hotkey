@@ -67,13 +67,13 @@
 
 1. Obtain a `Global Hotkey Manager (GHM)` object via the `getInstance` interface.
 
-2. Start the `GHM` via the `start` interface.
+2. Initialize the `GHM` via the `initialize` interface.
 
 3. Add, remove, or replace hotkeys using the corresponding interfaces.
 
 4. When a hotkey is triggered, the corresponding callback function will be executed.
 
-5. End the `GHM` via the `stop` interface.
+5. Uninitialize the `GHM` via the `uninitialize` interface.
 
 ---
 
@@ -81,7 +81,7 @@ Below is example code demonstrating the basic workflow:
 
 ```cpp
 GlobalHotkeyManager& ghm = RegisterGlobalHotkeyManager::getInstance();  // Get an instance of the `Register GHM`.
-ghm.start();    // Start the Global Hotkey Manager.
+ghm.initialize();   // Initialize the Global Hotkey Manager.
 
 KeyCombination hotkey1(CTRL, 'G');
 KeyCombination hotkey2(CTRL, 'H');
@@ -96,7 +96,7 @@ while (!shouldClose)
     // Do Something.
 }
 
-ghm.stop();      // End the Global Hotkey Manager.
+ghm.uninitialize(); // Uninitialize the Global Hotkey Manager.
 ```
 
 ## 💡 Examples
@@ -147,7 +147,7 @@ No. `Register GHM` on **Linux** relies on **X11**.
 
 - 'Register GHM' under the MacOS system is not supported for the time being.
 
-- Operations such as termination, addition, deletion, and hotkey replacement can only be performed after the corresponding 'GHM' has been started!
+- Operations such as termination, addition, deletion, and hotkey replacement can only be performed after the corresponding 'GHM' has been initialized!
 
 - Do not perform operations such as terminating, adding, deleting, and hotkey replacement in the worker thread (for the user, this is the thread where the callback function is executed when the hotkey is triggered)!
 

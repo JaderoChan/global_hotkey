@@ -36,7 +36,7 @@ static void kbdtEventHandler(keyboard_event* event);
 
 HookGHMPrivate::HookGHMPrivate() = default;
 
-HookGHMPrivate::~HookGHMPrivate() { stop(); }
+HookGHMPrivate::~HookGHMPrivate() { uninitialize(); }
 
 int HookGHMPrivate::doBeforeThreadRun()
 {

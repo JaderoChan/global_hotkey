@@ -20,8 +20,8 @@ public:
     GHMPrivate();
     virtual ~GHMPrivate();
 
-    int start();
-    int stop();
+    int initialize();
+    int uninitialize();
     int add(const KeyCombination& kc, const std::function<void ()>& fn, bool autoRepeat);
     int remove(const KeyCombination& kc);
     int removeAll();

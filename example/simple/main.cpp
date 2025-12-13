@@ -68,18 +68,17 @@ int main()
     gbhk::KeyCombination hotkey2(gbhk::CTRL | gbhk::SHIFT, 'J');
     gbhk::KeyCombination hotkey3(gbhk::CTRL | gbhk::SHIFT, gbhk::Key_Backspace);
 
-    int rc = ghm.start();
+    int rc = ghm.initialize();
     if (rc != gbhk::RC_SUCCESS)
     {
-        ghm.stop();
-        THROW_RT_ERR("Failed to start the Global Hotkey Manager: ", rc);
+        THROW_RT_ERR("Failed to initialize the Global Hotkey Manager: ", rc);
     }
-    printf("Success to start the GHM!\n");
+    printf("Success to initialize the GHM!\n");
 
     rc = ghm.add(hotkey1, &hotkeyTriggered1);
     if (rc != gbhk::RC_SUCCESS)
     {
-        ghm.stop();
+        ghm.uninitialize();
         THROW_RT_ERR("Failed to add the hotkey 1: ", rc);
     }
     printf("Success to add the hotkey: [%s]\n", hotkey1.toString().c_str());
@@ -88,7 +87,7 @@ int main()
     rc = ghm.add(hotkey2, &hotkeyTriggered2, true);
     if (rc != gbhk::RC_SUCCESS)
     {
-        ghm.stop();
+        ghm.uninitialize();
         THROW_RT_ERR("Failed to add the hotkey 2: ", rc);
     }
     printf("Success to add the hotkey: [%s] (auto repeat)\n", hotkey2.toString().c_str());
@@ -103,7 +102,7 @@ int main()
     });
     if (rc != gbhk::RC_SUCCESS)
     {
-        ghm.stop();
+        ghm.uninitialize();
         THROW_RT_ERR("Failed to add the hotkey: ", rc);
     }
     printf("Success to add the hotkey: [%s]\n", hotkey3.toString().c_str());
@@ -114,9 +113,9 @@ int main()
     cv.wait(lock, [&]() { return shouldClose.load(); });
 
     printf("Ending...\n");
-    rc = ghm.stop();
+    rc = ghm.uninitialize();
     if (rc != gbhk::RC_SUCCESS)
-        THROW_RT_ERR("Failed to stop the Global Hotkey Manager: ", rc);
+        THROW_RT_ERR("Failed to uninitialize the Global Hotkey Manager: ", rc);
     printf("The Global Hotkey Manager is ended!\n");
 
     return 0;

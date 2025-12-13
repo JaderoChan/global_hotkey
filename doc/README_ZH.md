@@ -67,13 +67,13 @@
 
 1. 通过`getInstance`接口获取一个`热键管理器 (GHM)`对象。
 
-2. 通过`start`接口启动`GHM`。
+2. 通过`initialize`接口初始化`GHM`。
 
 3. 通过相应的接口增加、移除或替换热键。
 
 4. 热键被触发时将执行对应的回调函数。
 
-5. 通过`stop`接口结束`GHM`
+5. 通过`uninitialize`接口释放`GHM`
 
 ---
 
@@ -81,7 +81,7 @@
 
 ```cpp
 GlobalHotkeyManager& ghm = RegisterGlobalHotkeyManager::getInstance();  // 获取`注册式热键管理器`实例对象。
-ghm.start();    // 启动热键管理器。
+ghm.initialize();   // 初始化热键管理器。
 
 KeyCombination hotkey1(CTRL, 'G');
 KeyCombination hotkey2(CTRL, 'H');
@@ -96,7 +96,7 @@ while (!shouldClose)
     // Do Something.
 }
 
-ghm.stop();      // 结束热键管理器。
+ghm.uninitialize(); // 释放热键管理器。
 ```
 
 ## 💡 示例
@@ -147,7 +147,7 @@ ghm.stop();      // 结束热键管理器。
 
 - MacOS系统下的`Register GHM`暂不支持。
 
-- 中止、增加、删除和热键替换等操作，必须在对应的`GHM`启动之后才可进行！
+- 中止、增加、删除和热键替换等操作，必须在对应的`GHM`初始化之后才可进行！
 
 - 不要在工作线程中（对于使用者而言，这是热键被触发时回调函数执行的线程）进行中止、增加、删除和热键替换等操作！
 

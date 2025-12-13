@@ -9,11 +9,11 @@ GlobalHotkeyManager::GlobalHotkeyManager(std::unique_ptr<GHMPrivate> ptr) : ptr_
 
 GlobalHotkeyManager::~GlobalHotkeyManager() = default;
 
-int GlobalHotkeyManager::start()
-{ return ptr_->start(); }
+int GlobalHotkeyManager::initialize()
+{ return ptr_->initialize(); }
 
-int GlobalHotkeyManager::stop()
-{ return ptr_->stop(); }
+int GlobalHotkeyManager::uninitialize()
+{ return ptr_->uninitialize(); }
 
 int GlobalHotkeyManager::add(const KeyCombination& kc, const std::function<void ()>& fn, bool autoRepeat)
 { return ptr_->add(kc, fn, autoRepeat); }

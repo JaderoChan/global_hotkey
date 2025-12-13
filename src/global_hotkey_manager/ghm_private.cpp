@@ -13,7 +13,7 @@ GHMPrivate::GHMPrivate() :
 
 GHMPrivate::~GHMPrivate() = default;
 
-int GHMPrivate::start()
+int GHMPrivate::initialize()
 {
     if (isRunning())            return RC_SUCCESS;
 
@@ -42,7 +42,7 @@ int GHMPrivate::start()
     return runningRc_;
 }
 
-int GHMPrivate::stop()
+int GHMPrivate::uninitialize()
 {
     if (!isRunning())           return RC_SUCCESS;
     if (isInWorkerThread_())    return RC_BAD_THREAD;
