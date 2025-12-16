@@ -86,7 +86,6 @@ elseif(LINUX)
 endif()
 
 if(GLOBAL_HOTKEY_BUILD_SHARED)
-    set(GLOBAL_HOTKEY_SHARED TRUE)
     add_library(${PROJECT_NAME} SHARED ${SRC})
     target_compile_definitions(${PROJECT_NAME} PRIVATE GLOBAL_HOTKEY_BUILD_SHARED)
 else()
