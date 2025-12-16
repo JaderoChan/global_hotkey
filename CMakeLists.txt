@@ -95,12 +95,14 @@ endif()
 
 configure_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/cmake/templates/config.hpp.in
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/global_hotkey/config.hpp
+    ${CMAKE_BINARY_DIR}/include/config.hpp
 )
 
+include(GNUInstallDirs)
 target_include_directories(${PROJECT_NAME} PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    $<INSTALL_INTERFACE:include>
+    $<BUILD_INTERFACE:${CMAKE_BINARY_DIR_DIR}/include>
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
 if(NOT GLOBAL_HOTKEY_DISABLE_HOOK)
@@ -176,7 +178,6 @@ set_target_properties(${PROJECT_NAME} PROPERTIES DEBUG_POSTFIX d)
 
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
-include(GNUInstallDirs)
 install(
     TARGETS ${PROJECT_NAME}
     EXPORT ${PROJECT_NAME}
@@ -186,6 +187,8 @@ install(
 )
 
 install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+file(GLOB HEADERS ${CMAKE_BINARY_DIR}/include/*.h ${CMAKE_BINARY_DIR}/include/*.hpp)
+install(FILES ${HEADERS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/global_hotkey)
 install(DIRECTORY doc/ DESTINATION ${CMAKE_INSTALL_DOCDIR})
 install(FILES LICENSE DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/licenses/${PROJECT_NAME})
 
