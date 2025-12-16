@@ -94,13 +94,13 @@ endif()
 
 configure_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/cmake/templates/config.hpp.in
-    ${CMAKE_BINARY_DIR}/include/config.hpp
+    ${CMAKE_CURRENT_BINARY_DIR}/include/config.hpp
 )
 
 include(GNUInstallDirs)
 target_include_directories(${PROJECT_NAME} PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    $<BUILD_INTERFACE:${CMAKE_BINARY_DIR_DIR}/include>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
@@ -186,7 +186,7 @@ install(
 )
 
 install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
-file(GLOB HEADERS ${CMAKE_BINARY_DIR}/include/*.h ${CMAKE_BINARY_DIR}/include/*.hpp)
+file(GLOB HEADERS ${CMAKE_CURRENT_BINARY_DIR}/include/*.h ${CMAKE_CURRENT_BINARY_DIR}/include/*.hpp)
 install(FILES ${HEADERS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/global_hotkey)
 install(DIRECTORY doc/ DESTINATION ${CMAKE_INSTALL_DOCDIR})
 install(FILES LICENSE DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/licenses/${PROJECT_NAME})
