@@ -91,6 +91,7 @@ if(GLOBAL_HOTKEY_BUILD_SHARED)
 else()
     add_library(${PROJECT_NAME} STATIC ${SRC})
 endif()
+add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
 configure_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/cmake/templates/config.hpp.in
@@ -174,8 +175,6 @@ if(NOT GLOBAL_HOTKEY_DISABLE_HOOK)
 endif()
 
 set_target_properties(${PROJECT_NAME} PROPERTIES DEBUG_POSTFIX d)
-
-add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
 install(
     TARGETS ${PROJECT_NAME}
