@@ -202,12 +202,6 @@ int GHMPrivate::doBeforeThreadRun()
 int GHMPrivate::doBeforeThreadEnd()
 { return RC_SUCCESS; }
 
-int GHMPrivate::registerHotkey(const KeyCombination &kc, bool autoRepeat)
-{ return RC_SUCCESS; }
-
-int GHMPrivate::unregisterHotkey(const KeyCombination &kc)
-{ return RC_SUCCESS; }
-
 bool GHMPrivate::isInWorkerThread_() const
 { return std::this_thread::get_id() == workerThreadId_; }
 
