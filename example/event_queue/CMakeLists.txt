@@ -12,8 +12,8 @@ add_executable(${PROJECT_NAME}
     main.cpp
 )
 
-if(GLOBAL_HOTKEY_EXAMPLE_USE_HOOK)
-    target_compile_definitions(${PROJECT_NAME} PRIVATE GLOBAL_HOTKEY_EXAMPLE_USE_HOOK)
+if(GLOBAL_HOTKEY_BUILD_EXAMPLE_USE_HOOK)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE GLOBAL_HOTKEY_BUILD_EXAMPLE_USE_HOOK)
 endif()
 
 target_link_libraries(${PROJECT_NAME} PRIVATE global_hotkey::global_hotkey)

@@ -10,7 +10,7 @@
             "name": "example-use-hook",
             "displayName": "Example Use Hook",
             "cacheVariables": {
-                "GLOBAL_HOTKEY_EXAMPLE_USE_HOOK": "ON"
+                "GLOBAL_HOTKEY_BUILD_EXAMPLE_USE_HOOK": "ON"
             },
             "binaryDir": "${sourceDir}/build/${presetName}"
         },
@@ -19,7 +19,7 @@
             "displayName": "Disable Register",
             "cacheVariables": {
                 "GLOBAL_HOTKEY_DISABLE_REGISTER": "ON",
-                "GLOBAL_HOTKEY_EXAMPLE_USE_HOOK": "ON"
+                "GLOBAL_HOTKEY_BUILD_EXAMPLE_USE_HOOK": "ON"
             },
             "binaryDir": "${sourceDir}/build/${presetName}"
         },

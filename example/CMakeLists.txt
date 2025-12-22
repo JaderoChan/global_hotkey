@@ -2,14 +2,14 @@ cmake_minimum_required(VERSION 3.25)
 
 project(global_hotkey_examples LANGUAGES CXX)
 
-option(GLOBAL_HOTKEY_EXAMPLE_USE_HOOK "Build example using hook Global Hotkey Manager" OFF)
-if(GLOBAL_HOTKEY_EXAMPLE_USE_HOOK)
+option(GLOBAL_HOTKEY_BUILD_EXAMPLE_USE_HOOK "Build example using hook Global Hotkey Manager" OFF)
+if(GLOBAL_HOTKEY_BUILD_EXAMPLE_USE_HOOK)
     message(STATUS "${GLOBAL_HOTKEY_MSG_PREFIX} Build example using hook Global Hotkey Manager.")
 endif()
 
-if(GLOBAL_HOTKEY_DISABLE_REGISTER AND NOT GLOBAL_HOTKEY_EXAMPLE_USE_HOOK)
+if(GLOBAL_HOTKEY_DISABLE_REGISTER AND NOT GLOBAL_HOTKEY_BUILD_EXAMPLE_USE_HOOK)
     message(FATAL_ERROR "${GLOBAL_HOTKEY_MSG_PREFIX} Cannot build example using register Global Hotkey Manager with GLOBAL_HOTKEY_DISABLE_REGISTER.")
-elseif(GLOBAL_HOTKEY_DISABLE_HOOK AND GLOBAL_HOTKEY_EXAMPLE_USE_HOOK)
+elseif(GLOBAL_HOTKEY_DISABLE_HOOK AND GLOBAL_HOTKEY_BUILD_EXAMPLE_USE_HOOK)
     message(FATAL_ERROR "${GLOBAL_HOTKEY_MSG_PREFIX} Cannot build example using hook Global Hotkey Manager with GLOBAL_HOTKEY_DISABLE_HOOK.")
 endif()
 

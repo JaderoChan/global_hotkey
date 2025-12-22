@@ -6,7 +6,7 @@
 
 #include <global_hotkey/global_hotkey.hpp>
 
-#ifdef GLOBAL_HOTKEY_EXAMPLE_USE_HOOK
+#ifdef GLOBAL_HOTKEY_BUILD_EXAMPLE_USE_HOOK
     #ifndef GLOBAL_HOTKEY_WIN
         #include <unistd.h> // getuid
 
@@ -24,13 +24,13 @@
             return AXIsProcessTrustedWithOptions(NULL);
         }
     #endif // GLOBAL_HOTKEY_MAC
-#endif // GLOBAL_HOTKEY_EXAMPLE_USE_HOOK
+#endif // GLOBAL_HOTKEY_BUILD_EXAMPLE_USE_HOOK
 
 #define THROW_RT_ERR(errmsg, code) (throw std::runtime_error((errmsg) + gbhk::getReturnCodeMsg(code)))
 
 static bool isPermissionAccessible()
 {
-#ifdef GLOBAL_HOTKEY_EXAMPLE_USE_HOOK
+#ifdef GLOBAL_HOTKEY_BUILD_EXAMPLE_USE_HOOK
     #ifdef GLOBAL_HOTKEY_WIN
         return true;
     #elif defined(GLOBAL_HOTKEY_MAC)
@@ -40,7 +40,7 @@ static bool isPermissionAccessible()
     #else
         return false;
     #endif // GLOBAL_HOTKEY_WIN
-#endif // GLOBAL_HOTKEY_EXAMPLE_USE_HOOK
+#endif // GLOBAL_HOTKEY_BUILD_EXAMPLE_USE_HOOK
     return true;
 }
 
@@ -56,13 +56,13 @@ static void hotkeyTriggered2()
 
 int main()
 {
-#ifdef GLOBAL_HOTKEY_EXAMPLE_USE_HOOK
+#ifdef GLOBAL_HOTKEY_BUILD_EXAMPLE_USE_HOOK
     gbhk::GlobalHotkeyManager& ghm = gbhk::HookGlobalHotkeyManager::getInstance();
     if (!isPermissionAccessible())
         throw std::runtime_error("Permission Denied!");
 #else
     gbhk::GlobalHotkeyManager& ghm = gbhk::RegisterGlobalHotkeyManager::getInstance();
-#endif // GLOBAL_HOTKEY_EXAMPLE_USE_HOOK
+#endif // GLOBAL_HOTKEY_BUILD_EXAMPLE_USE_HOOK
 
     gbhk::KeyCombination hotkey1(gbhk::CTRL, 'J');
     gbhk::KeyCombination hotkey2(gbhk::CTRL | gbhk::SHIFT, 'J');

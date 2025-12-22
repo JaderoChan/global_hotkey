@@ -5,7 +5,7 @@
 
 using namespace gbhk;
 
-#ifdef GLOBAL_HOTKEY_EXAMPLE_USE_HOOK
+#ifdef GLOBAL_HOTKEY_BUILD_EXAMPLE_USE_HOOK
     #define GHM HookGlobalHotkeyManager::getInstance()
 #else
     #define GHM RegisterGlobalHotkeyManager::getInstance()

@@ -57,7 +57,7 @@
 
 - `GLOBAL_HOTKEY_BUILD_EXAMPLE` Whether to build example programs. Default depends on whether the project is the main project.
 
-- `GLOBAL_HOTKEY_EXAMPLE_USE_HOOK` Specifies the hotkey type used in the example program. Default is `OFF` (i.e., uses `Register GHM` in the example program).
+- `GLOBAL_HOTKEY_BUILD_EXAMPLE_USE_HOOK` Specifies the hotkey type used in the example program. Default is `OFF` (i.e., uses `Register GHM` in the example program).
 
 - `GLOBAL_HOTKEY_EXAMPLE_BUILD_SIMPLE` Specifies whether to build the `simple` example program. Default is `ON`.
 

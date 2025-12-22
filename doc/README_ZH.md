@@ -57,7 +57,7 @@
 
 - `GLOBAL_HOTKEY_BUILD_EXAMPLE` 是否生成示例程序，默认值取决于项目是否为主项目。
 
-- `GLOBAL_HOTKEY_EXAMPLE_USE_HOOK` 指定示例程序使用的热键类型，默认为`OFF`（即在示例程序中使用`Register GHM`）。
+- `GLOBAL_HOTKEY_BUILD_EXAMPLE_USE_HOOK` 指定示例程序使用的热键类型，默认为`OFF`（即在示例程序中使用`Register GHM`）。
 
 - `GLOBAL_HOTKEY_EXAMPLE_BUILD_SIMPLE` 指定是否生成`simple`示例程序，默认`ON`。
 
