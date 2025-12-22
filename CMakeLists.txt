@@ -106,15 +106,15 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 )
 
 if(NOT GLOBAL_HOTKEY_DISABLE_HOOK)
+    message(STATUS "Start configure the 'keyboard tool' library...")
     include(FetchContent)
     FetchContent_Declare(
         kbdt
         GIT_REPOSITORY https://github.com/JaderoChan/keyboard_tool.git
         GIT_TAG main
     )
-    message(STATUS "Start fetch the 'keyboard tool' library...")
     FetchContent_MakeAvailable(kbdt)
-    message(STATUS "Success to fetch the 'keyboard tool' library.")
+    message(STATUS "Success to configure the 'keyboard tool' library.")
 endif()
 
 if(WIN32)
