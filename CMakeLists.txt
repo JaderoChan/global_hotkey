@@ -112,7 +112,9 @@ if(NOT GLOBAL_HOTKEY_DISABLE_HOOK)
         GIT_REPOSITORY https://github.com/JaderoChan/keyboard_tool.git
         GIT_TAG main
     )
+    message(STATUS "Start fetch the 'keyboard tool' library...")
     FetchContent_MakeAvailable(kbdt)
+    message(STATUS "Success to fetch the 'keyboard tool' library.")
 endif()
 
 if(WIN32)
