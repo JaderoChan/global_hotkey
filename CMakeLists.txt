@@ -113,7 +113,8 @@ if(NOT GLOBAL_HOTKEY_DISABLE_HOOK)
         GIT_TAG main
     )
     FetchContent_MakeAvailable(kbdt)
-    target_include_directories(${PROJECT_NAME} PRIVATE ${kbdt_SOURCE_DIR}/include)
+    list(APPEND CMAKE_PREFIX_PATH ${kbdt_BINARY_DIR})
+    find_package(kbdt REQUIRED)
 endif()
 
 if(WIN32)
