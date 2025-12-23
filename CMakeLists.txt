@@ -5,8 +5,6 @@ project(global_hotkey VERSION 1.3.0 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(GLOBAL_HOTKEY_VERSION ${PROJECT_VERSION})
-
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
 endif()
@@ -198,9 +196,6 @@ install(
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
 )
 
-set(INCLUDE_DIRS ${CMAKE_INSTALL_INCLUDEDIR})
-set(LIB_DIR ${CMAKE_INSTALL_LIBDIR})
-
 include(CMakePackageConfigHelpers)
 write_basic_package_version_file(
     ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
@@ -211,7 +206,7 @@ write_basic_package_version_file(
 configure_package_config_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/cmake/${PROJECT_NAME}Config.cmake.in
     ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
-    PATH_VARS INCLUDE_DIRS LIB_DIR
+    PATH_VARS CMAKE_INSTALL_INCLUDEDIR CMAKE_INSTALL_LIBDIR
     INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
 )
 
@@ -226,3 +221,5 @@ if(GLOBAL_HOTKEY_BUILD_EXAMPLE)
     message(STATUS "${GLOBAL_HOTKEY_MSG_PREFIX} Example will be built.")
     add_subdirectory(example)
 endif()
+
+export(PACKAGE ${PROJECT_NAME})
