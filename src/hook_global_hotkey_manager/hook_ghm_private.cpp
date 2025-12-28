@@ -152,7 +152,7 @@ void kbdtEventHandler(keyboard_event* event)
 {
     auto key = keyFromNativeKey(event->native_key);
     auto et = (event->type == KBDET_PRESSED ? ET_KEY_PRESSED : ET_KEY_RELEASED);
-    pushEvent({ et, key });
+    pushEvent({et, key});
 }
 
 } // namespace gbhk

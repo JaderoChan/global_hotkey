@@ -25,7 +25,7 @@ int RegisterGHMPrivateWin::doBeforeThreadEnd()
 {
     if (PostThreadMessageA(workerThreadId_, WM_DESTROY, 0, 0) != 0)
         return RC_SUCCESS;
-    return GetLastError();
+    return (int) GetLastError();
 }
 
 void RegisterGHMPrivateWin::work()
@@ -82,7 +82,7 @@ int RegisterGHMPrivateWin::registerHotkey(const KeyCombination& kc, bool autoRep
         cvRegUnregRc_.wait(lock, [this]() { return regUnregRc_ != -1; });
         return regUnregRc_;
     }
-    return GetLastError();
+    return (int) GetLastError();
 }
 
 int RegisterGHMPrivateWin::unregisterHotkey(const KeyCombination& kc)
@@ -100,7 +100,7 @@ int RegisterGHMPrivateWin::unregisterHotkey(const KeyCombination& kc)
         cvRegUnregRc_.wait(lock, [this]() { return regUnregRc_ != -1; });
         return regUnregRc_;
     }
-    return GetLastError();
+    return (int) GetLastError();
 }
 
 int RegisterGHMPrivateWin::nativeRegisterHotkey(WPARAM wParam, LPARAM lParam)
@@ -116,7 +116,7 @@ int RegisterGHMPrivateWin::nativeRegisterHotkey(WPARAM wParam, LPARAM lParam)
         hotkeyIndex_++;
         return RC_SUCCESS;
     }
-    return GetLastError();
+    return (int) GetLastError();
 }
 
 int RegisterGHMPrivateWin::nativeUnregisterHotkey(WPARAM wParam, LPARAM lParam)
@@ -132,7 +132,7 @@ int RegisterGHMPrivateWin::nativeUnregisterHotkey(WPARAM wParam, LPARAM lParam)
         kcToHotkeyId_.erase(kc);
         return RC_SUCCESS;
     }
-    return GetLastError();
+    return (int) GetLastError();
 }
 
 void RegisterGHMPrivateWin::invoke_(WPARAM wParam, LPARAM lParam) const

@@ -12,8 +12,8 @@ namespace gbhk
 {
 
 std::condition_variable RegisterGHMPrivateMac::cvRegUnregRc_;
-std::atomic<int> RegisterGHMPrivateMac::regUnregRc_(0);
-std::atomic<EventType> RegisterGHMPrivateMac::eventType_(ET_NONE);
+std::atomic<int> RegisterGHMPrivateMac::regUnregRc_{0};
+std::atomic<EventType> RegisterGHMPrivateMac::eventType_{ET_NONE};
 std::atomic<KeyCombination> RegisterGHMPrivateMac::regUnregKc_;
 std::unordered_map<KeyCombination, EventHotKeyRef> RegisterGHMPrivateMac::kcToHotkeyRef_;
 
@@ -186,7 +186,7 @@ int RegisterGHMPrivateMac::nativeRegisterHotkey()
         &ref
     );
     if (status != noErr)
-        return status;
+        return (int) status;
     kcToHotkeyRef_[regUnregKc_] = ref;
     return RC_SUCCESS;
 }
@@ -196,7 +196,7 @@ int RegisterGHMPrivateMac::nativeUnregisterHotkey()
     EventHotKeyRef ref = kcToHotkeyRef_[regUnregKc_];
     auto status = UnregisterEventHotKey(ref);
     if (status != noErr)
-        return status;
+        return (int) status;
     kcToHotkeyRef_.erase(regUnregKc_);
     return RC_SUCCESS;
 }
