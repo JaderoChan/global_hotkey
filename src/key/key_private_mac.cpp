@@ -127,7 +127,7 @@ int keyToNativeKey(const Key& key) noexcept
         case Key_Numpad_Divide:     return kVK_ANSI_KeypadDivide;
         case Key_Numpad_Decimal:    return kVK_ANSI_KeypadDecimal;
         case Key_Numpad_Separator:  return 0;   // Not supported
-        case Key_Numpad_Equal:      return kVK_ANSI_KeypadEqual;
+        case Key_Numpad_Equal:      return kVK_ANSI_KeypadEquals;
         case Key_Numpad_Enter:      return kVK_ANSI_KeypadEnter;
 
         // Application keys
@@ -297,7 +297,7 @@ Key keyFromNativeKey(int nativeKey) noexcept
         case kVK_ANSI_KeypadMultiply:   return Key_Numpad_Multiply;
         case kVK_ANSI_KeypadDivide:     return Key_Numpad_Divide;
         case kVK_ANSI_KeypadDecimal:    return Key_Numpad_Decimal;
-        case kVK_ANSI_KeypadEqual:      return Key_Numpad_Equal;
+        case kVK_ANSI_KeypadEquals:     return Key_Numpad_Equal;
         case kVK_ANSI_KeypadEnter:      return Key_Numpad_Enter;
 
         // Application keys
