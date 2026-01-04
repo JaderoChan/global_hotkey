@@ -73,7 +73,7 @@ int main()
     {
         THROW_RT_ERR("Failed to initialize the Global Hotkey Manager: ", rc);
     }
-    printf("Success to initialize the GHM!\n");
+    printf("Successfully initialize the GHM!\n");
 
     rc = ghm.add(hotkey1, &hotkeyTriggered1);
     if (rc != gbhk::RC_SUCCESS)
@@ -81,7 +81,7 @@ int main()
         ghm.uninitialize();
         THROW_RT_ERR("Failed to add the hotkey 1: ", rc);
     }
-    printf("Success to add the hotkey: [%s]\n", hotkey1.toString().c_str());
+    printf("Successfully add the hotkey: [%s]\n", hotkey1.toString().c_str());
 
     // The hotkey 2 is auto repeat.
     rc = ghm.add(hotkey2, &hotkeyTriggered2, true);
@@ -90,7 +90,7 @@ int main()
         ghm.uninitialize();
         THROW_RT_ERR("Failed to add the hotkey 2: ", rc);
     }
-    printf("Success to add the hotkey: [%s] (auto repeat)\n", hotkey2.toString().c_str());
+    printf("Successfully add the hotkey: [%s] (auto repeat)\n", hotkey2.toString().c_str());
 
     std::atomic<bool> shouldClose(false);
     std::condition_variable cv;
@@ -105,14 +105,14 @@ int main()
         ghm.uninitialize();
         THROW_RT_ERR("Failed to add the hotkey: ", rc);
     }
-    printf("Success to add the hotkey: [%s]\n", hotkey3.toString().c_str());
+    printf("Successfully add the hotkey: [%s]\n", hotkey3.toString().c_str());
     printf("Press the [%s] to exit!\n\n", hotkey3.toString().c_str());
 
     std::mutex dummyMtx;
     std::unique_lock<std::mutex> lock(dummyMtx);
     cv.wait(lock, [&]() { return shouldClose.load(); });
 
-    printf("Ending...\n");
+    printf("Exit...\n");
     rc = ghm.uninitialize();
     if (rc != gbhk::RC_SUCCESS)
         THROW_RT_ERR("Failed to uninitialize the Global Hotkey Manager: ", rc);

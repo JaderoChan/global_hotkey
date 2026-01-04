@@ -13,14 +13,14 @@ void exitWork()
 {
     int rc = GHM.uninitialize();
     if (rc == RC_SUCCESS)
-        printf("Success to exit!\n");
+        printf("Successfully exit!\n");
     else
         printf("Failed to exit! Error: %s\n", RCMSG(rc));
 }
 
 void addHotkeyWork()
 {
-    printf("Please input the string of the hotkey you want to add (e.g. Ctrl+C)\n");
+    printf("Please input string of the hotkey you want to add (e.g. Ctrl+C)\n");
     int ret = scanf("%s", buf);
     KeyCombination kc(buf);
 
@@ -36,20 +36,20 @@ void addHotkeyWork()
         return;
     }
 
-    printf("Please input the text it be print when the hotkey be triggered\n");
+    printf("Please input text it be print when the hotkey be triggered\n");
     ret = scanf("%s", buf);
 
     std::string str(buf);
     int rc = GHM.add(kc, [=]() { printf("%s\n", str.c_str()); });
     if (rc == RC_SUCCESS)
-        printf("Success to add the hotkey [%s]!\n", KCSTR(kc));
+        printf("Successfully add the hotkey [%s]!\n", KCSTR(kc));
     else
         printf("Failed to add the hotkey [%s]! Error: %s\n", KCSTR(kc), RCMSG(rc));
 }
 
 void removeHotkeyWork()
 {
-    printf("Please input the string of the hotkey you want to remove (e.g. Ctrl+C)\n");
+    printf("Please input string of the hotkey you want to remove (e.g. Ctrl+C)\n");
     int ret = scanf("%s", buf);
     KeyCombination kc(buf);
 
@@ -67,14 +67,14 @@ void removeHotkeyWork()
 
     int rc = GHM.remove(kc);
     if (rc == RC_SUCCESS)
-        printf("Success to remove the hotkey [%s]!\n", KCSTR(kc));
+        printf("Successfully remove the hotkey [%s]!\n", KCSTR(kc));
     else
         printf("Failed to remove the hotkey [%s]! Error: %s\n", KCSTR(kc), RCMSG(rc));
 }
 
 void replaceHotkeyWork()
 {
-    printf("Please input the string of the old hotkey you want to replace (e.g. Ctrl+C)\n");
+    printf("Please input string of the old hotkey you want to replace (e.g. Ctrl+C)\n");
     int ret = scanf("%s", buf);
     KeyCombination oldKc(buf);
 
@@ -90,7 +90,7 @@ void replaceHotkeyWork()
         return;
     }
 
-    printf("Please input the string of the new hotkey you want to add (e.g. Ctrl+Shift+C)\n");
+    printf("Please input string of the new hotkey you want to add (e.g. Ctrl+Shift+C)\n");
     ret = scanf("%s", buf);
     KeyCombination newKc(buf);
 
@@ -108,7 +108,7 @@ void replaceHotkeyWork()
 
     int rc = GHM.replace(oldKc, newKc);
     if (rc == RC_SUCCESS)
-        printf("Success to replace the hotkey [%s] to hotkey [%s]!\n", KCSTR(oldKc), KCSTR(newKc));
+        printf("Successfully replace the hotkey [%s] to hotkey [%s]!\n", KCSTR(oldKc), KCSTR(newKc));
     else
         printf("Failed to replace the hotkey [%s] to hotkey [%s]! Error: %s\n",
             KCSTR(oldKc), KCSTR(newKc), RCMSG(rc));
@@ -116,7 +116,7 @@ void replaceHotkeyWork()
 
 void setHotkeyAutoRepeatWork()
 {
-    printf("Please input the string of the hotkey you want to set is auto repeat (e.g. Ctrl+C)\n");
+    printf("Please input string of the hotkey you want to set is auto repeat (e.g. Ctrl+C)\n");
     int ret = scanf("%s", buf);
     KeyCombination kc(buf);
 
@@ -127,7 +127,7 @@ void setHotkeyAutoRepeatWork()
     }
 
     bool autoRepeat = false;
-    printf("Please input the \"Y/N (Yes/No)\" to set whether the hotkey is auto repeat\n");
+    printf("Please input \"Y/N (Yes/No)\" to set whether the hotkey is auto repeat\n");
     ret = scanf("%s", buf);
     while (true)
     {
@@ -150,10 +150,10 @@ void setHotkeyAutoRepeatWork()
 
     int rc = GHM.setAutoRepeat(kc, autoRepeat);
     if (rc == RC_SUCCESS)
-        printf("Success to set the hotkey [%s] to %s!\n",
+        printf("Successfully set the hotkey [%s] to %s!\n",
             KCSTR(kc), autoRepeat ? "auto repeat" : "no auto repeat");
     else
-        printf("Success to set the hotkey [%s] to %s! Error: %s\n",
+        printf("Failed to set the hotkey [%s] to %s! Error: %s\n",
             KCSTR(kc), autoRepeat ? "auto repeat" : "no auto repeat", RCMSG(rc));
 }
 
@@ -187,7 +187,7 @@ void heavyWork()
 
 void setHeavyWorkLevelWork()
 {
-    printf("Please input the level of the heavy work\n");
+    printf("Please input level of the heavy work\n");
     int level = 0;
     int ret = scanf("%d", &level);
     if (level < 1)
