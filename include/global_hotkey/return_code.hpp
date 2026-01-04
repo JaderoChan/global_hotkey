@@ -32,12 +32,13 @@ inline std::string getReturnCodeMsg(int rc) noexcept
         case RC_SUCCESS:
             return "Success";
         case RC_BAD_TIMING:
-            return "Can't perform uninitialize, add, remove, replace and the like functions before the GHM be initialized";
+            return "Cannot perform uninitialize, add, remove, replace, or similar functions "
+                   "before the Global Hotkey Manager is initialized";
         case RC_BAD_THREAD:
-            return "Can't perform uninitialize, add, remove, replace and the like functions in the worker thread \
-(usually is the hotkey callback functions)";
+            return "Cannot perform uninitialize, add, remove, replace, or similar functions "
+                   "in the worker thread (typically within hotkey callbacks)";
         default:
-            return "A return value depends on the platform or framwork: " + std::to_string(rc);
+            return "Platform or framework dependent return code: " + std::to_string(rc);
     }
 }
 

@@ -230,7 +230,8 @@ public:
     { return (data_ & modifier) != 0; }
     constexpr inline bool has(Modifiers modifiers) const noexcept
     { return (data_ & modifiers.data_) == modifiers.data_; }
-    /// @brief Check whether contains least one modifier.
+    /// @brief Check if this object represents a valid modifier combination.
+    /// @return true if at least one modifier key is included, false if no modifiers are present.
     constexpr inline bool isValid() const noexcept
     { return (data_ & META) || (data_ & CTRL) || (data_ & ALT) || (data_ & SHIFT); }
 
@@ -283,7 +284,9 @@ public:
     constexpr inline int32_t value() const noexcept { return data_; }
     constexpr inline operator int32_t() const noexcept { return data_; }
 
-    /// @brief Check whether the key value is not 0.
+    /// @brief Check if this object represents a valid key value.
+    /// @return true if the key value is non-zero, false if the value is zero.
+    /// @note A zero value typically represents an invalid or uninitialized key.
     constexpr inline bool isValid() const noexcept { return data_ != 0; }
 
     friend constexpr inline bool operator==(Key lhs, Key rhs) noexcept { return lhs.data_ == rhs.data_; }

@@ -33,34 +33,50 @@ public:
     std::vector<KeyCombination> getAll() const;
 
 protected:
-    /// @brief Get the pair of `autoRepeat` and `callback` values corresponding to the specified key combination.
-    /// @return Return a empty pair if the key combination given is not exists or it is invalid
-    /// else return the pair of `autoRepeat` and `callback` values.
-    /// @note Thread-safe.
+    /// @brief Get the auto-repeat flag and callback function for a registered hotkey.
+    /// @param kc The key combination to look up.
+    /// @return A pair containing the auto-repeat flag and callback function.
+    ///         Returns an empty pair (default-constructed) if the key combination
+    ///         is not registered or invalid.
+    /// @note This function is thread-safe.
     std::pair<bool, std::function<void ()>> getPairValue(const KeyCombination& kc) const;
 
-    /// @brief Indicates the worker thread running successfully.
-    /// @note The `Running Return Code` will be set to '#RC_SUCCESS`.
+    /// @brief Signal that the worker thread has completed successfully.
+    /// @note The running return code will be set to `RC_SUCCESS`.
     void setRunSuccess();
-    /// @brief Indicates the worker thread running failed.
-    /// @note The `Running Return Code` will be set to errorCode.
+
+    /// @brief Signal that the worker thread has failed.
+    /// @param errorCode The error code indicating the failure reason.
+    /// @note The running return code will be set to the specified error code.
     void setRunFail(int errorCode);
 
-    // Some interfaces for subclasses to specialize.
+    // Interface for subclasses to implement platform-specific behavior
 
-    /// @note This function will be performed before the worker thread is running.
+    /// @brief Perform platform-specific initialization before the worker thread starts.
+    /// @return RC_SUCCESS on success, or a platform-specific error code on failure.
+    /// @note This function is called before the worker thread begins execution.
     virtual int doBeforeThreadRun();
-    /// @note This function will be performed before the worker thread is end.
-    /// @note Specifically, only when this function returns will the semaphore controlling
-    /// the thread's end be changed to enable the thread to exit.
+
+    /// @brief Perform platform-specific cleanup before the worker thread terminates.
+    /// @return RC_SUCCESS on success, or a platform-specific error code on failure.
+    /// @note This function is called before the worker thread exits.
+    /// @note The thread exit semaphore is only signaled after this function returns.
     virtual int doBeforeThreadEnd();
-    /// @note The specific working logic of the worker thread.
-    /// @attention The `#setRunSuccess()` or `#setRunFail()` must be performed in the implementation
-    /// of this function to indicate whether the work running successfully.
+
+    /// @brief Main work function for the platform-specific worker thread.
+    /// @attention Implementations must call either `setRunSuccess()` or `setRunFail()`
+    ///            to indicate the completion status of the worker thread.
     virtual void work() = 0;
-    /// @note The specific logic of register hotkey.
+
+    /// @brief Register a hotkey with the platform-specific hotkey system.
+    /// @param kc The key combination to register.
+    /// @param autoRepeat Whether the hotkey should auto-repeat when held down.
+    /// @return RC_SUCCESS on success, or a platform-specific error code on failure.
     virtual int registerHotkey(const KeyCombination& kc, bool autoRepeat) = 0;
-    /// @note The specific logic of unregister hotkey.
+
+    /// @brief Unregister a hotkey from the platform-specific hotkey system.
+    /// @param kc The key combination to unregister.
+    /// @return RC_SUCCESS on success, or a platform-specific error code on failure.
     virtual int unregisterHotkey(const KeyCombination& kc) = 0;
 
 private:

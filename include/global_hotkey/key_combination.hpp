@@ -34,7 +34,8 @@ public:
     constexpr inline Modifiers modifiers() const noexcept { return mod_; }
     constexpr inline Key key() const noexcept { return key_; }
 
-    /// @brief Check whether contains at least one modifier and a valid key value.
+    /// @brief Check if this key combination represents a valid hotkey.
+    /// @return true if the combination contains at least one modifier and a valid key value, false otherwise.
     constexpr inline bool isValid() const noexcept { return mod_.isValid() && key_.isValid(); }
 
 #if GLOBAL_HOTKEY_CPPVERS >= 201703L

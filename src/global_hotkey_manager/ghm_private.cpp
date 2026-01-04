@@ -112,7 +112,7 @@ int GHMPrivate::replace(const KeyCombination& oldKc, const KeyCombination& newKc
     fns_.erase(oldKc);
     mtx_.unlock();
     rc = registerHotkey(newKc, value.first);
-    // No Error Rollback! That is if register the new KC is failed, the old KC still be unregister.
+    // No Error Rollback! That is if registering newKc fails, oldKc will still be removed.
     if (rc != RC_SUCCESS)
         return rc;
 

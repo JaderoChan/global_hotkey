@@ -15,42 +15,57 @@ class GHMPrivate;
 class GLOBAL_HOTKEY_API GlobalHotkeyManager
 {
 public:
-    /// @brief Initialize the `Global Hotkey Manager`.
+    /// @brief Initialize the Global Hotkey Manager.
     int initialize();
-    /// @brief Uninitialize the `Global Hotkey Manager`.
-    /// @attention Can't be performed in the worker thread,
-    /// that is you can't perform this function in the hotkey callback.
+
+    /// @brief Uninitialize the Global Hotkey Manager and release all resources.
+    /// @attention Do not call this function from worker thread (typically within hotkey callbacks),
+    ///            as it may cause deadlock.
     int uninitialize();
-    /// @brief Add a hotkey to the `Global Hotkey Manager`.
-    /// @param kc The hotkey you will add.
-    /// @param fn The callback function triggered when hotkey is actived.
-    /// @param autoRepeat Whether the hotkey automatically repeat the callback function
-    /// when it's held down continuously.
+
+    /// @brief Register a global hotkey.
+    /// @param kc The key combination to register as a hotkey.
+    /// @param fn The callback function to execute when the hotkey is activated.
+    /// @param autoRepeat Whether to repeatedly trigger the callback while the hotkey is held down.
     int add(const KeyCombination& kc, const std::function<void ()>& fn, bool autoRepeat = false);
-    /// @brief Remove a hotkey from the `Global Hotkey Manager`.
-    /// @param kc The hotkey you will remove.
+
+    /// @brief Unregister a global hotkey.
+    /// @param kc The key combination to remove.
     int remove(const KeyCombination& kc);
-    /// @brief Remove all hotkey in the `Global Hotkey Manager`.
+
+    /// @brief Unregister all global hotkeys.
     int removeAll();
-    /// @brief Replace a old hotkey with a new hotkey.
-    /// @param oldKc The old hotkey.
-    /// @param newKc The new hotkey.
-    /// @attention If the newKc is failed to add, the oldKc still will be remove.
+
+    /// @brief Replace an existing hotkey with a new key combination.
+    /// @param oldKc The existing key combination to replace.
+    /// @param newKc The new key combination to register.
+    /// @note If registering newKc fails, oldKc will still be removed.
     int replace(const KeyCombination& oldKc, const KeyCombination& newKc);
-    /// @brief Set whether the hotkey is auto repeat.
-    /// @sa #add() #isAutoRepeat()
+
+    /// @brief Enable or disable auto-repeat for a registered hotkey.
+    /// @param kc The key combination to modify.
+    /// @param autoRepeat Whether to enable auto-repeat.
+    /// @see isAutoRepeat()
     int setAutoRepeat(const KeyCombination& kc, bool autoRepeat);
-    /// @brief Check whether the hotkey given is exists in the `Global Hotkey Manager`.
-    /// @param kc The hotkey you will check.
+
+    /// @brief Check if a hotkey is registered.
+    /// @param kc The key combination to check.
+    /// @return true if the hotkey is registered, false otherwise.
     bool has(const KeyCombination& kc) const;
-    /// @brief Check whether the hotkey given is auto repeat.
-    /// @param kc The hotkey you will check.
-    /// @sa #setAutoRepeat()
+
+    /// @brief Check if auto-repeat is enabled for a hotkey.
+    /// @param kc The key combination to check.
+    /// @return true if auto-repeat is enabled, false otherwise or if hotkey is not registered.
+    /// @see setAutoRepeat()
     bool isAutoRepeat(const KeyCombination& kc) const;
-    /// @brief Whether the `Global Hotkey Manager` worker thread is running.
-    /// @note thread-safe.
+
+    /// @brief Check if the Global Hotkey Manager is active.
+    /// @return true if the manager is running, false otherwise.
+    /// @note This function is thread-safe.
     bool isRunning() const;
-    /// @brief Fetch all hotkey in the `Global Hotkey Manager`.
+
+    /// @brief Get all registered hotkeys.
+    /// @return Vector containing all registered key combinations.
     std::vector<KeyCombination> getAll() const;
 
 protected:
@@ -59,6 +74,7 @@ protected:
     GlobalHotkeyManager(const GlobalHotkeyManager&) = delete;
     GlobalHotkeyManager& operator=(const GlobalHotkeyManager&) = delete;
 
+    /// @brief Implementation-specific private data (PIMPL idiom).
     std::unique_ptr<GHMPrivate> ptr_;
 };
 
