@@ -4,12 +4,27 @@
         {
             "name": "default",
             "displayName": "Default",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            },
+            "binaryDir": "${sourceDir}/build/${presetName}"
+        },
+        {
+            "name": "example-use-register",
+            "displayName": "Example Use Register",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "GLOBAL_HOTKEY_BUILD_EXAMPLE":  "ON",
+                "GLOBAL_HOTKEY_BUILD_EXAMPLE_USE_HOOK": "OFF"
+            },
             "binaryDir": "${sourceDir}/build/${presetName}"
         },
         {
             "name": "example-use-hook",
             "displayName": "Example Use Hook",
             "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "GLOBAL_HOTKEY_BUILD_EXAMPLE":  "ON",
                 "GLOBAL_HOTKEY_BUILD_EXAMPLE_USE_HOOK": "ON"
             },
             "binaryDir": "${sourceDir}/build/${presetName}"
@@ -18,8 +33,8 @@
             "name": "disable-register",
             "displayName": "Disable Register",
             "cacheVariables": {
-                "GLOBAL_HOTKEY_DISABLE_REGISTER": "ON",
-                "GLOBAL_HOTKEY_BUILD_EXAMPLE_USE_HOOK": "ON"
+                "CMAKE_BUILD_TYPE": "Release",
+                "GLOBAL_HOTKEY_DISABLE_REGISTER": "ON"
             },
             "binaryDir": "${sourceDir}/build/${presetName}"
         },
@@ -27,6 +42,7 @@
             "name": "disable-hook",
             "displayName": "Disable Hook",
             "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
                 "GLOBAL_HOTKEY_DISABLE_HOOK": "ON"
             },
             "binaryDir": "${sourceDir}/build/${presetName}"
