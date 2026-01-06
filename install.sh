@@ -1,26 +1,36 @@
-BUILD_EXAMPLE="OFF"
-BUILD_EXAMPLE_USE_HOOK="OFF"
+#!/bin/bash
 
-if [ $# -gt 0 ]; then
-    PARAM=$(echo "$1" | tr '[:lower:]' '[:upper:]')
+BUILD_SHARED=OFF
+BUILD_EXAMPLE=OFF
+BUILD_EXAMPLE_USE_HOOK=OFF
 
-    if [ "$PARAM" != "ON" ] && [ "$PARAM" != "OFF" ]; then
-        echo "Error: Invalid parameter!"
-        echo "Usage: $0 [ON/OFF [--build_example_use_hook]]"
-        exit 1
-    fi
-    BUILD_EXAMPLE="$PARAM"
-
-    if [ $# -gt 1 ]; then
-        if [ "$2" != "--build_example_use_hook" ]; then
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --build_example)
+            BUILD_EXAMPLE=ON
+            ;;
+        --build_example_use_hook)
+            BUILD_EXAMPLE_USE_HOOK=ON
+            ;;
+        --build_shared)
+            BUILD_SHARED=ON
+            ;;
+        *)
             echo "Error: Invalid parameter!"
-            echo "Usage: $0 [ON/OFF [--build_example_use_hook]]"
+            echo "Usage: $0 [--build_example] [--build_example_use_hook] [--build_shared]"
             exit 1
-        fi
-        BUILD_EXAMPLE_USE_HOOK="ON"
-    fi
-fi
+            ;;
+    esac
+    shift
+done
 
-cmake -B build -DGLOBAL_HOTKEY_BUILD_EXAMPLE="$BUILD_EXAMPLE" -DGLOBAL_HOTKEY_BUILD_EXAMPLE_USE_HOOK="$BUILD_EXAMPLE_USE_HOOK"
-cmake --build build -j
+cmake -B build \
+    -DGLOBAL_HOTKEY_BUILD_SHARED="$BUILD_SHARED" \
+    -DGLOBAL_HOTKEY_BUILD_EXAMPLE="$BUILD_EXAMPLE" \
+    -DGLOBAL_HOTKEY_BUILD_EXAMPLE_USE_HOOK="$BUILD_EXAMPLE_USE_HOOK" && \
+cmake --build build -j && \
 cmake --install build --prefix install
+
+unset BUILD_SHARED
+unset BUILD_EXAMPLE
+unset BUILD_EXAMPLE_USE_HOOK
