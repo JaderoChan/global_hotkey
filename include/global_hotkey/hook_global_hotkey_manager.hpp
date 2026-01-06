@@ -1,7 +1,7 @@
 #ifndef GLOBAL_HOTKEY_HOOK_GLOBAL_HOTKEY_MANAGER_HPP
 #define GLOBAL_HOTKEY_HOOK_GLOBAL_HOTKEY_MANAGER_HPP
 
-#include "def.hpp"
+#include "defines.hpp"
 
 #ifndef GLOBAL_HOTKEY_DISABLE_HOOK
 

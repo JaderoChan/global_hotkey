@@ -4,7 +4,7 @@
 #include <functional>   // hash
 #include <string>       // string
 
-#include "def.hpp"
+#include "defines.hpp"
 #include "key.hpp"
 
 namespace gbhk

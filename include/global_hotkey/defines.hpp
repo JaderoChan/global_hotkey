@@ -1,5 +1,5 @@
-#ifndef GLOBAL_HOTKEY_DEF_HPP
-#define GLOBAL_HOTKEY_DEF_HPP
+#ifndef GLOBAL_HOTKEY_DEFINES_HPP
+#define GLOBAL_HOTKEY_DEFINES_HPP
 
 #include "config.hpp"
 
@@ -40,4 +40,4 @@
     #define GLOBAL_HOTKEY_API __attribute__((visibility("default")))
 #endif // GLOBAL_HOTKEY_WIN
 
-#endif // !GLOBAL_HOTKEY_DEF_HPP
+#endif // !GLOBAL_HOTKEY_DEFINES_HPP

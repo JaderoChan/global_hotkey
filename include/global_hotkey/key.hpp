@@ -5,7 +5,7 @@
 #include <initializer_list> // initializer_list
 #include <string>           // string
 
-#include "def.hpp"
+#include "defines.hpp"
 
 namespace gbhk
 {
