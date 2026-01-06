@@ -8,7 +8,7 @@ endif()
 
 add_executable(${PROJECT_NAME}
     event_work.cpp
-    utility.cpp
+    utilitys.cpp
     main.cpp
 )
 
