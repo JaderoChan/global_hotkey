@@ -112,7 +112,7 @@ if(NOT GLOBAL_HOTKEY_DISABLE_HOOK)
         GIT_REPOSITORY https://github.com/JaderoChan/keyboard_tool.git
         GIT_TAG main
     )
-    set(KBDT_WITH_UTILS OFF)
+    set(KBDT_BUILD_WITH_UTILS OFF)
     FetchContent_MakeAvailable(kbdt)
     message(STATUS "Success to configure the 'keyboard tool' library.")
 endif()
