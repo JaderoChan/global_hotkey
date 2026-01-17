@@ -1,0 +1,105 @@
+#ifndef GLOBAL_HOTKEY_GHM_PRIVATE_HPP
+#define GLOBAL_HOTKEY_GHM_PRIVATE_HPP
+
+#include <atomic>               // atomic
+#include <condition_variable>   // condition_variable
+#include <functional>           // function
+#include <mutex>                // mutex, lock_guard, unique_lock
+#include <thread>               // thread, thread::id
+#include <unordered_map>        // unordered_map
+#include <vector>               // vector
+
+#include <global_hotkey/key_combination.hpp>
+
+namespace gbhk
+{
+
+class GHMPrivate
+{
+public:
+    GHMPrivate();
+    virtual ~GHMPrivate();
+
+    int initialize();
+    int uninitialize();
+    int add(const KeyCombination& kc, const std::function<void ()>& fn, bool autoRepeat);
+    int remove(const KeyCombination& kc);
+    int removeAll();
+    int replace(const KeyCombination& oldKc, const KeyCombination& newKc);
+    int setAutoRepeat(const KeyCombination& kc, bool autoRepeat);
+    bool has(const KeyCombination& kc) const;
+    bool isAutoRepeat(const KeyCombination& kc) const;
+    bool isRunning() const;
+    std::vector<KeyCombination> getAll() const;
+
+protected:
+    /// @brief Get the auto-repeat flag and callback function for a registered hotkey.
+    /// @param kc The key combination to look up.
+    /// @return A pair containing the auto-repeat flag and callback function.
+    ///         Returns an empty pair (default-constructed) if the key combination
+    ///         is not registered or invalid.
+    /// @note This function is thread-safe.
+    std::pair<bool, std::function<void ()>> getPairValue(const KeyCombination& kc) const;
+
+    /// @brief Signal that the worker thread has completed successfully.
+    /// @note The running return code will be set to `RC_SUCCESS`.
+    void setRunSuccess();
+
+    /// @brief Signal that the worker thread has failed.
+    /// @param errorCode The error code indicating the failure reason.
+    /// @note The running return code will be set to the specified error code.
+    void setRunFail(int errorCode);
+
+    // Interface for subclasses to implement platform-specific behavior
+
+    /// @brief Perform platform-specific initialization before the worker thread starts.
+    /// @return RC_SUCCESS on success, or a platform-specific error code on failure.
+    /// @note This function is called before the worker thread begins execution.
+    virtual int doBeforeThreadRun();
+
+    /// @brief Perform platform-specific cleanup before the worker thread terminates.
+    /// @return RC_SUCCESS on success, or a platform-specific error code on failure.
+    /// @note This function is called before the worker thread exits.
+    /// @note The thread exit semaphore is only signaled after this function returns.
+    virtual int doBeforeThreadEnd();
+
+    /// @brief Main work function for the platform-specific worker thread.
+    /// @attention Implementations must call either `setRunSuccess()` or `setRunFail()`
+    ///            to indicate the completion status of the worker thread.
+    virtual void work() = 0;
+
+    /// @brief Register a hotkey with the platform-specific hotkey system.
+    /// @param kc The key combination to register.
+    /// @param autoRepeat Whether the hotkey should auto-repeat when held down.
+    /// @return RC_SUCCESS on success, or a platform-specific error code on failure.
+    virtual int registerHotkey(const KeyCombination& kc, bool autoRepeat) = 0;
+
+    /// @brief Unregister a hotkey from the platform-specific hotkey system.
+    /// @param kc The key combination to unregister.
+    /// @return RC_SUCCESS on success, or a platform-specific error code on failure.
+    virtual int unregisterHotkey(const KeyCombination& kc) = 0;
+
+private:
+    enum RunningState
+    {
+        RS_FREE,
+        RS_RUNNING,
+        RS_TERMINATE
+    };
+
+    bool isInWorkerThread_() const;
+
+    std::condition_variable cvRunningState_;
+    std::atomic<RunningState> runningState_;
+    std::atomic<int> runningRc_;
+
+    std::thread workerThread_;
+    std::thread::id workerThreadId_;
+
+    mutable std::mutex mtx_;
+    std::unordered_map<KeyCombination, std::pair<bool, std::function<void ()>>> fns_;
+};
+
+} // namespace gbhk
+
+#endif // !GLOBAL_HOTKEY_GHM_PRIVATE_HPP

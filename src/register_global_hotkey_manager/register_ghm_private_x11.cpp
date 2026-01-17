@@ -1,0 +1,238 @@
+#ifndef GLOBAL_HOTKEY_DISABLE_REGISTER
+
+#include "register_ghm_private_x11.hpp"
+
+#ifdef GLOBAL_HOTKEY_LINUX
+
+#include <cstdint>
+#include <poll.h>           // poll
+#include <sys/eventfd.h>    // eventfd
+#include <unistd.h>         // read, write, close
+
+#include <global_hotkey/return_code.hpp>
+
+#include "../key/key_private_x11.hpp"
+
+namespace gbhk
+{
+
+class ErrorHandler
+{
+public:
+    ErrorHandler();
+    ~ErrorHandler();
+
+    static int ec;
+
+private:
+    static int handleError(Display* display, XErrorEvent* error);
+    static XErrorHandler prevXErrorHandler;
+};
+
+// 8 byte for `write` and `read` of the fd created by `eventfd`.
+enum EventType : int64_t
+{
+    ET_EXIT = 1,
+    ET_REGISTER,
+    ET_UNREGISTER
+};
+
+static std::unordered_map<int, int> keycodeToKeysym;
+
+RegisterGHMPrivateX11::RegisterGHMPrivateX11() :
+    regUnregRc_(0),
+    regUnregKc_(KeyCombination())
+{}
+
+RegisterGHMPrivateX11::~RegisterGHMPrivateX11() { uninitialize(); }
+
+int RegisterGHMPrivateX11::doBeforeThreadRun()
+{
+    eventFd_ = eventfd(0, EFD_CLOEXEC | EFD_NONBLOCK);
+    if (eventFd_ == -1)
+        return errno;
+    return RC_SUCCESS;
+}
+
+int RegisterGHMPrivateX11::doBeforeThreadEnd()
+{
+    EventType et = ET_EXIT;
+    auto wrsize = write(eventFd_, &et, 8);
+    if (wrsize != 8)
+        return errno;
+    return RC_SUCCESS;
+}
+
+void RegisterGHMPrivateX11::work()
+{
+    Display* display = NULL;
+    {
+        ErrorHandler eh;
+        display = XOpenDisplay(NULL);
+        if (eh.ec != RC_SUCCESS)
+        {
+            setRunFail(eh.ec);
+            return;
+        }
+    }
+
+    int x11Fd = ConnectionNumber(display);
+    pollfd pollFds[2] = {0};
+    pollFds[0] = pollfd{x11Fd, POLLIN};
+    pollFds[1] = pollfd{eventFd_, POLLIN};
+
+    setRunSuccess();
+    KeyCombination prevKc;
+    KeyCombination currKc;
+    XEvent event = {0};
+    while (true)
+    {
+        int ret = poll(pollFds, 2, -1);
+        if (ret == -1)
+            continue;
+
+        // XEvent was detected.
+        if (pollFds[0].revents & POLLIN)
+        {
+            while (XPending(display))
+            {
+                XNextEvent(display, &event);
+                if (event.type == KeyPress)
+                {
+                    auto mod = modifiersFromX11Modifiers(event.xkey.state);
+                    auto keysym = keycodeToKeysym[event.xkey.keycode];
+                    auto key = keyFromX11Keysym(keysym);
+                    currKc = {mod, key};
+                }
+                // event.type == KeyRelease
+                else
+                {
+                    currKc = {};
+                }
+            }
+            invoke_(prevKc, currKc);
+            prevKc = currKc;
+        }
+
+        // My event was detected.
+        if (pollFds[1].revents & POLLIN)
+        {
+            EventType et;
+            auto rdsize = read(eventFd_, &et, 8);
+            if (rdsize != 8)
+                continue;
+
+            if (et == ET_EXIT)
+            {
+                break;
+            }
+            else if (et == ET_REGISTER)
+            {
+                regUnregRc_ = nativeRegisterHotkey(display);
+                cvRegUnregRc_.notify_one();
+            }
+            else if (et == ET_UNREGISTER)
+            {
+                regUnregRc_ = nativeUnregisterHotkey(display);
+                cvRegUnregRc_.notify_one();
+            }
+        }
+    }
+
+    XCloseDisplay(display);
+    close(eventFd_);
+}
+
+int RegisterGHMPrivateX11::registerHotkey(const KeyCombination& kc, bool autoRepeat)
+{
+    regUnregRc_ = -1;
+    regUnregKc_ = kc;
+    EventType et = ET_REGISTER;
+    auto wrsize = write(eventFd_, &et, 8);
+    if (wrsize != 8)
+        return errno;
+
+    std::mutex dummyMtx;
+    std::unique_lock<std::mutex> lock(dummyMtx);
+    cvRegUnregRc_.wait(lock, [this]() { return regUnregRc_ != -1; });
+    return regUnregRc_;
+}
+
+int RegisterGHMPrivateX11::unregisterHotkey(const KeyCombination& kc)
+{
+    regUnregRc_ = -1;
+    regUnregKc_ = kc;
+    EventType et = ET_UNREGISTER;
+    auto wrsize = write(eventFd_, &et, 8);
+    if (wrsize != 8)
+        return errno;
+
+    std::mutex dummyMtx;
+    std::unique_lock<std::mutex> lock(dummyMtx);
+    cvRegUnregRc_.wait(lock, [this]() { return regUnregRc_ != -1; });
+    return regUnregRc_;
+}
+
+int RegisterGHMPrivateX11::nativeRegisterHotkey(Display* display)
+{
+    ErrorHandler eh;
+
+    auto keysym = keyToX11Keysym(regUnregKc_.load().key());
+    auto keycode = XKeysymToKeycode(display, keysym);
+    keycodeToKeysym[keycode] = keysym;
+    auto mod = modifiersTox11Modifiers(regUnregKc_.load().modifiers());
+    XGrabKey(display, keycode, mod, DefaultRootWindow(display), True, GrabModeAsync, GrabModeAsync);
+    XSync(display, False);
+
+    return eh.ec;
+}
+
+int RegisterGHMPrivateX11::nativeUnregisterHotkey(Display* display)
+{
+    ErrorHandler eh;
+
+    auto keysym = keyToX11Keysym(regUnregKc_.load().key());
+    auto keycode = XKeysymToKeycode(display, keysym);
+    auto mod = modifiersTox11Modifiers(regUnregKc_.load().modifiers());
+    XUngrabKey(display, keycode, mod, DefaultRootWindow(display));
+    XSync(display, False);
+
+    return eh.ec;
+}
+
+void RegisterGHMPrivateX11::invoke_(const KeyCombination& prevKc, const KeyCombination& currKc) const
+{
+    auto pair = getPairValue(currKc);
+    auto& autoRepeat = pair.first;
+    auto& fn = pair.second;
+    bool shouldInvoke = fn && (currKc != prevKc || autoRepeat);
+    if (shouldInvoke)
+        fn();
+}
+
+int ErrorHandler::ec = RC_SUCCESS;
+XErrorHandler ErrorHandler::prevXErrorHandler;
+
+ErrorHandler::ErrorHandler()
+{
+    ec = RC_SUCCESS;
+    prevXErrorHandler = XSetErrorHandler(&ErrorHandler::handleError);
+}
+
+ErrorHandler::~ErrorHandler()
+{
+    XSetErrorHandler(prevXErrorHandler);
+}
+
+int ErrorHandler::handleError(Display* display, XErrorEvent* error)
+{
+    if (error->error_code != Success)
+        ec = error->error_code;
+    return ec;
+}
+
+} // namespace gbhk
+
+#endif // GLOBAL_HOTKEY_LINUX
+
+#endif // !GLOBAL_HOTKEY_DISABLE_REGISTER
