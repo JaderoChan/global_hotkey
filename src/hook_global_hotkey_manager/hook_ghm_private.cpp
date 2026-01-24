@@ -83,7 +83,7 @@ void HookGHMPrivate::work()
         }
 
         KeyCombination currKc(pressedMod, pressedKey);
-        invoke_(prevKc, currKc);
+        invoke(prevKc, currKc);
         prevKc = currKc;
     }
 }
@@ -94,7 +94,7 @@ int HookGHMPrivate::registerHotkey(const KeyCombination& kc, bool autoRepeat)
 int HookGHMPrivate::unregisterHotkey(const KeyCombination& kc)
 { return RC_SUCCESS; }
 
-void HookGHMPrivate::invoke_(const KeyCombination& prevKc, const KeyCombination& currKc) const
+void HookGHMPrivate::invoke(const KeyCombination& prevKc, const KeyCombination& currKc) const
 {
     auto pair = getPairValue(currKc);
     auto& autoRepeat = pair.first;

@@ -45,7 +45,7 @@ int GHMPrivate::initialize()
 int GHMPrivate::uninitialize()
 {
     if (!isRunning())           return RC_SUCCESS;
-    if (isInWorkerThread_())    return RC_BAD_THREAD;
+    if (isInWorkerThread())     return RC_BAD_THREAD;
 
     int rc = removeAll();
     rc = doBeforeThreadEnd();
@@ -60,7 +60,7 @@ int GHMPrivate::uninitialize()
 int GHMPrivate::add(const KeyCombination& kc, const std::function<void ()>& fn, bool autoRepeat)
 {
     if (!isRunning())           return RC_BAD_TIMING;
-    if (isInWorkerThread_())    return RC_BAD_THREAD;
+    if (isInWorkerThread())     return RC_BAD_THREAD;
 
     int rc = registerHotkey(kc, autoRepeat);
     if (rc != RC_SUCCESS)
@@ -75,7 +75,7 @@ int GHMPrivate::add(const KeyCombination& kc, const std::function<void ()>& fn, 
 int GHMPrivate::remove(const KeyCombination& kc)
 {
     if (!isRunning())           return RC_BAD_TIMING;
-    if (isInWorkerThread_())    return RC_BAD_THREAD;
+    if (isInWorkerThread())     return RC_BAD_THREAD;
 
     int rc = unregisterHotkey(kc);
 
@@ -88,7 +88,7 @@ int GHMPrivate::remove(const KeyCombination& kc)
 int GHMPrivate::removeAll()
 {
     if (!isRunning())           return RC_BAD_TIMING;
-    if (isInWorkerThread_())    return RC_BAD_THREAD;
+    if (isInWorkerThread())     return RC_BAD_THREAD;
 
     int rc = RC_SUCCESS;
     for (const auto& var : fns_)
@@ -103,7 +103,7 @@ int GHMPrivate::removeAll()
 int GHMPrivate::replace(const KeyCombination& oldKc, const KeyCombination& newKc)
 {
     if (!isRunning())           return RC_BAD_TIMING;
-    if (isInWorkerThread_())    return RC_BAD_THREAD;
+    if (isInWorkerThread())     return RC_BAD_THREAD;
     if (newKc == oldKc)         return RC_SUCCESS;
 
     auto value = getPairValue(oldKc);
@@ -125,7 +125,7 @@ int GHMPrivate::replace(const KeyCombination& oldKc, const KeyCombination& newKc
 int GHMPrivate::setAutoRepeat(const KeyCombination& kc, bool autoRepeat)
 {
     if (!isRunning())           return RC_BAD_TIMING;
-    if (isInWorkerThread_())    return RC_BAD_THREAD;
+    if (isInWorkerThread())     return RC_BAD_THREAD;
 
     auto value = getPairValue(kc);
     if (value.first == autoRepeat)
@@ -202,7 +202,7 @@ int GHMPrivate::doBeforeThreadRun()
 int GHMPrivate::doBeforeThreadEnd()
 { return RC_SUCCESS; }
 
-bool GHMPrivate::isInWorkerThread_() const
+bool GHMPrivate::isInWorkerThread() const
 { return std::this_thread::get_id() == workerThreadId_; }
 
 } // namespace gbhk

@@ -87,7 +87,7 @@ private:
         RS_TERMINATE
     };
 
-    bool isInWorkerThread_() const;
+    bool isInWorkerThread() const;
 
     std::condition_variable cvRunningState_;
     std::atomic<RunningState> runningState_;

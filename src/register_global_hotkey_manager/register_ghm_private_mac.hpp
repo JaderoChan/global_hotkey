@@ -40,7 +40,7 @@ private:
     static int nativeRegisterHotkey();
     static int nativeUnregisterHotkey();
     /// @todo
-    void invoke_() const;
+    void invoke() const;
 
     static std::condition_variable cvRegUnregRc_;
     static std::atomic<int> regUnregRc_;

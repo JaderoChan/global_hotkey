@@ -52,7 +52,7 @@ private:
     // The following functions should only be called from within the worker thread.
     int nativeRegisterHotkey(Display* display);
     int nativeUnregisterHotkey(Display* display);
-    void invoke_(const KeyCombination& prevKc, const KeyCombination& currKc) const;
+    void invoke(const KeyCombination& prevKc, const KeyCombination& currKc) const;
 
     std::condition_variable cvRegUnregRc_;
     std::atomic<int> regUnregRc_;

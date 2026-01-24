@@ -201,7 +201,7 @@ int RegisterGHMPrivateMac::nativeUnregisterHotkey()
     return RC_SUCCESS;
 }
 
-void RegisterGHMPrivateMac::invoke_() const
+void RegisterGHMPrivateMac::invoke() const
 {
 
 }
