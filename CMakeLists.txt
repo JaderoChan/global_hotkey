@@ -104,13 +104,14 @@ target_include_directories(${PROJECT_NAME} PUBLIC
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
+set(THIRDPARTY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty)
+
 if(NOT GLOBAL_HOTKEY_DISABLE_HOOK)
     message(STATUS "Start configure the 'keyboard tool' library...")
     include(FetchContent)
     FetchContent_Declare(
         kbdt
-        GIT_REPOSITORY https://github.com/JaderoChan/keyboard_tool.git
-        GIT_TAG main
+        SOURCE_DIR ${THIRDPARTY_DIR}/kbdt
     )
     set(KBDT_BUILD_WITH_UTILS OFF)
     FetchContent_MakeAvailable(kbdt)
