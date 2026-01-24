@@ -55,6 +55,8 @@
 
 - `GLOBAL_HOTKEY_DISABLE_HOOK` 指定是否禁用`监听式热键 (Hook GHM)`），默认为`OFF`。
 
+- `GLOBAL_HOTKEY_OPTIMIZE_SYSTEM_RESERVE_HOTKEY` 此选项仅针对Windows平台上的Hook GHM。如果启用此选项，当'Ctrl+Shift+ESC'与'Ctrl+Alt+Delete'热键被触发时将使用一些技巧尝试防止异常的程序行为。默认启用。
+
 - `GLOBAL_HOTKEY_BUILD_EXAMPLE` 是否生成示例程序，默认值取决于项目是否为主项目。
 
 - `GLOBAL_HOTKEY_BUILD_EXAMPLE_USE_HOOK` 指定示例程序使用的热键类型，默认为`OFF`（即在示例程序中使用`Register GHM`）。
@@ -159,7 +161,7 @@ ghm.uninitialize(); // 释放热键管理器。
 
     *（详细信息参见 [Windows LowLevelKeyboard](https://learn.microsoft.com/zh-cn/windows/win32/winmsg/lowlevelkeyboardproc) ，其**Remarks**中提到**Timeout**时间为**1000毫秒**）*
 
-- 在**Windows**平台下使用`Hook GHM`时，当用户按下`Ctrl+Shift+ESC`快捷键呼出**任务管理器**后，由于**任务管理器**会阻止**LowLevelKeyboardHook**消息，所以会导致`Hook GHM`能够接收到`Ctrl+Shift+ESC`的按键按下消息，但有概率无法收到按键释放消息（取决于你的按压时长与**任务管理器**是否已经成为焦点窗口）。除`Ctrl+Shift+Esc`外，还存在一些其他的特殊快捷键（如`Ctrl+Alt+Delete`）也会导致这个问题。在设计相关程序时应该着重注意。
+- 在**Windows**平台下使用`Hook GHM`时，当用户按下`Ctrl+Shift+ESC`快捷键呼出**任务管理器**后，由于**任务管理器**会阻止**LowLevelKeyboardHook**消息，所以会导致`Hook GHM`能够接收到`Ctrl+Shift+ESC`的按键按下消息，但有概率无法收到按键释放消息（取决于你的按压时长与**任务管理器**是否已经成为焦点窗口）。除`Ctrl+Shift+Esc`外，还存在一些其他的特殊快捷键（如`Ctrl+Alt+Delete`）也会导致这个问题。在设计相关程序时应该着重注意。（参见编译选项`GLOBAL_HOTKEY_OPTIMIZE_SYSTEM_RESERVE_HOTKEY`，启用此选项将尝试避免此问题）
 
 - 使用**MSVC编译器**且启用了`Hook GHM`时需要配置`pthread for Windows`，参见[pthreads-win32](https://sourceware.org/pthreads-win32/)。
 
