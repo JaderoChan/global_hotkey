@@ -37,52 +37,86 @@ int HookGHMPrivate::doBeforeThreadEnd()
     return RC_SUCCESS;
 }
 
+static bool isMetaKey(Key key)
+{
+    return key == Key_Mod_Meta || key == Key_Mod_Meta_Left || key == Key_Mod_Meta_Right;
+}
+
+static bool isCtrlKey(Key key)
+{
+    return key == Key_Mod_Ctrl || key == Key_Mod_Ctrl_Left || key == Key_Mod_Ctrl_Right;
+}
+
+static bool isAltKey(Key key)
+{
+    return key == Key_Mod_Alt || key == Key_Mod_Alt_Left || key == Key_Mod_Alt_Right;
+}
+
+static bool isShiftKey(Key key)
+{
+    return key == Key_Mod_Shift || key == Key_Mod_Shift_Left || key == Key_Mod_Shift_Right;
+}
+
 void HookGHMPrivate::work()
 {
     setRunSuccess();
+    bool shouldExit = false;
     KeyCombination prevKc;
     Modifiers pressedMod = 0;
-    Key pressedKey = 0;
-    while (true)
+    while (!shouldExit)
     {
         Event ev = takeEvent();
-
-        if (ev.type == ET_EXIT)
-            break;
-
-        // ev.type == ET_KEY_PRESSED || ev.type == ET_KEY_RELEASED
-        Key key = ev.data;
-        if (ev.type == ET_KEY_PRESSED)
+        switch (ev.type)
         {
-            if (key == Key_Mod_Meta || key == Key_Mod_Meta_Left || key == Key_Mod_Meta_Right)
-                pressedMod = pressedMod.add(META);
-            else if (key == Key_Mod_Ctrl || key == Key_Mod_Ctrl_Left || key == Key_Mod_Ctrl_Right)
-                pressedMod = pressedMod.add(CTRL);
-            else if (key == Key_Mod_Alt || key == Key_Mod_Alt_Left || key == Key_Mod_Alt_Right)
-                pressedMod = pressedMod.add(ALT);
-            else if (key == Key_Mod_Shift || key == Key_Mod_Shift_Left || key == Key_Mod_Shift_Right)
-                pressedMod = pressedMod.add(SHIFT);
-            else
-                pressedKey = key;
+            case ET_EXIT:
+            {
+                shouldExit = true;
+                break;
+            }
+            case ET_KEY_PRESSED:
+            {
+                Key key = ev.data;
+                if (isMetaKey(key))
+                {
+                    pressedMod.add(META);
+                }
+                else if (isCtrlKey(key))
+                {
+                    pressedMod.add(CTRL);
+                }
+                else if (isAltKey(key))
+                {
+                    pressedMod.add(ALT);
+                }
+                else if (isShiftKey(key))
+                {
+                    pressedMod.add(SHIFT);
+                }
+                else
+                {
+                    KeyCombination currKc(pressedMod, key);
+                    invoke(prevKc, currKc);
+                    prevKc = currKc;
+                }
+                break;
+            }
+            case ET_KEY_RELEASED:
+            {
+                Key key = ev.data;
+                if (isMetaKey(key))
+                    pressedMod.remove(META);
+                else if (isCtrlKey(key))
+                    pressedMod.remove(CTRL);
+                else if (isAltKey(key))
+                    pressedMod.remove(ALT);
+                else if (isShiftKey(key))
+                    pressedMod.remove(SHIFT);
+                prevKc = {};
+                break;
+            }
+            default:
+                break;
         }
-        // ev.type == ET_KEY_RELEASED
-        else
-        {
-            if (key == Key_Mod_Meta || key == Key_Mod_Meta_Left || key == Key_Mod_Meta_Right)
-                pressedMod = pressedMod.remove(META);
-            else if (key == Key_Mod_Ctrl || key == Key_Mod_Ctrl_Left || key == Key_Mod_Ctrl_Right)
-                pressedMod = pressedMod.remove(CTRL);
-            else if (key == Key_Mod_Alt || key == Key_Mod_Alt_Left || key == Key_Mod_Alt_Right)
-                pressedMod = pressedMod.remove(ALT);
-            else if (key == Key_Mod_Shift || key == Key_Mod_Shift_Left || key == Key_Mod_Shift_Right)
-                pressedMod = pressedMod.remove(SHIFT);
-            else if (pressedKey == key)
-                pressedKey = 0;
-        }
-
-        KeyCombination currKc(pressedMod, pressedKey);
-        invoke(prevKc, currKc);
-        prevKc = currKc;
     }
 }
 
