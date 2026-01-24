@@ -92,6 +92,15 @@ else()
 endif()
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
+option(
+    GLOBAL_HOTKEY_OPTIMIZE_SYSTEM_RESERVE_HOTKEY
+    "This option is only for Hook GHM on the Windows platform. If this option is enabled, when the hotkeys 'Ctrl+Shift+ESC' and 'Ctrl+Alt+Delete' are triggered, some tricks will be used to try to prevent abnormal program behavior."
+    ON
+)
+if(GLOBAL_HOTKEY_OPTIMIZE_SYSTEM_RESERVE_HOTKEY)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE GLOBAL_HOTKEY_OPTIMIZE_SYSTEM_RESERVE_HOTKEY)
+endif()
+
 configure_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/cmake/templates/config.hpp.in
     ${CMAKE_CURRENT_BINARY_DIR}/include/config.hpp

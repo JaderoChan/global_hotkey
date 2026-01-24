@@ -94,6 +94,16 @@ void HookGHMPrivate::work()
                 }
                 else
                 {
+                #if defined(GLOBAL_HOTKEY_WIN) && defined(GLOBAL_HOTKEY_OPTIMIZE_SYSTEM_RESERVE_HOTKEY)
+                    bool isCtrlShiftEsc = (pressedMod == (CTRL | SHIFT) && key == Key_Esc);
+                    bool isCtrlAltDel = (pressedMod == (CTRL | ALT) && key == Key_Delete);
+                    if (isCtrlShiftEsc || isCtrlAltDel)
+                    {
+                        pressedMod = 0;
+                        break;
+                    }
+                #endif
+
                     KeyCombination currKc(pressedMod, key);
                     tryInvoke(prevKc, currKc);
                     prevKc = currKc;
