@@ -162,3 +162,7 @@ No. `Register GHM` on **Linux** relies on **X11**.
 - When using `Hook GHM` on the **Windows** platform, after the user presses the shortcut key `Ctrl+Shift+ESC` to call out the **Task Manager**, since the **Task Manager** will block the **LowLevelKeyboardHook** message, So it will cause `Hook GHM` to be able to receive the key press message of `Ctrl+Shift+ESC`, but there is a probability that it cannot receive the key release message (depending on the duration of your press and whether the **Task Manager** has become the focus window). Apart from `Ctrl+Shift+Esc`, there are also some other special shortcut keys (such as `Ctrl+Alt+Delete`) that can cause this problem. Particular attention should be paid when designing relevant programs.
 
 - When use **MSVC Compiler** and the `Hook GHM` is enabled need to configure the `pthread for Windows`, see also [pthreads-win32](https://sourceware.org/pthreads-win32/).
+
+---
+
+For some reasons, the commit records of this library before version 1.4.0 have been cleared. After the history of the commit can be [global hotkey old](https://github.com/jaderochan/global_hotkey_old) public archive to view.
