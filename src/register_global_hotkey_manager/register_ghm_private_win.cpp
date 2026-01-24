@@ -16,7 +16,7 @@ namespace gbhk
 
 RegisterGHMPrivateWin::RegisterGHMPrivateWin() :
     regUnregRc_(0),
-    hotkeyIndex_(0)
+    maxHotkeyId_(0)
 {}
 
 RegisterGHMPrivateWin::~RegisterGHMPrivateWin() { uninitialize(); }
@@ -61,7 +61,8 @@ void RegisterGHMPrivateWin::work()
         }
     }
 
-    hotkeyIndex_ = 0;
+    maxHotkeyId_ = 0;
+    freeHotkeyIds_.clear();
     hotkeyIdToKc_.clear();
     kcToHotkeyId_.clear();
 }
@@ -109,11 +110,15 @@ int RegisterGHMPrivateWin::nativeRegisterHotkey(WPARAM wParam, LPARAM lParam)
     Key key = keyFromNativeKey(lParam);
     KeyCombination kc(mod, key);
 
-    if (RegisterHotKey(NULL, hotkeyIndex_, wParam, lParam) != 0)
+    int hotkeyId = (freeHotkeyIds_.empty() ? maxHotkeyId_.load() : freeHotkeyIds_.back());
+    if (RegisterHotKey(NULL, hotkeyId, wParam, lParam) != 0)
     {
-        hotkeyIdToKc_[hotkeyIndex_] = kc;
-        kcToHotkeyId_[kc] = hotkeyIndex_;
-        hotkeyIndex_++;
+        hotkeyIdToKc_[hotkeyId] = kc;
+        kcToHotkeyId_[kc] = hotkeyId;
+        if (freeHotkeyIds_.empty())
+            maxHotkeyId_++;
+        else
+            freeHotkeyIds_.pop_back();
         return RC_SUCCESS;
     }
     return (int) GetLastError();
@@ -130,6 +135,7 @@ int RegisterGHMPrivateWin::nativeUnregisterHotkey(WPARAM wParam, LPARAM lParam)
     {
         hotkeyIdToKc_.erase(hotkeyId);
         kcToHotkeyId_.erase(kc);
+        freeHotkeyIds_.push_back(hotkeyId);
         return RC_SUCCESS;
     }
     return (int) GetLastError();
