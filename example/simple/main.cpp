@@ -3,6 +3,7 @@
 #include <condition_variable>   // condition_variable
 #include <mutex>                // mutex
 #include <stdexcept>            // runtime_error
+#include <string>
 
 #include <global_hotkey/global_hotkey.hpp>
 
@@ -60,8 +61,10 @@ int main()
     gbhk::GlobalHotkeyManager& ghm = gbhk::HookGlobalHotkeyManager::getInstance();
     if (!isPermissionAccessible())
         throw std::runtime_error("Permission Denied!");
+    std::string ghmPrefix = "Hook";
 #else
     gbhk::GlobalHotkeyManager& ghm = gbhk::RegisterGlobalHotkeyManager::getInstance();
+    std::string ghmPrefix = "Register";
 #endif // GLOBAL_HOTKEY_BUILD_EXAMPLE_USE_HOOK
 
     gbhk::KeyCombination hotkey1(gbhk::CTRL, 'J');
@@ -73,7 +76,7 @@ int main()
     {
         THROW_RT_ERR("Failed to initialize the Global Hotkey Manager: ", rc);
     }
-    printf("Successfully initialize the GHM!\n");
+    printf("Successfully initialize the %s GHM!\n", ghmPrefix);
 
     rc = ghm.add(hotkey1, &hotkeyTriggered1);
     if (rc != gbhk::RC_SUCCESS)
