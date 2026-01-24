@@ -2,8 +2,6 @@
 
 #include "hook_ghm_private.hpp"
 
-#include <queue>    // queue
-
 #include <global_hotkey/return_code.hpp>
 
 #include "../key/key_private.hpp"

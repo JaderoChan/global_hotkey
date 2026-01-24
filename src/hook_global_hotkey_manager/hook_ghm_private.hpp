@@ -5,6 +5,8 @@
 
 #include "../global_hotkey_manager/ghm_private.hpp"
 
+#include <queue>    // queue
+
 #include <kbdt/kbdt.h>
 
 namespace gbhk
