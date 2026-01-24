@@ -28,7 +28,7 @@ private:
     // The following functions should only be called from within the worker thread.
     int nativeRegisterHotkey(WPARAM wParam, LPARAM lParam);
     int nativeUnregisterHotkey(WPARAM wParam, LPARAM lParam);
-    void invoke(WPARAM wParam, LPARAM lParam) const;
+    void tryInvoke(WPARAM wParam, LPARAM lParam) const;
 
     DWORD workerThreadId_ = 0;
     std::condition_variable cvRegUnregRc_;

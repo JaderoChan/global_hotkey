@@ -110,7 +110,7 @@ void RegisterGHMPrivateX11::work()
                     currKc = {};
                 }
             }
-            invoke(prevKc, currKc);
+            tryInvoke(prevKc, currKc);
             prevKc = currKc;
         }
 
@@ -200,7 +200,7 @@ int RegisterGHMPrivateX11::nativeUnregisterHotkey(Display* display)
     return eh.ec;
 }
 
-void RegisterGHMPrivateX11::invoke(const KeyCombination& prevKc, const KeyCombination& currKc) const
+void RegisterGHMPrivateX11::tryInvoke(const KeyCombination& prevKc, const KeyCombination& currKc) const
 {
     auto pair = getPairValue(currKc);
     auto& autoRepeat = pair.first;

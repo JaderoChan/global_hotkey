@@ -39,7 +39,7 @@ protected:
     int unregisterHotkey(const KeyCombination& kc) override;
 
 private:
-    void invoke(const KeyCombination& prevKc, const KeyCombination& currKc) const;
+    void tryInvoke(const KeyCombination& prevKc, const KeyCombination& currKc) const;
 
     static std::mutex mtx_;
     static std::condition_variable cvHasEvent_;

@@ -43,7 +43,7 @@ void RegisterGHMPrivateWin::work()
     {
         if (msg.message == WM_HOTKEY)
         {
-            invoke(msg.wParam, msg.lParam);
+            tryInvoke(msg.wParam, msg.lParam);
         }
         else if (msg.message == WM_REGISTER_HOTKEY)
         {
@@ -135,7 +135,7 @@ int RegisterGHMPrivateWin::nativeUnregisterHotkey(WPARAM wParam, LPARAM lParam)
     return (int) GetLastError();
 }
 
-void RegisterGHMPrivateWin::invoke(WPARAM wParam, LPARAM lParam) const
+void RegisterGHMPrivateWin::tryInvoke(WPARAM wParam, LPARAM lParam) const
 {
     int hotkeyId = (int) wParam;
     if (hotkeyIdToKc_.find(hotkeyId) != hotkeyIdToKc_.end())
