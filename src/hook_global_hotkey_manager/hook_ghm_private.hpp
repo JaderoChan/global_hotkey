@@ -10,6 +10,19 @@
 namespace gbhk
 {
 
+enum EventType
+{
+    ET_EXIT         = 1,
+    ET_KEY_PRESSED  = 2,
+    ET_KEY_RELEASED = 3
+};
+
+struct Event
+{
+    EventType type;
+    int32_t data;
+};
+
 class HookGHMPrivate final : public GHMPrivate
 {
 public:
@@ -25,6 +38,16 @@ protected:
 
 private:
     void invoke_(const KeyCombination& prevKc, const KeyCombination& currKc) const;
+
+    static std::mutex mtx_;
+    static std::condition_variable cvHasEvent_;
+    static std::queue<Event> eventQueue_;
+
+    // Block until has event.
+    static Event takeEvent();
+    static void pushEvent(const Event& event);
+    static void clearEventQueue();
+    static void kbdtEventHandler(keyboard_event* event);
 };
 
 } // namespace gbhk

@@ -11,28 +11,9 @@
 namespace gbhk
 {
 
-enum EventType
-{
-    ET_EXIT         = 1,
-    ET_KEY_PRESSED  = 2,
-    ET_KEY_RELEASED = 3
-};
-
-struct Event
-{
-    EventType type;
-    int32_t data;
-};
-
-static std::mutex mtx;
-static std::condition_variable cvHasEvent;
-static std::queue<Event> eventQueue;
-
-// Block until has event.
-static Event takeEvent();
-static void pushEvent(const Event& event);
-static void clearEventQueue();
-static void kbdtEventHandler(keyboard_event* event);
+std::mutex HookGHMPrivate::mtx_;
+std::condition_variable HookGHMPrivate::cvHasEvent_;
+std::queue<Event> HookGHMPrivate::eventQueue_;
 
 HookGHMPrivate::HookGHMPrivate() = default;
 
@@ -123,32 +104,32 @@ void HookGHMPrivate::invoke_(const KeyCombination& prevKc, const KeyCombination&
         fn();
 }
 
-Event takeEvent()
+Event HookGHMPrivate::takeEvent()
 {
-    std::unique_lock<std::mutex> lock(mtx);
-    cvHasEvent.wait(lock, []() { return !eventQueue.empty(); });
-    Event ev = eventQueue.front();
-    eventQueue.pop();
+    std::unique_lock<std::mutex> lock(mtx_);
+    cvHasEvent_.wait(lock, []() { return !eventQueue_.empty(); });
+    Event ev = eventQueue_.front();
+    eventQueue_.pop();
     return ev;
 }
 
-void pushEvent(const Event& event)
+void HookGHMPrivate::pushEvent(const Event& event)
 {
     {
-        std::lock_guard<std::mutex> lock(mtx);
-        eventQueue.push(event);
+        std::lock_guard<std::mutex> lock(mtx_);
+        eventQueue_.push(event);
     }
-    cvHasEvent.notify_one();
+    cvHasEvent_.notify_one();
 }
 
-void clearEventQueue()
+void HookGHMPrivate::clearEventQueue()
 {
-    std::lock_guard<std::mutex> lock(mtx);
-    while (!eventQueue.empty())
-        eventQueue.pop();
+    std::lock_guard<std::mutex> lock(mtx_);
+    while (!eventQueue_.empty())
+        eventQueue_.pop();
 }
 
-void kbdtEventHandler(keyboard_event* event)
+void HookGHMPrivate::kbdtEventHandler(keyboard_event* event)
 {
     auto key = keyFromNativeKey(event->native_key);
     auto et = (event->type == KBDET_PRESSED ? ET_KEY_PRESSED : ET_KEY_RELEASED);

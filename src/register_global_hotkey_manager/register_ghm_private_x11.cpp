@@ -16,28 +16,28 @@
 namespace gbhk
 {
 
-class ErrorHandler
+int ErrorHandler::ec = RC_SUCCESS;
+XErrorHandler ErrorHandler::prevXErrorHandler_;
+
+ErrorHandler::ErrorHandler()
 {
-public:
-    ErrorHandler();
-    ~ErrorHandler();
+    ec = RC_SUCCESS;
+    prevXErrorHandler_ = XSetErrorHandler(&ErrorHandler::handleError);
+}
 
-    static int ec;
-
-private:
-    static int handleError(Display* display, XErrorEvent* error);
-    static XErrorHandler prevXErrorHandler;
-};
-
-// 8 byte for `write` and `read` of the fd created by `eventfd`.
-enum EventType : int64_t
+ErrorHandler::~ErrorHandler()
 {
-    ET_EXIT = 1,
-    ET_REGISTER,
-    ET_UNREGISTER
-};
+    XSetErrorHandler(prevXErrorHandler_);
+}
 
-static std::unordered_map<int, int> keycodeToKeysym;
+int ErrorHandler::handleError(Display* display, XErrorEvent* error)
+{
+    if (error->error_code != Success)
+        ec = error->error_code;
+    return ec;
+}
+
+std::unordered_map<int, int> RegisterGHMPrivateX11::keycodeToKeysym_;
 
 RegisterGHMPrivateX11::RegisterGHMPrivateX11() :
     regUnregRc_(0),
@@ -100,7 +100,7 @@ void RegisterGHMPrivateX11::work()
                 if (event.type == KeyPress)
                 {
                     auto mod = modifiersFromX11Modifiers(event.xkey.state);
-                    auto keysym = keycodeToKeysym[event.xkey.keycode];
+                    auto keysym = keycodeToKeysym_[event.xkey.keycode];
                     auto key = keyFromX11Keysym(keysym);
                     currKc = {mod, key};
                 }
@@ -179,7 +179,7 @@ int RegisterGHMPrivateX11::nativeRegisterHotkey(Display* display)
 
     auto keysym = keyToX11Keysym(regUnregKc_.load().key());
     auto keycode = XKeysymToKeycode(display, keysym);
-    keycodeToKeysym[keycode] = keysym;
+    keycodeToKeysym_[keycode] = keysym;
     auto mod = modifiersTox11Modifiers(regUnregKc_.load().modifiers());
     XGrabKey(display, keycode, mod, DefaultRootWindow(display), True, GrabModeAsync, GrabModeAsync);
     XSync(display, False);
@@ -208,27 +208,6 @@ void RegisterGHMPrivateX11::invoke_(const KeyCombination& prevKc, const KeyCombi
     bool shouldInvoke = fn && (currKc != prevKc || autoRepeat);
     if (shouldInvoke)
         fn();
-}
-
-int ErrorHandler::ec = RC_SUCCESS;
-XErrorHandler ErrorHandler::prevXErrorHandler;
-
-ErrorHandler::ErrorHandler()
-{
-    ec = RC_SUCCESS;
-    prevXErrorHandler = XSetErrorHandler(&ErrorHandler::handleError);
-}
-
-ErrorHandler::~ErrorHandler()
-{
-    XSetErrorHandler(prevXErrorHandler);
-}
-
-int ErrorHandler::handleError(Display* display, XErrorEvent* error)
-{
-    if (error->error_code != Success)
-        ec = error->error_code;
-    return ec;
 }
 
 } // namespace gbhk
