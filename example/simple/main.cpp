@@ -61,10 +61,10 @@ int main()
     gbhk::GlobalHotkeyManager& ghm = gbhk::HookGlobalHotkeyManager::getInstance();
     if (!isPermissionAccessible())
         throw std::runtime_error("Permission Denied!");
-    std::string ghmPrefix = "Hook";
+    const char* ghmPrefix = "Hook";
 #else
     gbhk::GlobalHotkeyManager& ghm = gbhk::RegisterGlobalHotkeyManager::getInstance();
-    std::string ghmPrefix = "Register";
+    const char* ghmPrefix = "Register";
 #endif // GLOBAL_HOTKEY_BUILD_EXAMPLE_USE_HOOK
 
     gbhk::KeyCombination hotkey1(gbhk::CTRL, 'J');
