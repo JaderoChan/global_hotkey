@@ -1,7 +1,7 @@
 #ifndef UTILITYS_HPP
 #define UTILITYS_HPP
 
-#include "defs.hpp"
+#include "defines.hpp"
 
 bool isUnchangedKeyCombination(const KeyCombination& kc);
 
