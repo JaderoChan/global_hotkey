@@ -61,6 +61,7 @@ int GHMPrivate::add(const KeyCombination& kc, const std::function<void ()>& fn, 
 {
     if (!isRunning())           return RC_BAD_TIMING;
     if (isInWorkerThread())     return RC_BAD_THREAD;
+    if (has(kc))                return RC_ALREADY_EXIST;
 
     int rc = registerHotkey(kc, autoRepeat);
     if (rc != RC_SUCCESS)
@@ -76,6 +77,7 @@ int GHMPrivate::remove(const KeyCombination& kc)
 {
     if (!isRunning())           return RC_BAD_TIMING;
     if (isInWorkerThread())     return RC_BAD_THREAD;
+    if (!has(kc))               return RC_NOT_FOUND;
 
     int rc = unregisterHotkey(kc);
 
@@ -105,12 +107,15 @@ int GHMPrivate::replace(const KeyCombination& oldKc, const KeyCombination& newKc
     if (!isRunning())           return RC_BAD_TIMING;
     if (isInWorkerThread())     return RC_BAD_THREAD;
     if (newKc == oldKc)         return RC_SUCCESS;
+    if (!has(oldKc))            return RC_NOT_FOUND;
+    if (has(newKc))             return RC_ALREADY_EXIST;
 
     auto value = getPairValue(oldKc);
     int rc = unregisterHotkey(oldKc);
-    mtx_.lock();
-    fns_.erase(oldKc);
-    mtx_.unlock();
+    {
+        std::lock_guard<std::mutex> lock(mtx_);
+        fns_.erase(oldKc);
+    }
     rc = registerHotkey(newKc, value.first);
     // No Error Rollback! That is if registering newKc fails, oldKc will still be removed.
     if (rc != RC_SUCCESS)
@@ -126,6 +131,7 @@ int GHMPrivate::setAutoRepeat(const KeyCombination& kc, bool autoRepeat)
 {
     if (!isRunning())           return RC_BAD_TIMING;
     if (isInWorkerThread())     return RC_BAD_THREAD;
+    if (!has(kc))               return RC_NOT_FOUND;
 
     auto value = getPairValue(kc);
     if (value.first == autoRepeat)
@@ -133,9 +139,10 @@ int GHMPrivate::setAutoRepeat(const KeyCombination& kc, bool autoRepeat)
     value.first = autoRepeat;
 
     int rc = unregisterHotkey(kc);
-    mtx_.lock();
-    fns_.erase(kc);
-    mtx_.unlock();
+    {
+        std::lock_guard<std::mutex> lock(mtx_);
+        fns_.erase(kc);
+    }
     rc = registerHotkey(kc, autoRepeat);
     if (rc != RC_SUCCESS)
         return rc;
@@ -154,10 +161,10 @@ bool GHMPrivate::has(const KeyCombination& kc) const
 
 bool GHMPrivate::isAutoRepeat(const KeyCombination& kc) const
 {
+    if (!has(kc))               return RC_NOT_FOUND;
+
     std::lock_guard<std::mutex> lock(mtx_);
-    if (fns_.find(kc) != fns_.end())
-        return fns_.at(kc).first;
-    return false;
+    return fns_.at(kc).first;
 }
 
 bool GHMPrivate::isRunning() const

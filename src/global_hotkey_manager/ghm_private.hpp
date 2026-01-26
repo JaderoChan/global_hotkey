@@ -96,7 +96,7 @@ private:
     std::thread workerThread_;
     std::thread::id workerThreadId_;
 
-    mutable std::mutex mtx_;
+    mutable std::mutex mtx_;    // Used for protect fns variable.
     std::unordered_map<KeyCombination, std::pair<bool, std::function<void ()>>> fns_;
 };
 

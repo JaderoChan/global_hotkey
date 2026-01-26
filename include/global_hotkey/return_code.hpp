@@ -21,6 +21,8 @@ namespace gbhk
 enum ReturnCode : int
 {
     RC_SUCCESS              = 0x00 | RC_MASK,
+    RC_ALREADY_EXIST        = 0x01 | RC_MASK,
+    RC_NOT_FOUND            = 0x02 | RC_MASK,
     RC_BAD_TIMING           = 0x10 | RC_MASK,
     RC_BAD_THREAD           = 0x11 | RC_MASK
 };
@@ -31,6 +33,10 @@ inline std::string getReturnCodeMsg(int rc) noexcept
     {
         case RC_SUCCESS:
             return "Success";
+        case RC_ALREADY_EXIST:
+            return "The hotkey to be added already exists";
+        case RC_NOT_FOUND:
+            return "The hotkey to be deleted or set does not exist";
         case RC_BAD_TIMING:
             return "Attempt perform uninitialize, add, remove, replace, or similar functions "
                    "before the Global Hotkey Manager is initialized";

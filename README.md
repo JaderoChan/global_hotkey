@@ -153,7 +153,7 @@ No. `Register GHM` on **Linux** relies on **X11**.
 
 - Do not perform operations such as terminating, adding, deleting, and hotkey replacement in the worker thread (for the user, this is the thread where the callback function is executed when the hotkey is triggered)!
 
-- Avoid adding an invalid hotkey or removing an unadded hotkey, as this is undefined behavior and may lead to unexpected results. This library does not conduct security checks for such operations. These operations whether be perform should be decided by the user.
+- Avoid adding an maybe invalid hotkey, as this is undefined behavior and may lead to unexpected results. This library does not conduct security checks for such operations. These operations whether be perform should be decided by the user.
 
 - When a hotkey is triggered, its callback function will run in the worker thread of `GHM`. Therefore, the callback function of the hotkey should not perform heavy tasks to avoid blocking the worker thread. A reasonable approach is to correctly use threads, asynchronous mechanisms, or message queues (e.g. **Qt**'s signal-slot system).
 
