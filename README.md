@@ -34,15 +34,21 @@
 
 ## 🔧 How to Build?
 
-1. Just run the `install` script directly in the root directory to install it with one click.
+1. Just run the `install` script directly in the root directory to install it with one click, the available options are as follows:
+
+    - [--build_example] (same as `GLOBAL_HOTKEY_BUILD_EXAMPLE=ON`)
+    - [--build_example_use_hook] (same as `GLOBAL_HOTKEY_BUILD_EXAMPLE_USE_HOOK=ON`) (It is not available under **Wayland** because this option is mandatory under **Wayland**)
+    - [--prefix \<path\>] (Specify the installation path)
+
+    For example, `install --build_example --prefix install` will install the library to the *./install* directory and build sample programs.
+
 2. The project uses `CMake` for organization. Just run these few scripts to build and use it!
 
     ```shell
     git clone https://github.com/JaderoChan/global_hotkey.git
     cd global_hotkey
     cmake -B build
-    cd build
-    make
+    cmake --build build
     ```
 
 ### ⚙️ Build Options
