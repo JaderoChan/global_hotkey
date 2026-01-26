@@ -3,7 +3,7 @@
 
 #include "defines.hpp"
 
-bool isUnchangedKeyCombination(const KeyCombination& kc);
+bool isImmutableKeyCombination(const KeyCombination& kc);
 
 void printPrompt();
 

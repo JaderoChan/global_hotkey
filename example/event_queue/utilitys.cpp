@@ -4,7 +4,7 @@
 #include <cstddef>  // size_t
 #include <cstdlib>
 
-bool isUnchangedKeyCombination(const KeyCombination &kc) {
+bool isImmutableKeyCombination(const KeyCombination &kc) {
   return kc == exitKc || kc == addKc || kc == removeKc || kc == replaceKc ||
          kc == listKc || kc == clearTerminalKc ||
          kc == simpleWorkKc || kc == heavyWorkKc || kc == setHeavyWorkLevelKc;
@@ -55,8 +55,8 @@ void listAllKeyCombination()
     printf("====================\n");
     for (const auto& kc : kcs)
     {
-        if (isUnchangedKeyCombination(kc))
-            printf("<Unchanged> ");
+        if (isImmutableKeyCombination(kc))
+            printf("<Immutable> ");
         printf("[%s]\n", KCSTR(kc));
     }
     printf("====================\n");

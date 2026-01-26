@@ -59,7 +59,7 @@ void removeHotkeyWork()
         return;
     }
 
-    if (isUnchangedKeyCombination(kc))
+    if (isImmutableKeyCombination(kc))
     {
         printf("The hotkey [%s] is can't be remove!\n", KCSTR(kc));
         return;
@@ -84,7 +84,7 @@ void replaceHotkeyWork()
         return;
     }
 
-    if (isUnchangedKeyCombination(oldKc))
+    if (isImmutableKeyCombination(oldKc))
     {
         printf("The hotkey [%s] is can't be replace!\n", KCSTR(oldKc));
         return;
