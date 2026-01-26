@@ -9,16 +9,16 @@ namespace gbhk
 
 int modifiersToNativeModifiers(const Modifiers& modifiers) noexcept
 {
-    int rslt = 0;
+    int mod = 0;
     if (modifiers.has(META))
-        rslt |= cmdKey;
+        mod |= cmdKey;
     if (modifiers.has(CTRL))
-        rslt |= controlKey;
+        mod |= controlKey;
     if (modifiers.has(ALT))
-        rslt |= optionKey;
+        mod |= optionKey;
     if (modifiers.has(SHIFT))
-        rslt |= shiftKey;
-    return rslt;
+        mod |= shiftKey;
+    return mod;
 }
 
 int keyToNativeKey(const Key& key) noexcept
@@ -181,16 +181,16 @@ int keyToNativeKey(const Key& key) noexcept
 
 Modifiers modifiersFromNativeModifiers(int nativeModifiers) noexcept
 {
-    Modifiers rslt;
+    Modifiers mod;
     if (nativeModifiers & cmdKey)
-        rslt.add(META);
+        mod.add(META);
     if (nativeModifiers & controlKey)
-        rslt.add(CTRL);
+        mod.add(CTRL);
     if (nativeModifiers & optionKey)
-        rslt.add(ALT);
+        mod.add(ALT);
     if (nativeModifiers & shiftKey)
-        rslt.add(SHIFT);
-    return rslt;
+        mod.add(SHIFT);
+    return mod;
 }
 
 Key keyFromNativeKey(int nativeKey) noexcept

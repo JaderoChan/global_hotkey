@@ -17,13 +17,13 @@ KeyCombination KeyCombination::fromString(const std::string& str, char connector
 
 std::string KeyCombination::toString(char connector, bool showKeyValue) const noexcept
 {
-    std::string rslt;
+    std::string str;
     std::string connectorStr(1, connector);
-    rslt += mod_.toString(connector);
-    rslt += (!rslt.empty() ? connectorStr : "") + key_.toString();
+    str += mod_.toString(connector);
+    str += (!str.empty() ? connectorStr : "") + key_.toString();
     if (showKeyValue)
-        rslt += "(" + std::to_string(key_) + ")";
-    return rslt;
+        str += "(" + std::to_string(key_) + ")";
+    return str;
 }
 
 } // namespace gbhk

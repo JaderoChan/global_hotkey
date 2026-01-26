@@ -57,19 +57,19 @@ static std::string modifierFlagString(ModifierFlag flag) noexcept
 
 std::string Modifiers::toString(char connector) const noexcept
 {
-    std::string rslt;
+    std::string str;
     std::string connectorStr(1, connector);
 
     if (has(META))
-        rslt += modifierFlagString(META);
+        str += modifierFlagString(META);
     if (has(CTRL))
-        rslt += (!rslt.empty() ? connectorStr : "") + modifierFlagString(CTRL);
+        str += (!str.empty() ? connectorStr : "") + modifierFlagString(CTRL);
     if (has(ALT))
-        rslt += (!rslt.empty() ? connectorStr : "") + modifierFlagString(ALT);
+        str += (!str.empty() ? connectorStr : "") + modifierFlagString(ALT);
     if (has(SHIFT))
-        rslt += (!rslt.empty() ? connectorStr : "") + modifierFlagString(SHIFT);
+        str += (!str.empty() ? connectorStr : "") + modifierFlagString(SHIFT);
 
-    return rslt;
+    return str;
 }
 
 std::string Key::toString() const noexcept
@@ -284,11 +284,11 @@ Modifiers Modifiers::fromString(const std::string& str, char connector) noexcept
 {
     std::stringstream ss;
     ss << str;
-    Modifiers rslt;
+    Modifiers mod;
     std::string s;
     while (std::getline(ss, s, connector))
-        rslt.add(modifierFlagFromString(s));
-    return rslt;
+        mod.add(modifierFlagFromString(s));
+    return mod;
 }
 
 Key Key::fromString(const std::string& str) noexcept

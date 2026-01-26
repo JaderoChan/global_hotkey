@@ -12,16 +12,16 @@ namespace gbhk
 
 int modifiersToX11Modifiers(const Modifiers& modifiers) noexcept
 {
-    int rslt = 0;
+    int mod = 0;
     if (modifiers.has(META))
-        rslt |= Mod4Mask;
+        mod |= Mod4Mask;
     if (modifiers.has(CTRL))
-        rslt |= ControlMask;
+        mod |= ControlMask;
     if (modifiers.has(ALT))
-        rslt |= Mod1Mask;
+        mod |= Mod1Mask;
     if (modifiers.has(SHIFT))
-        rslt |= ShiftMask;
-    return rslt;
+        mod |= ShiftMask;
+    return mod;
 }
 
 int keyToX11Keysym(const Key& key) noexcept
@@ -189,16 +189,16 @@ int keyToX11Keysym(const Key& key) noexcept
 
 Modifiers modifiersFromX11Modifiers(int x11Modifiers) noexcept
 {
-    Modifiers rslt;
+    Modifiers mod;
     if (x11Modifiers & Mod4Mask)
-        rslt.add(META);
+        mod.add(META);
     if (x11Modifiers & ControlMask)
-        rslt.add(CTRL);
+        mod.add(CTRL);
     if (x11Modifiers & Mod1Mask)
-        rslt.add(ALT);
+        mod.add(ALT);
     if (x11Modifiers & ShiftMask)
-        rslt.add(SHIFT);
-    return rslt;
+        mod.add(SHIFT);
+    return mod;
 }
 
 Key keyFromX11Keysym(int x11Keysym) noexcept
