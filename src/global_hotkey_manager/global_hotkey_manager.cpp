@@ -39,7 +39,7 @@ bool GlobalHotkeyManager::isAutoRepeat(const KeyCombination& kc) const
 bool GlobalHotkeyManager::isRunning() const
 { return ptr_->isRunning(); }
 
-std::vector<KeyCombination> GlobalHotkeyManager::getAll() const
+std::unordered_set<KeyCombination> GlobalHotkeyManager::getAll() const
 { return ptr_->getAll(); }
 
 } // namespace gbhk

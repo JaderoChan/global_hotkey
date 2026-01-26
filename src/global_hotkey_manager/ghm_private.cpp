@@ -165,12 +165,12 @@ bool GHMPrivate::isRunning() const
     return runningState_ == RS_RUNNING;
 }
 
-std::vector<KeyCombination> GHMPrivate::getAll() const
+std::unordered_set<KeyCombination> GHMPrivate::getAll() const
 {
-    std::vector<KeyCombination> rslt;
+    std::unordered_set<KeyCombination> set;
     for (const auto& var : fns_)
-        rslt.emplace_back(var.first);
-    return rslt;
+        set.insert(var.first);
+    return set;
 }
 
 std::pair<bool, std::function<void ()>> GHMPrivate::getPairValue(const KeyCombination& kc) const

@@ -7,7 +7,7 @@
 #include <mutex>                // mutex, lock_guard, unique_lock
 #include <thread>               // thread, thread::id
 #include <unordered_map>        // unordered_map
-#include <vector>               // vector
+#include <unordered_set>
 
 #include <global_hotkey/key_combination.hpp>
 
@@ -30,7 +30,7 @@ public:
     bool has(const KeyCombination& kc) const;
     bool isAutoRepeat(const KeyCombination& kc) const;
     bool isRunning() const;
-    std::vector<KeyCombination> getAll() const;
+    std::unordered_set<KeyCombination> getAll() const;
 
 protected:
     /// @brief Get the auto-repeat flag and callback function for a registered hotkey.

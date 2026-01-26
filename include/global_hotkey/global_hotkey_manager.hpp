@@ -3,7 +3,7 @@
 
 #include <functional>   // function
 #include <memory>       // unique_ptr
-#include <vector>       // vector
+#include <unordered_set>
 
 #include "key_combination.hpp"
 
@@ -65,8 +65,8 @@ public:
     bool isRunning() const;
 
     /// @brief Get all registered hotkeys.
-    /// @return Vector containing all registered key combinations.
-    std::vector<KeyCombination> getAll() const;
+    /// @return Set containing all registered key combinations.
+    std::unordered_set<KeyCombination> getAll() const;
 
 protected:
     explicit GlobalHotkeyManager(std::unique_ptr<GHMPrivate> ptr);
