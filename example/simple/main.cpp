@@ -27,7 +27,7 @@
     #endif // GLOBAL_HOTKEY_MAC
 #endif // GLOBAL_HOTKEY_BUILD_EXAMPLE_USE_HOOK
 
-#define THROW_RT_ERR(errmsg, code) (throw std::runtime_error((errmsg) + gbhk::getReturnCodeMsg(code)))
+#define THROW_RT_ERR(errmsg, code) (throw std::runtime_error((errmsg) + gbhk::getReturnCodeMessage(code)))
 
 static bool isPermissionAccessible()
 {

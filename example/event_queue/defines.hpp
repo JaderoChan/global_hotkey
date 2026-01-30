@@ -11,7 +11,7 @@ using namespace gbhk;
     #define GHM RegisterGlobalHotkeyManager::getInstance()
 #endif
 
-#define RCMSG(rc)   getReturnCodeMsg(rc).c_str()
+#define RCMSG(rc)   getReturnCodeMessage(rc).c_str()
 #define KCSTR(kc)   kc.toString().c_str()
 
 constexpr KeyCombination exitKc(CTRL | SHIFT, Key_Backspace);
