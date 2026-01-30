@@ -127,6 +127,20 @@ int GHMPrivate::replace(const KeyCombination& oldKc, const KeyCombination& newKc
     return rc;
 }
 
+int GHMPrivate::setFunction(const KeyCombination& kc, const std::function<void()>& fn)
+{
+    if (!isRunning())           return RC_BAD_TIMING;
+    if (isInWorkerThread())     return RC_BAD_THREAD;
+    if (!has(kc))               return RC_NOT_FOUND;
+
+    auto value = getPairValue(kc);
+    value.second = fn;
+    std::lock_guard<std::mutex> lock(mtx_);
+    fns_[kc] = value;
+
+    return RC_SUCCESS;
+}
+
 int GHMPrivate::setAutoRepeat(const KeyCombination& kc, bool autoRepeat)
 {
     if (!isRunning())           return RC_BAD_TIMING;

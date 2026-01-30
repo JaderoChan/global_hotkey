@@ -27,6 +27,9 @@ int GlobalHotkeyManager::removeAll()
 int GlobalHotkeyManager::replace(const KeyCombination& oldKc, const KeyCombination& newKc)
 { return ptr_->replace(oldKc, newKc); }
 
+int GlobalHotkeyManager::setFunction(const KeyCombination& kc, const std::function<void ()>& fn)
+{ return ptr_->setFunction(kc, fn); }
+
 int GlobalHotkeyManager::setAutoRepeat(const KeyCombination& kc, bool autoRepeat)
 { return ptr_->setAutoRepeat(kc, autoRepeat); }
 

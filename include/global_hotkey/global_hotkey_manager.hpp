@@ -42,6 +42,11 @@ public:
     /// @note If registering newKc fails, oldKc will still be removed.
     int replace(const KeyCombination& oldKc, const KeyCombination& newKc);
 
+    /// @brief Set the callback function for specified hotkey.
+    /// @param kc The key combination to set.
+    /// @param fn The callback function to execute when the hotkey is activated.
+    int setFunction(const KeyCombination& kc, const std::function<void ()>& fn);
+
     /// @brief Enable or disable auto-repeat for a registered hotkey.
     /// @param kc The key combination to modify.
     /// @param autoRepeat Whether to enable auto-repeat.

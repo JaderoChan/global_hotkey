@@ -26,6 +26,7 @@ public:
     int remove(const KeyCombination& kc);
     int removeAll();
     int replace(const KeyCombination& oldKc, const KeyCombination& newKc);
+    int setFunction(const KeyCombination& kc, const std::function<void ()>& fn);
     int setAutoRepeat(const KeyCombination& kc, bool autoRepeat);
     bool has(const KeyCombination& kc) const;
     bool isAutoRepeat(const KeyCombination& kc) const;
