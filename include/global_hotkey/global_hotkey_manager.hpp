@@ -56,6 +56,7 @@ public:
     /// @brief Check if auto-repeat is enabled for a hotkey.
     /// @param kc The key combination to check.
     /// @return true if auto-repeat is enabled, false otherwise.
+    /// @note false will be returned when the specified hotkey does not exist.
     /// @see setAutoRepeat()
     bool isAutoRepeat(const KeyCombination& kc) const;
 

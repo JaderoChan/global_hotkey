@@ -161,7 +161,8 @@ bool GHMPrivate::has(const KeyCombination& kc) const
 
 bool GHMPrivate::isAutoRepeat(const KeyCombination& kc) const
 {
-    if (!has(kc))               return RC_NOT_FOUND;
+    if (!has(kc))
+        return false;
 
     std::lock_guard<std::mutex> lock(mtx_);
     return fns_.at(kc).first;
