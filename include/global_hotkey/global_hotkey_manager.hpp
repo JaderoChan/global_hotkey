@@ -50,18 +50,18 @@ public:
 
     /// @brief Check if a hotkey is registered.
     /// @param kc The key combination to check.
-    /// @return true if the hotkey is registered, false otherwise.
+    /// @return True if the hotkey is registered, false otherwise.
     bool has(const KeyCombination& kc) const;
 
     /// @brief Check if auto-repeat is enabled for a hotkey.
     /// @param kc The key combination to check.
-    /// @return true if auto-repeat is enabled, false otherwise.
-    /// @note false will be returned when the specified hotkey does not exist.
+    /// @return True if auto-repeat is enabled, false otherwise.
+    /// @note False will be returned when the specified hotkey does not exist.
     /// @see setAutoRepeat()
     bool isAutoRepeat(const KeyCombination& kc) const;
 
     /// @brief Check if the Global Hotkey Manager is active.
-    /// @return true if the manager is running, false otherwise.
+    /// @return True if the manager is running, false otherwise.
     /// @note This function is thread-safe.
     bool isRunning() const;
 
