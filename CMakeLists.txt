@@ -113,18 +113,9 @@ endif()
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 set(GLOBAL_HOTKEY_SHARED ${GLOBAL_HOTKEY_BUILD_SHARED})
 
-configure_file(
-    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/templates/config.hpp.in
-    ${CMAKE_CURRENT_BINARY_DIR}/include/config.hpp
-)
-
-include(GNUInstallDirs)
-target_include_directories(${PROJECT_NAME} PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
-    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
-)
+####################
+# Configure target #
+####################
 
 option(
     GLOBAL_HOTKEY_OPTIMIZE_SYSTEM_RESERVE_HOTKEY
@@ -144,9 +135,22 @@ endif()
 
 set_target_properties(${PROJECT_NAME} PROPERTIES DEBUG_POSTFIX d)
 
-############################
-# Configure the dependency #
-############################
+########################
+# Configure dependency #
+########################
+
+configure_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/templates/config.hpp.in
+    ${CMAKE_CURRENT_BINARY_DIR}/include/config.hpp
+)
+
+include(GNUInstallDirs)
+target_include_directories(${PROJECT_NAME} PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+)
 
 if(NOT GLOBAL_HOTKEY_DISABLE_HOOK)
     message(STATUS "Start configure the 'keyboard tool' library...")
