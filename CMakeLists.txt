@@ -113,6 +113,19 @@ endif()
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 set(GLOBAL_HOTKEY_SHARED ${GLOBAL_HOTKEY_BUILD_SHARED})
 
+configure_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/templates/config.hpp.in
+    ${CMAKE_CURRENT_BINARY_DIR}/include/config.hpp
+)
+
+include(GNUInstallDirs)
+target_include_directories(${PROJECT_NAME} PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+)
+
 option(
     GLOBAL_HOTKEY_OPTIMIZE_SYSTEM_RESERVE_HOTKEY
     "This option is only for Hook GHM on the Windows platform. If this option is enabled, when the hotkeys 'Ctrl+Shift+ESC' and 'Ctrl+Alt+Delete' are triggered, some tricks will be used to try to prevent abnormal program behavior."
@@ -130,19 +143,6 @@ if(WIN32)
 endif()
 
 set_target_properties(${PROJECT_NAME} PROPERTIES DEBUG_POSTFIX d)
-
-configure_file(
-    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/templates/config.hpp.in
-    ${CMAKE_CURRENT_BINARY_DIR}/include/config.hpp
-)
-
-include(GNUInstallDirs)
-target_include_directories(${PROJECT_NAME} PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
-    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
-)
 
 ############################
 # Configure the dependency #
