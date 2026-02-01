@@ -1,10 +1,7 @@
-#ifndef GLOBAL_HOTKEY_DISABLE_HOOK
-
 #include "hook_ghm_private.hpp"
 
 #include <global_hotkey/return_code.hpp>
-
-#include "../key/key_private.hpp"
+#include <key/key_private.hpp>
 
 namespace gbhk
 {
@@ -179,5 +176,3 @@ void HookGHMPrivate::kbdtEventHandler(keyboard_event* event)
 }
 
 } // namespace gbhk
-
-#endif // !GLOBAL_HOTKEY_DISABLE_HOOK

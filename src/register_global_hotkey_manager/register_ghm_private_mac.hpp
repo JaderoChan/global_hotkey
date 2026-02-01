@@ -1,11 +1,7 @@
 #ifndef GLOBAL_HOTKEY_REGISTER_GHM_PRIVATE_MAC_HPP
 #define GLOBAL_HOTKEY_REGISTER_GHM_PRIVATE_MAC_HPP
 
-#ifndef GLOBAL_HOTKEY_DISABLE_REGISTER
-
 #include "register_ghm_private.hpp"
-
-#ifdef GLOBAL_HOTKEY_MAC
 
 #include <Carbon/Carbon.h>
 #include <CoreFoundation/CoreFoundation.h>
@@ -54,9 +50,5 @@ private:
 };
 
 } // namespace gbhk
-
-#endif // GLOBAL_HOTKEY_MAC
-
-#endif // !GLOBAL_HOTKEY_DISABLE_REGISTER
 
 #endif // !GLOBAL_HOTKEY_REGISTER_GHM_PRIVATE_MAC_HPP

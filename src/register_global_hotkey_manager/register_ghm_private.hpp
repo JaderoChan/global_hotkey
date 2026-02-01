@@ -1,9 +1,7 @@
 #ifndef GLOBAL_HOTKEY_REGISTER_GHM_PRIVATE_HPP
 #define GLOBAL_HOTKEY_REGISTER_GHM_PRIVATE_HPP
 
-#ifndef GLOBAL_HOTKEY_DISABLE_REGISTER
-
-#include "../global_hotkey_manager/ghm_private.hpp"
+#include <global_hotkey_manager/ghm_private.hpp>
 
 namespace gbhk
 {
@@ -16,7 +14,5 @@ public:
 };
 
 } // namespace gbhk
-
-#endif // !GLOBAL_HOTKEY_DISABLE_REGISTER
 
 #endif // !GLOBAL_HOTKEY_REGISTER_GHM_PRIVATE_HPP

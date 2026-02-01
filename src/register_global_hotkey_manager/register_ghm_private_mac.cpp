@@ -1,12 +1,7 @@
-#ifndef GLOBAL_HOTKEY_DISABLE_REGISTER
-
 #include "register_ghm_private_mac.hpp"
 
-#ifdef GLOBAL_HOTKEY_MAC
-
 #include <global_hotkey/return_code.hpp>
-
-#include "../key/key_private.hpp"
+#include <key/key_private.hpp>
 
 namespace gbhk
 {
@@ -207,7 +202,3 @@ void RegisterGHMPrivateMac::tryInvoke() const
 }
 
 } // namespace gbhk
-
-#endif // GLOBAL_HOTKEY_MAC
-
-#endif // !GLOBAL_HOTKEY_DISABLE_REGISTER

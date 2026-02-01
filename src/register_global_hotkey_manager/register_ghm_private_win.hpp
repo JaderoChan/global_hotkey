@@ -1,11 +1,7 @@
 #ifndef GLOBAL_HOTKEY_REGISTER_GHM_PRIVATE_WIN_HPP
 #define GLOBAL_HOTKEY_REGISTER_GHM_PRIVATE_WIN_HPP
 
-#ifndef GLOBAL_HOTKEY_DISABLE_REGISTER
-
 #include "register_ghm_private.hpp"
-
-#ifdef GLOBAL_HOTKEY_WIN
 
 #include <vector>
 
@@ -42,9 +38,5 @@ private:
 };
 
 } // namespace gbhk
-
-#endif // GLOBAL_HOTKEY_WIN
-
-#endif // !GLOBAL_HOTKEY_DISABLE_REGISTER
 
 #endif // !GLOBAL_HOTKEY_REGISTER_GHM_PRIVATE_WIN_HPP

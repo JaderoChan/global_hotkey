@@ -1,12 +1,7 @@
-#ifndef GLOBAL_HOTKEY_DISABLE_REGISTER
-
 #include "register_ghm_private_win.hpp"
 
-#ifdef GLOBAL_HOTKEY_WIN
-
 #include <global_hotkey/return_code.hpp>
-
-#include "../key/key_private.hpp"
+#include <key/key_private.hpp>
 
 namespace gbhk
 {
@@ -154,7 +149,3 @@ void RegisterGHMPrivateWin::tryInvoke(WPARAM wParam, LPARAM lParam) const
 }
 
 } // namespace gbhk
-
-#endif // GLOBAL_HOTKEY_WIN
-
-#endif // !GLOBAL_HOTKEY_DISABLE_REGISTER

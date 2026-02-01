@@ -1,7 +1,5 @@
 #include "key_private.hpp"
 
-#ifdef GLOBAL_HOTKEY_WIN
-
 #include <windows.h>
 
 namespace gbhk
@@ -308,5 +306,3 @@ Key keyFromNativeKey(int nativeKey) noexcept
 }
 
 } // namespace gbhk
-
-#endif // GLOBAL_HOTKEY_WIN

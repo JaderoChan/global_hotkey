@@ -1,5 +1,3 @@
-#ifndef GLOBAL_HOTKEY_DISABLE_REGISTER
-
 #include <global_hotkey/register_global_hotkey_manager.hpp>
 
 #ifdef GLOBAL_HOTKEY_WIN
@@ -32,5 +30,3 @@ RegisterGlobalHotkeyManager::RegisterGlobalHotkeyManager() :
 RegisterGlobalHotkeyManager::~RegisterGlobalHotkeyManager() = default;
 
 } // namespace gbhk
-
-#endif // !GLOBAL_HOTKEY_DISABLE_REGISTER

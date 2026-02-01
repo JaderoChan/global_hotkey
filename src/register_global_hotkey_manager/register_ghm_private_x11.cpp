@@ -1,8 +1,4 @@
-#ifndef GLOBAL_HOTKEY_DISABLE_REGISTER
-
 #include "register_ghm_private_x11.hpp"
-
-#ifdef GLOBAL_HOTKEY_LINUX
 
 #include <cstdint>
 #include <poll.h>           // poll
@@ -10,8 +6,7 @@
 #include <unistd.h>         // read, write, close
 
 #include <global_hotkey/return_code.hpp>
-
-#include "../key/key_private_x11.hpp"
+#include <key/key_private_x11.hpp>
 
 namespace gbhk
 {
@@ -211,7 +206,3 @@ void RegisterGHMPrivateX11::tryInvoke(const KeyCombination& prevKc, const KeyCom
 }
 
 } // namespace gbhk
-
-#endif // GLOBAL_HOTKEY_LINUX
-
-#endif // !GLOBAL_HOTKEY_DISABLE_REGISTER

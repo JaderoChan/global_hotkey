@@ -1,10 +1,6 @@
 #ifndef GLOBAL_HOTKEY_HOOK_GLOBAL_HOTKEY_MANAGER_HPP
 #define GLOBAL_HOTKEY_HOOK_GLOBAL_HOTKEY_MANAGER_HPP
 
-#include "defines.hpp"
-
-#ifndef GLOBAL_HOTKEY_DISABLE_HOOK
-
 #include "global_hotkey_manager.hpp"
 
 namespace gbhk
@@ -21,7 +17,5 @@ private:
 };
 
 } // namespace gbhk
-
-#endif // !GLOBAL_HOTKEY_DISABLE_HOOK
 
 #endif // !GLOBAL_HOTKEY_HOOK_GLOBAL_HOTKEY_MANAGER_HPP

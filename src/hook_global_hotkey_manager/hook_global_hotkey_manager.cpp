@@ -1,5 +1,3 @@
-#ifndef GLOBAL_HOTKEY_DISABLE_HOOK
-
 #include <global_hotkey/hook_global_hotkey_manager.hpp>
 
 #include "hook_ghm_private.hpp"
@@ -20,5 +18,3 @@ HookGlobalHotkeyManager::HookGlobalHotkeyManager() :
 HookGlobalHotkeyManager::~HookGlobalHotkeyManager() = default;
 
 } // namespace gbhk
-
-#endif // !GLOBAL_HOTKEY_DISABLE_HOOK

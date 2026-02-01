@@ -5,6 +5,7 @@
 #include <memory>       // unique_ptr
 #include <unordered_set>
 
+#include "defines.hpp"
 #include "key_combination.hpp"
 
 namespace gbhk

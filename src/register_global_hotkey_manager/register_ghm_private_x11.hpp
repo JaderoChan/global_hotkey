@@ -1,11 +1,7 @@
 #ifndef GLOBAL_HOTKEY_REGISTER_GHM_PRIVATE_X11_HPP
 #define GLOBAL_HOTKEY_REGISTER_GHM_PRIVATE_X11_HPP
 
-#ifndef GLOBAL_HOTKEY_DISABLE_REGISTER
-
 #include "register_ghm_private.hpp"
-
-#ifdef GLOBAL_HOTKEY_LINUX
 
 #include <X11/Xlib.h>
 
@@ -61,9 +57,5 @@ private:
 };
 
 } // namespace gbhk
-
-#endif // GLOBAL_HOTKEY_LINUX
-
-#endif // !GLOBAL_HOTKEY_DISABLE_REGISTER
 
 #endif // !GLOBAL_HOTKEY_REGISTER_GHM_PRIVATE_X11_HPP

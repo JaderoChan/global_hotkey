@@ -26,8 +26,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "hook_global_hotkey_manager.hpp"
-#include "register_global_hotkey_manager.hpp"
+#include "config.hpp"
+
+#ifndef GLOBAL_HOTKEY_DISABLE_REGISTER
+    #include "register_global_hotkey_manager.hpp"
+#endif // !GLOBAL_HOTKEY_DISABLE_REGISTER
+
+#ifndef GLOBAL_HOTKEY_DISABLE_HOOK
+    #include "hook_global_hotkey_manager.hpp"
+#endif // !GLOBAL_HOTKEY_DISABLE_HOOK
+
 #include "return_code.hpp"
 
 #endif // !GLOBAL_HOTKEY_GLOBAL_HOTKEY_HPP

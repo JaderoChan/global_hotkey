@@ -1,7 +1,5 @@
 #include "key_private.hpp"
 
-#ifdef GLOBAL_HOTKEY_MAC
-
 #include <Carbon/Carbon.h>
 
 namespace gbhk
@@ -342,5 +340,3 @@ Key keyFromNativeKey(int nativeKey) noexcept
 }
 
 } // namespace gbhk
-
-#endif // GLOBAL_HOTKEY_MAC
