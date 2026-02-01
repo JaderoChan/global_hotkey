@@ -8,11 +8,11 @@
 
 #include "../key/key_private.hpp"
 
-#define WM_REGISTER_HOTKEY      (WM_USER + 1)
-#define WM_UNREGISTER_HOTKEY    (WM_USER + 2)
-
 namespace gbhk
 {
+
+#define WM_REGISTER_HOTKEY      (WM_USER + 1)
+#define WM_UNREGISTER_HOTKEY    (WM_USER + 2)
 
 RegisterGHMPrivateWin::RegisterGHMPrivateWin() :
     regUnregRc_(0),

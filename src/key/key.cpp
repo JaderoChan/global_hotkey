@@ -4,6 +4,9 @@
 
 #include <global_hotkey/key.hpp>
 
+namespace gbhk
+{
+
 #define IS_SPACE(c) std::isspace(static_cast<unsigned char>(c))
 #define IS_ALNUM(c) std::isalnum(static_cast<unsigned char>(c))
 #define TO_UPPER(c) std::toupper(static_cast<unsigned char>(c))
@@ -39,9 +42,6 @@ isEqualStr(str, prefix "^") || isEqualStr(str, prefix "\xE2\x8C\x83"))
 
 #define IS_SHIFT(str, prefix) \
 (isEqualStr(str, prefix "shift") || isEqualStr(str, prefix "\xE2\x87\xAA"))
-
-namespace gbhk
-{
 
 static std::string modifierFlagString(ModifierFlag flag) noexcept
 {
