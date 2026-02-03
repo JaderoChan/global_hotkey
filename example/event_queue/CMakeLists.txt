@@ -17,8 +17,3 @@ if(GLOBAL_HOTKEY_BUILD_EXAMPLE_USE_HOOK)
 endif()
 
 target_link_libraries(${PROJECT_NAME} PRIVATE global_hotkey::global_hotkey)
-
-install(
-    TARGETS ${PROJECT_NAME}
-    RUNTIME DESTINATION example
-)
