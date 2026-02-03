@@ -30,7 +30,7 @@
 
 ## Dependence
 
-[Keyboard Tool](https://github.com/JaderoChan/keyboard_tool)
+[Keyboard Tools](https://github.com/JaderoChan/keyboard_tools)
 
 ## 🔧 How to Build?
 
@@ -168,8 +168,6 @@ No. `Register GHM` on **Linux** relies on **X11**.
     *(For details, refer to [Windows LowLevelKeyboard](https://learn.microsoft.com/en-us/windows/win32/winmsg/lowlevelkeyboardproc). The **Remarks** section mentions a **Timeout** of **1000 milliseconds**.)*
 
 - When using `Hook GHM` on the **Windows** platform, after the user presses the shortcut key `Ctrl+Shift+ESC` to call out the **Task Manager**, since the **Task Manager** will block the **LowLevelKeyboardHook** message, So it will cause `Hook GHM` to be able to receive the key press message of `Ctrl+Shift+ESC`, but there is a probability that it cannot receive the key release message (depending on the duration of your press and whether the **Task Manager** has become the focus window). Apart from `Ctrl+Shift+Esc`, there are also some other special shortcut keys (such as `Ctrl+Alt+Delete`) that can cause this problem. Particular attention should be paid when designing relevant programs. (See the compile option `GLOBAL_HOTKEY_OPTIMIZE_SYSTEM_RESERVE_HOTKEY`, enabling this option will try to avoid this problem)
-
-- When use **MSVC Compiler** and the `Hook GHM` is enabled need to configure the `pthread for Windows`, see also [pthreads-win32](https://sourceware.org/pthreads-win32/).
 
 ---
 

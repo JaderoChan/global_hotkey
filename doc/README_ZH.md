@@ -30,7 +30,7 @@
 
 ## 依赖
 
-[Keyboard Tool](https://github.com/JaderoChan/keyboard_tool)
+[Keyboard Tools](https://github.com/JaderoChan/keyboard_tools)
 
 ## 🔧 如何编译？
 
@@ -168,8 +168,6 @@ ghm.uninitialize(); // 释放热键管理器。
     *（详细信息参见 [Windows LowLevelKeyboard](https://learn.microsoft.com/zh-cn/windows/win32/winmsg/lowlevelkeyboardproc) ，其**Remarks**中提到**Timeout**时间为**1000毫秒**）*
 
 - 在**Windows**平台下使用`Hook GHM`时，当用户按下`Ctrl+Shift+ESC`快捷键呼出**任务管理器**后，由于**任务管理器**会阻止**LowLevelKeyboardHook**消息，所以会导致`Hook GHM`能够接收到`Ctrl+Shift+ESC`的按键按下消息，但有概率无法收到按键释放消息（取决于你的按压时长与**任务管理器**是否已经成为焦点窗口）。除`Ctrl+Shift+Esc`外，还存在一些其他的特殊快捷键（如`Ctrl+Alt+Delete`）也会导致这个问题。在设计相关程序时应该着重注意。（参见编译选项`GLOBAL_HOTKEY_OPTIMIZE_SYSTEM_RESERVE_HOTKEY`，启用此选项将尝试避免此问题）
-
-- 使用**MSVC编译器**且启用了`Hook GHM`时需要配置`pthread for Windows`，参见[pthreads-win32](https://sourceware.org/pthreads-win32/)。
 
 ---
 

@@ -157,11 +157,11 @@ if(NOT GLOBAL_HOTKEY_DISABLE_HOOK)
     set(THIRDPARTY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty)
     include(FetchContent)
     FetchContent_Declare(
-        kbdt
-        SOURCE_DIR ${THIRDPARTY_DIR}/kbdt
+        keyboard_tools
+        SOURCE_DIR ${THIRDPARTY_DIR}/keyboard_tools
     )
-    set(KBDT_BUILD_WITH_UTILS OFF)
-    FetchContent_MakeAvailable(kbdt)
+    set(KBDT_WITH_KEYUTILS OFF)
+    FetchContent_MakeAvailable(keyboard_tools)
     message(STATUS "Success to configure the 'keyboard tool' library.")
 endif()
 
@@ -214,7 +214,7 @@ endif()
 find_package(Threads REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE Threads::Threads)
 if(NOT GLOBAL_HOTKEY_DISABLE_HOOK)
-    target_link_libraries(${PROJECT_NAME} PRIVATE kbdt::kbdt)
+    target_link_libraries(${PROJECT_NAME} PRIVATE keyboard_tools::keyboard_tools)
 endif()
 
 ###########

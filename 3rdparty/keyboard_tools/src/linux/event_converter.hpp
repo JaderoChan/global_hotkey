@@ -1,0 +1,22 @@
+#ifndef KBDT_LINUX_EVENT_CONVERTER_HPP
+#define KBDT_LINUX_EVENT_CONVERTER_HPP
+
+#include <linux/input.h>
+
+#include <kbdt/types.hpp>
+
+namespace kbdt
+{
+
+namespace details
+{
+
+void keyEventToInputEvent(const KeyEvent& event, struct input_event& ie);
+
+void keyEventFromInputEvent(KeyEvent& event, const struct input_event& ie);
+
+} // namespace details
+
+} // namespace kbdt
+
+#endif // !KBDT_LINUX_EVENT_CONVERTER_HPP
