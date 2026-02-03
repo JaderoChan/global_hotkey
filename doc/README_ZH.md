@@ -36,11 +36,11 @@
 
 1. 直接运行根目录下的`install`脚本即可一键安装，可用选项如下：
 
-    - [--build_example]（与`GLOBAL_HOTKEY_BUILD_EXAMPLE=ON`功能相同）
-    - [--build_example_use_hook]（与`GLOBAL_HOTKEY_BUILD_EXAMPLE_USE_HOOK=ON`功能相同）（**Wayland**下不可用，因为**Wayland**下此选项是必须的）
+    - [--build-example]（与`GLOBAL_HOTKEY_BUILD_EXAMPLE=ON`功能相同）
+    - [--build-example-use-hook]（与`GLOBAL_HOTKEY_BUILD_EXAMPLE_USE_HOOK=ON`功能相同）（**Wayland**下不可用，因为**Wayland**下此选项是必须的）
     - [--prefix \<path\>]（指定安装路径）
 
-    例如`install --build_example --prefix install`将会安装库至 *./install* 目录下，并构建示例程序。
+    例如`install --build-example --prefix install`将会安装库至 *./install* 目录下，并构建示例程序。
 
 2. 项目使用`CMake`进行组织，仅需下面几行脚本即可编译使用！
 

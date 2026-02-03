@@ -6,16 +6,16 @@ INSTALL_PREFIX=
 
 echo_helper_and_exit() {
     echo "Error: Invalid parameter!"
-    echo "Usage: $0 [--build_example] [--build_shared] [--prefix <install prefix>]"
+    echo "Usage: $0 [--build-example] [--build-shared] [--prefix <install prefix>]"
     exit 1
 }
 
 while [[ $# -gt 0 ]]; do
     case "${1,,}" in
-        --build_example)
+        --build-example)
             BUILD_EXAMPLE=ON
             ;;
-        --build_shared)
+        --build-shared)
             BUILD_SHARED=ON
             ;;
         --prefix)

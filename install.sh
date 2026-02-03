@@ -7,19 +7,19 @@ INSTALL_PREFIX=
 
 echo_helper_and_exit() {
     echo "Error: Invalid parameter!"
-    echo "Usage: $0 [--build_example] [--build_example_use_hook] [--build_shared] [--prefix <install prefix>]"
+    echo "Usage: $0 [--build-example] [--build-example-use-hook] [--build-shared] [--prefix <install prefix>]"
     exit 1
 }
 
 while [[ $# -gt 0 ]]; do
     case "${1,,}" in
-        --build_example)
+        --build-example)
             BUILD_EXAMPLE=ON
             ;;
-        --build_example_use_hook)
+        --build-example-use-hook)
             BUILD_EXAMPLE_USE_HOOK=ON
             ;;
-        --build_shared)
+        --build-shared)
             BUILD_SHARED=ON
             ;;
         --prefix)

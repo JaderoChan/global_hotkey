@@ -9,17 +9,17 @@ goto :parameterHandler
 
 :echoHelperAndExit
     echo Error: Invalid parameter!
-    echo Usage: %0 [--build_example] [--build_example_use_hook] [--build_shared] [--prefix ^<install prefix^>]
+    echo Usage: %0 [--build-example] [--build-example-use-hook] [--build-shared] [--prefix ^<install prefix^>]
     exit /b 1
 
 :parameterHandler
     if "%~1" == "" goto :done
 
-    if /i "%~1" == "--build_example" (
+    if /i "%~1" == "--build-example" (
         set BUILD_EXAMPLE=ON
-    ) else if /i "%~1" == "--build_example_use_hook" (
+    ) else if /i "%~1" == "--build-example-use-hook" (
         set BUILD_EXAMPLE_USE_HOOK=ON
-    ) else if /i "%~1" == "--build_shared" (
+    ) else if /i "%~1" == "--build-shared" (
         set BUILD_SHARED=ON
     ) else if /i "%~1" == "--prefix" (
         if "%~2" == "" (
