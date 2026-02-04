@@ -24,7 +24,7 @@
 
     See example code.
 
-- `Hook-style Global Hotkey (Hook GHM)`!
+- Hook-style Global Hotkey (`Hook GHM`)!
 
     Need to implement ~~background monitoring trojan~~ some special features?
 
@@ -61,7 +61,7 @@
 
 - `GLOBAL_HOTKEY_DISABLE_HOOK` Specifies whether to disable `Hook-style Global Hotkey (Hook GHM)`. Default is `OFF`.
 
-- `GLOBAL_HOTKEY_OPTIMIZE_SYSTEM_RESERVE_HOTKEY` This option is only for Hook GHM on the Windows platform. If this option is enabled, when the hotkeys 'Ctrl+Shift+ESC' and 'Ctrl+Alt+Delete' are triggered, some tricks will be used to try to prevent abnormal program behavior. Default is enable.
+- `GLOBAL_HOTKEY_OPTIMIZE_SYSTEM_RESERVE_HOTKEY` This option is only for Hook GHM on the Windows platform. If this option is enabled, when the hotkeys `Ctrl+Shift+ESC` and `Ctrl+Alt+Delete` are triggered, some tricks will be used to try to prevent abnormal program behavior. Default is enable.
 
 - `GLOBAL_HOTKEY_BUILD_EXAMPLE` Whether to build example programs. Default depends on whether the project is the main project.
 

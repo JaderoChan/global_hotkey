@@ -24,7 +24,7 @@
 
     参见示例代码。
 
-- `监听式热键 (Hook GHM)`！
+- 监听式热键 (`Hook GHM`)！
 
     需要实现~~后台监听木马~~某些特殊的功能？
 
@@ -61,7 +61,7 @@
 
 - `GLOBAL_HOTKEY_DISABLE_HOOK` 指定是否禁用`监听式热键 (Hook GHM)`），默认为`OFF`。
 
-- `GLOBAL_HOTKEY_OPTIMIZE_SYSTEM_RESERVE_HOTKEY` 此选项仅针对Windows平台上的Hook GHM。如果启用此选项，当'Ctrl+Shift+ESC'与'Ctrl+Alt+Delete'热键被触发时将使用一些技巧尝试防止异常的程序行为。默认启用。
+- `GLOBAL_HOTKEY_OPTIMIZE_SYSTEM_RESERVE_HOTKEY` 此选项仅针对Windows平台上的Hook GHM。如果启用此选项，当`Ctrl+Shift+ESC`与`Ctrl+Alt+Delete`热键被触发时将使用一些技巧尝试防止异常的程序行为。默认启用。
 
 - `GLOBAL_HOTKEY_BUILD_EXAMPLE` 是否生成示例程序，默认值取决于项目是否为主项目。
 
