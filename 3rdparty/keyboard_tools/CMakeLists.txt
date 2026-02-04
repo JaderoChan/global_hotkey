@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.25)
 
-project(keyboard_tools VERSION 2.0.2 LANGUAGES CXX)
+project(keyboard_tools VERSION 2.0.3 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(KBDT_MSG_PREFIX "[Keyboard Tools]")
