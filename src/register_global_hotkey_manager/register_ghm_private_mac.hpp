@@ -35,7 +35,7 @@ private:
 
     static int nativeRegisterHotkey();
     static int nativeUnregisterHotkey();
-    /// @todo
+    // TODO
     void tryInvoke() const;
 
     static std::condition_variable cvRegUnregRc_;
