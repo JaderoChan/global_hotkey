@@ -13,7 +13,7 @@ namespace details
 #define WM_SET_EVENT_HANDLER (WM_USER + 1)
 
 static KeyEventHandler eventHandler = nullptr;
-static DWORD workerThreadId;
+static DWORD workerThreadId = 0;
 
 static LRESULT WINAPI LowLevelKeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
 {

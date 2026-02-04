@@ -18,7 +18,7 @@ namespace details
 #define KBDT_RC_FAIL       -1
 
 std::atomic<KeyEventHandler> eventHandler{nullptr};
-static CFRunLoopRef runLoop;
+static CFRunLoopRef runLoop = NULL;
 
 static CGEventRef keyboardTapCallback(CGEventTapProxy proxy, CGEventType type, CGEventRef event, void* data)
 {
@@ -93,6 +93,7 @@ void work()
     CFRelease(runLoopSource);
 
     eventHandler = nullptr;
+    runLoop = NULL;
 }
 
 } // namespace details
