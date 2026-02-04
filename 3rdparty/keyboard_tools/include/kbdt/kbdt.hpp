@@ -28,7 +28,8 @@
 
 #include <vector>
 
-#include "config.hpp"
+#include <kbdt/config.hpp>
+
 #include "defines.hpp"
 #include "types.hpp"
 
