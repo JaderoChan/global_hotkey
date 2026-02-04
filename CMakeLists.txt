@@ -162,7 +162,7 @@ if(NOT GLOBAL_HOTKEY_DISABLE_HOOK)
         keyboard_tools
         SOURCE_DIR ${THIRDPARTY_DIR}/keyboard_tools
     )
-    set(KBDT_WITH_KEYUTILS OFF)
+    set(KEYBOARD_TOOLS_WITH_KEYUTILS OFF)
     FetchContent_MakeAvailable(keyboard_tools)
     message(STATUS "Success to configure the 'keyboard tool' library.")
 endif()
