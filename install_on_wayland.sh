@@ -39,6 +39,7 @@ fi
 cmake -B build \
     -DGLOBAL_HOTKEY_BUILD_SHARED=$BUILD_SHARED \
     -DGLOBAL_HOTKEY_BUILD_EXAMPLE=$BUILD_EXAMPLE \
+    -DGLOBAL_HOTKEY_DISABLE_REGISTER=ON \
     -DGLOBAL_HOTKEY_BUILD_EXAMPLE_USE_HOOK=ON && \
 cmake --build build --config release -j && \
 cmake --install build $INSTALL_PREFIX_CMD
