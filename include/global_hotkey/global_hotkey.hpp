@@ -26,7 +26,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "config.hpp"
+#include <global_hotkey/config.hpp>
 
 #ifndef GLOBAL_HOTKEY_DISABLE_REGISTER
     #include "register_global_hotkey_manager.hpp"

@@ -1,7 +1,7 @@
 #ifndef GLOBAL_HOTKEY_DEFINES_HPP
 #define GLOBAL_HOTKEY_DEFINES_HPP
 
-#include "config.hpp"
+#include <global_hotkey/config.hpp>
 
 #ifdef _MSVC_LANG
     #define GLOBAL_HOTKEY_CPPVERS     _MSVC_LANG
