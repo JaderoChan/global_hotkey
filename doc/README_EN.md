@@ -151,6 +151,10 @@ Only `Hook GHM` is supported, and `Hook GHM` requires administrator privileges t
 
 No. `Register GHM` on **Linux** relies on **X11**.
 
+## Thread safety
+
+`Global Hotkey Manager` is a singleton class whose internal operations are thread-safe, which means you can call the member functions of `GHM` in different threads. However, it is worth noting that most member functions of `GHM` cannot be called within their own worker threads (for users, the most crucial point is that the callback functions of hotkeys are executed within the worker threads). The reason for this is that most functions of `GHM` need to wait for the operation to complete and return a value to indicate whether the operation was successful. If this operation is performed in the worker thread, a deadlock will occur, and the function will never return.
+
 ## 🔔 Notes
 
 - 'Register GHM' under the MacOS system is not supported for the time being.
