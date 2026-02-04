@@ -1,10 +1,10 @@
-#ifndef KBDT_DETAILS_HPP
-#define KBDT_DETAILS_HPP
+#ifndef KEYBOARD_TOOLS_DETAILS_HPP
+#define KEYBOARD_TOOLS_DETAILS_HPP
 
 #include <vector>
 
-#include <kbdt/defines.hpp>
-#include <kbdt/types.hpp>
+#include <keyboard_tools/defines.hpp>
+#include <keyboard_tools/types.hpp>
 
 namespace kbdt
 {
@@ -58,4 +58,4 @@ size_t sendEvents(const std::vector<KeyEvent>& events);
 
 } // namespace kbdt
 
-#endif // !KBDT_DETAILS_HPP
+#endif // !KEYBOARD_TOOLS_DETAILS_HPP

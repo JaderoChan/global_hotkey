@@ -1,9 +1,9 @@
-#ifndef KBDT_LINUX_EVENT_CONVERTER_HPP
-#define KBDT_LINUX_EVENT_CONVERTER_HPP
+#ifndef KEYBOARD_TOOLS_LINUX_EVENT_CONVERTER_HPP
+#define KEYBOARD_TOOLS_LINUX_EVENT_CONVERTER_HPP
 
 #include <linux/input.h>
 
-#include <kbdt/types.hpp>
+#include <keyboard_tools/types.hpp>
 
 namespace kbdt
 {
@@ -19,4 +19,4 @@ void keyEventFromInputEvent(KeyEvent& event, const struct input_event& ie);
 
 } // namespace kbdt
 
-#endif // !KBDT_LINUX_EVENT_CONVERTER_HPP
+#endif // !KEYBOARD_TOOLS_LINUX_EVENT_CONVERTER_HPP

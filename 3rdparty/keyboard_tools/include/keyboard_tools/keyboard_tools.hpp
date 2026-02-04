@@ -23,12 +23,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef KBDT_HPP
-#define KBDT_HPP
+#ifndef KEYBOARD_TOOLS_HPP
+#define KEYBOARD_TOOLS_HPP
 
 #include <vector>
 
-#include <kbdt/config.hpp>
+#include <keyboard_tools/config.hpp>
 
 #include "defines.hpp"
 #include "types.hpp"
@@ -36,7 +36,7 @@
 namespace kbdt
 {
 
-class KBDT_API KeyboardToolsManager
+class KEYBOARD_TOOLS_API KeyboardToolsManager
 {
 public:
     static KeyboardToolsManager& getInstance();
@@ -96,17 +96,17 @@ bool sendEvent(const KeyEvent& event);
  */
 constexpr bool isEventPropagationBlockSupported()
 {
-#ifdef KBDT_WIN
+#ifdef KEYBOARD_TOOLS_WIN
     return true;
-#elif defined(KBDT_MAC)
+#elif defined(KEYBOARD_TOOLS_MAC)
     return true;
-#elif defined(KBDT_LINUX)
+#elif defined(KEYBOARD_TOOLS_LINUX)
     return false;
 #else
     return false;
-#endif // KBDT_WIN
+#endif // KEYBOARD_TOOLS_WIN
 }
 
 } // namespace kbdt
 
-#endif // !KBDT_HPP
+#endif // !KEYBOARD_TOOLS_HPP

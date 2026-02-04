@@ -1,11 +1,11 @@
-#include <kbdt/keyutils.hpp>
+#include <keyboard_tools/key_utilitys.hpp>
 
 #include <windows.h>
 
 namespace kbdt
 {
 
-KBDT_API int keyToNativeKey(Key key) noexcept
+KEYBOARD_TOOLS_API int keyToNativeKey(Key key) noexcept
 {
     if ((key >= Key_0 && key <= Key_9) || (key >= Key_A && key <= Key_Z))
         return key;
@@ -142,7 +142,7 @@ KBDT_API int keyToNativeKey(Key key) noexcept
     }
 }
 
-KBDT_API Key keyFromNativeKey(int nativeKey) noexcept
+KEYBOARD_TOOLS_API Key keyFromNativeKey(int nativeKey) noexcept
 {
     if ((nativeKey >= '0' && nativeKey <= '9') || (nativeKey >= 'A' && nativeKey <= 'Z'))
         return (Key) nativeKey;

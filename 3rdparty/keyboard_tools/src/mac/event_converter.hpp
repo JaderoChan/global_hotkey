@@ -1,9 +1,9 @@
-#ifndef KBDT_MAC_EVENT_CONVERTER_HPP
-#define KBDT_MAC_EVENT_CONVERTER_HPP
+#ifndef KEYBOARD_TOOLS_MAC_EVENT_CONVERTER_HPP
+#define KEYBOARD_TOOLS_MAC_EVENT_CONVERTER_HPP
 
 #include <CoreGraphics/CGEvent.h>
 
-#include <kbdt/types.hpp>
+#include <keyboard_tools/types.hpp>
 
 namespace kbdt
 {
@@ -19,4 +19,4 @@ void keyEventFromCGEvent(KeyEvent& event, CGEventType cgEventType, CGEventRef cg
 
 } // namespace kbdt
 
-#endif // !KBDT_MAC_EVENT_CONVERTER_HPP
+#endif // !KEYBOARD_TOOLS_MAC_EVENT_CONVERTER_HPP

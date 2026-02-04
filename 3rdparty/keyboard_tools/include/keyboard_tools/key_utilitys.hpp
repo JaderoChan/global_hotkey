@@ -1,5 +1,5 @@
-#ifndef KBDT_KEYUTILS_HPP
-#define KBDT_KEYUTILS_HPP
+#ifndef KEYBOARD_TOOLS_KEY_UTILITYS_HPP
+#define KEYBOARD_TOOLS_KEY_UTILITYS_HPP
 
 #include <cstdint>  // uint32_t
 #include <string>
@@ -191,16 +191,16 @@ enum Key : int32_t
     Key_Option_Right        = Key_Alt_Right
 };
 
-KBDT_API const char* keyToStr(Key key) noexcept;
+KEYBOARD_TOOLS_API const char* keyToStr(Key key) noexcept;
 
-KBDT_API Key keyFromStr(const char* str) noexcept;
+KEYBOARD_TOOLS_API Key keyFromStr(const char* str) noexcept;
 
-KBDT_API Key keyFromStr(const std::string& str) noexcept;
+KEYBOARD_TOOLS_API Key keyFromStr(const std::string& str) noexcept;
 
-KBDT_API int keyToNativeKey(Key key) noexcept;
+KEYBOARD_TOOLS_API int keyToNativeKey(Key key) noexcept;
 
-KBDT_API Key keyFromNativeKey(int nativeKey) noexcept;
+KEYBOARD_TOOLS_API Key keyFromNativeKey(int nativeKey) noexcept;
 
 } // namespace kbdt
 
-#endif // !KBDT_KEYUTILS_HPP
+#endif // !KEYBOARD_TOOLS_KEY_UTILITYS_HPP

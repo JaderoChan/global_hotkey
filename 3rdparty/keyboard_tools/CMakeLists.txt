@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.25)
 
-project(keyboard_tools VERSION 1.0.1 LANGUAGES CXX)
+project(keyboard_tools VERSION 2.0.2 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(KBDT_MSG_PREFIX "[Keyboard Tools]")
@@ -16,11 +16,11 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_CURRENT_BINARY_DIR)
 endif()
 
 # Check whether the project is the root project.
-if(NOT DEFINED KBDT_MASTER_PROJECT)
+if(NOT DEFINED KEYBOARD_TOOLS_MASTER_PROJECT)
     if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
-        set(KBDT_MASTER_PROJECT ON)
+        set(KEYBOARD_TOOLS_MASTER_PROJECT ON)
     else()
-        set(KBDT_MASTER_PROJECT OFF)
+        set(KEYBOARD_TOOLS_MASTER_PROJECT OFF)
     endif()
 endif()
 
@@ -28,7 +28,7 @@ endif()
 set(SRC)
 list(
     APPEND SRC
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/kbdt.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/keyboard_tools.cpp
 )
 if(WIN32)
     file(GLOB SRC ${SRC} ${CMAKE_CURRENT_SOURCE_DIR}/src/win/*.cpp)
@@ -38,15 +38,15 @@ elseif(LINUX)
     file(GLOB SRC ${SRC} ${CMAKE_CURRENT_SOURCE_DIR}/src/linux/*.cpp)
 endif()
 
-option(KBDT_WITH_KEYUTILS "Build with key utilitys" ON)
-if(KBDT_WITH_KEYUTILS)
-    list(APPEND SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/keyutils/keyutils.cpp)
+option(KEYBOARD_TOOLS_WITH_KEYUTILS "Build with key utilitys" ON)
+if(KEYBOARD_TOOLS_WITH_KEYUTILS)
+    list(APPEND SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/key_utilitys/key_utilitys.cpp)
     if(WIN32)
-        list(APPEND SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/keyutils/keyutils_win.cpp)
+        list(APPEND SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/key_utilitys/key_utilitys_win.cpp)
     elseif(APPLE)
-        list(APPEND SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/keyutils/keyutils_mac.cpp)
+        list(APPEND SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/key_utilitys/key_utilitys_mac.cpp)
     elseif(LINUX)
-        list(APPEND SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/keyutils/keyutils_linux.cpp)
+        list(APPEND SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/key_utilitys/key_utilitys_linux.cpp)
     endif()
 endif()
 
@@ -54,17 +54,17 @@ endif()
 # Build #
 #########
 
-option(KBDT_BUILD_SHARED "Build shared library" OFF)
-if(KBDT_BUILD_SHARED)
+option(KEYBOARD_TOOLS_BUILD_SHARED "Build shared library" OFF)
+if(KEYBOARD_TOOLS_BUILD_SHARED)
     message(STATUS "${KBDT_MSG_PREFIX} Shared library will be built.")
     add_library(${PROJECT_NAME} SHARED ${SRC})
-    target_compile_definitions(${PROJECT_NAME} PRIVATE KBDT_BUILD_SHARED)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE KEYBOARD_TOOLS_BUILD_SHARED)
 else()
     message(STATUS "${KBDT_MSG_PREFIX} Static library will be built.")
     add_library(${PROJECT_NAME} STATIC ${SRC})
 endif()
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
-set(KBDT_SHARED ${KBDT_BUILD_SHARED})
+set(KEYBOARD_TOOLS_SHARED ${KEYBOARD_TOOLS_BUILD_SHARED})
 
 ####################
 # Configure target #
@@ -82,7 +82,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES DEBUG_POSTFIX d)
 # Configure dependency #
 ########################
 
-set(CONFIG_HEADER_PATH ${CMAKE_CURRENT_BINARY_DIR}/include/kbdt/config.hpp)
+set(CONFIG_HEADER_PATH ${CMAKE_CURRENT_BINARY_DIR}/include/keyboard_tools/config.hpp)
 configure_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/cmake/templates/config.hpp.in
     ${CONFIG_HEADER_PATH}
@@ -145,12 +145,12 @@ install(
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
-file(GLOB HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/include/kbdt/*.hpp)
-if(NOT KBDT_WITH_KEYUTILS)
-    list(FILTER HEADERS EXCLUDE REGEX ".*keyutils\.hpp")
+file(GLOB HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/include/keyboard_tools/*.hpp)
+if(NOT KEYBOARD_TOOLS_WITH_KEYUTILS)
+    list(FILTER HEADERS EXCLUDE REGEX ".*key_utilitys\.hpp")
 endif()
 list(APPEND HEADERS ${CONFIG_HEADER_PATH})
-install(FILES ${HEADERS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/kbdt)
+install(FILES ${HEADERS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/keyboard_tools)
 install(FILES LICENSE DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/licenses/${PROJECT_NAME})
 
 install(
@@ -185,7 +185,7 @@ install(
 # Build Example #
 #################
 
-option(KBDT_BUILD_EXAMPLE "Build example" ${KBDT_MASTER_PROJECT})
-if(KBDT_BUILD_EXAMPLE)
+option(KEYBOARD_TOOLS_BUILD_EXAMPLE "Build example" ${KEYBOARD_TOOLS_MASTER_PROJECT})
+if(KEYBOARD_TOOLS_BUILD_EXAMPLE)
     add_subdirectory(example)
 endif()

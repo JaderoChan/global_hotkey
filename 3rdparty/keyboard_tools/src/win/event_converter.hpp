@@ -1,9 +1,9 @@
-#ifndef KBDT_WIN_EVENT_CONVERTER_HPP
-#define KBDT_WIN_EVENT_CONVERTER_HPP
+#ifndef KEYBOARD_TOOLS_WIN_EVENT_CONVERTER_HPP
+#define KEYBOARD_TOOLS_WIN_EVENT_CONVERTER_HPP
 
 #include <windows.h>
 
-#include <kbdt/types.hpp>
+#include <keyboard_tools/types.hpp>
 
 namespace kbdt
 {
@@ -19,4 +19,4 @@ void keyEventFromParam(KeyEvent& event, WPARAM wParam, LPARAM lParam);
 
 } // namespace kbdt
 
-#endif // !KBDT_WIN_EVENT_CONVERTER_HPP
+#endif // !KEYBOARD_TOOLS_WIN_EVENT_CONVERTER_HPP

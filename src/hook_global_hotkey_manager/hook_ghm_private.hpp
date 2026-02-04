@@ -5,7 +5,7 @@
 
 #include <queue>    // queue
 
-#include <kbdt/kbdt.hpp>
+#include <keyboard_tools/keyboard_tools.hpp>
 
 namespace gbhk
 {

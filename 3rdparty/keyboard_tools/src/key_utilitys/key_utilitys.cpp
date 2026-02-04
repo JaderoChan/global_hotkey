@@ -1,4 +1,4 @@
-#include <kbdt/keyutils.hpp>
+#include <keyboard_tools/key_utilitys.hpp>
 
 #include <cctype>   // isspace, isalnum, toupper
 #include <cstddef>  // size_t
@@ -10,19 +10,19 @@ namespace kbdt
 #define IS_ALNUM(c) std::isalnum(static_cast<unsigned char>(c))
 #define TO_UPPER(c) std::toupper(static_cast<unsigned char>(c))
 
-#ifdef KBDT_WIN
+#ifdef KEYBOARD_TOOLS_WIN
     #define META_TEXT   "Win"
     #define ALT_TEXT    "Alt"
-#elif defined(KBDT_MAC)
+#elif defined(KEYBOARD_TOOLS_MAC)
     #define META_TEXT   "Command"
     #define ALT_TEXT    "Option"
-#elif defined(KBDT_LINUX)
+#elif defined(KEYBOARD_TOOLS_LINUX)
     #define META_TEXT   "Super"
     #define ALT_TEXT    "Alt"
 #else
     #define META_TEXT   "Meta"
     #define ALT_TEXT    "Alt"
-#endif // KBDT_WIN
+#endif // KEYBOARD_TOOLS_WIN
 
 #define CTRL_TEXT       "Ctrl"
 #define SHIFT_TEXT      "Shift"
@@ -42,7 +42,7 @@ isEqualStr(str, prefix "^") || isEqualStr(str, prefix "\xE2\x8C\x83"))
 #define IS_SHIFT(str, prefix) \
 (isEqualStr(str, prefix "shift") || isEqualStr(str, prefix "\xE2\x87\xAA"))
 
-KBDT_API const char* keyToStr(Key key) noexcept
+KEYBOARD_TOOLS_API const char* keyToStr(Key key) noexcept
 {
     switch (key)
     {
@@ -216,7 +216,7 @@ KBDT_API const char* keyToStr(Key key) noexcept
     }
 }
 
-KBDT_API Key keyFromStr(const char* str) noexcept
+KEYBOARD_TOOLS_API Key keyFromStr(const char* str) noexcept
 {
     return keyFromStr(std::string(str));
 }
@@ -245,7 +245,7 @@ static bool isEqualStr(const std::string& str1, const std::string& str2) noexcep
     return true;
 }
 
-KBDT_API Key keyFromStr(const std::string& str) noexcept
+KEYBOARD_TOOLS_API Key keyFromStr(const std::string& str) noexcept
 {
     if (str.empty())
         return (Key) 0;

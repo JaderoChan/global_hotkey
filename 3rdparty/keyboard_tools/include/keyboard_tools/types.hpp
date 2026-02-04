@@ -1,5 +1,5 @@
-#ifndef KBDT_TYPES_HPP
-#define KBDT_TYPES_HPP
+#ifndef KEYBOARD_TOOLS_TYPES_HPP
+#define KEYBOARD_TOOLS_TYPES_HPP
 
 #include <cstddef>  // size_t
 
@@ -33,4 +33,4 @@ using KeyEventHandler = bool (*)(KeyEvent);
 
 } // namespace kbdt
 
-#endif // !KBDT_TYPES_HPP
+#endif // !KEYBOARD_TOOLS_TYPES_HPP

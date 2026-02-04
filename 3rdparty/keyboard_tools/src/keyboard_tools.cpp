@@ -1,11 +1,11 @@
-#include <kbdt/kbdt.hpp>
+#include <keyboard_tools/keyboard_tools.hpp>
 
 #include <atomic>
 #include <condition_variable>
 #include <mutex>
 #include <thread>
 
-#include "kbdt_details.hpp"
+#include "keyboard_tools_details.hpp"
 
 namespace kbdt
 {

@@ -1,11 +1,11 @@
-#include <kbdt/keyutils.hpp>
+#include <keyboard_tools/key_utilitys.hpp>
 
 #include <Carbon/Carbon.h>
 
 namespace kbdt
 {
 
-KBDT_API int keyToNativeKey(Key key) noexcept
+KEYBOARD_TOOLS_API int keyToNativeKey(Key key) noexcept
 {
     switch (key)
     {
@@ -163,7 +163,7 @@ KBDT_API int keyToNativeKey(Key key) noexcept
     }
 }
 
-KBDT_API Key keyFromNativeKey(int nativeKey) noexcept
+KEYBOARD_TOOLS_API Key keyFromNativeKey(int nativeKey) noexcept
 {
     switch (nativeKey)
     {
