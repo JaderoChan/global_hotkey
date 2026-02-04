@@ -49,14 +49,14 @@ void RegisterGHMPrivateMac::work()
         return;
     }
 
-    EventTypeSpec eventType_Specs[2] = {0};
-    eventType_Specs[0].eventClass = kEventClassKeyboard;
-    eventType_Specs[0].eventKind = kEventHotKeyPressed;
-    eventType_Specs[1].eventClass = kEventClassKeyboard;
-    eventType_Specs[1].eventKind = kEventHotKeyReleased;
+    EventTypeSpec eventTypeSpecs[2] = {0};
+    eventTypeSpecs[0].eventClass = kEventClassKeyboard;
+    eventTypeSpecs[0].eventKind = kEventHotKeyPressed;
+    eventTypeSpecs[1].eventClass = kEventClassKeyboard;
+    eventTypeSpecs[1].eventKind = kEventHotKeyReleased;
     auto status = InstallApplicationEventHandler(
         &RegisterGHMPrivateMac::hotkeyEventHandler,
-        2, eventType_Specs,
+        2, eventTypeSpecs,
         NULL, NULL
     );
     if (status != noErr)
@@ -179,25 +179,25 @@ int RegisterGHMPrivateMac::nativeRegisterHotkey()
     UInt32 key = (UInt32) keyToNativeKey(kc.key());
 
     EventHotKeyID hotkeyId = {(OSType) mod, key};
-    EventHotKeyRef ref = 0;
+    EventHotKeyRef eventHotkey = 0;
     auto status = RegisterEventHotKey(
         key,
         mod,
         hotkeyId,
         GetApplicationEventTarget(),
         0,
-        &ref
+        &eventHotkey
     );
     if (status != noErr)
         return (int) status;
-    kcToHotkeyRef_[regUnregKc_] = ref;
+    kcToHotkeyRef_[regUnregKc_] = eventHotkey;
     return RC_SUCCESS;
 }
 
 int RegisterGHMPrivateMac::nativeUnregisterHotkey()
 {
-    EventHotKeyRef ref = kcToHotkeyRef_[regUnregKc_];
-    auto status = UnregisterEventHotKey(ref);
+    EventHotKeyRef eventHotkey = kcToHotkeyRef_[regUnregKc_];
+    auto status = UnregisterEventHotKey(eventHotkey);
     if (status != noErr)
         return (int) status;
     kcToHotkeyRef_.erase(regUnregKc_);
