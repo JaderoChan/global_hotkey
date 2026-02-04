@@ -39,9 +39,9 @@ RegisterGHMPrivateX11::RegisterGHMPrivateX11() :
     regUnregKc_(KeyCombination())
 {}
 
-RegisterGHMPrivateX11::~RegisterGHMPrivateX11() { uninitialize(); }
+RegisterGHMPrivateX11::~RegisterGHMPrivateX11() { stop(); }
 
-int RegisterGHMPrivateX11::doBeforeThreadRun()
+int RegisterGHMPrivateX11::initialize()
 {
     eventFd_ = eventfd(0, EFD_CLOEXEC | EFD_NONBLOCK);
     if (eventFd_ == -1)
@@ -49,11 +49,11 @@ int RegisterGHMPrivateX11::doBeforeThreadRun()
     return RC_SUCCESS;
 }
 
-int RegisterGHMPrivateX11::doBeforeThreadEnd()
+int RegisterGHMPrivateX11::stopWork()
 {
     EventType et = ET_EXIT;
-    auto wrsize = write(eventFd_, &et, 8);
-    if (wrsize != 8)
+    auto wsize = write(eventFd_, &et, 8);
+    if (wsize != 8)
         return errno;
     return RC_SUCCESS;
 }
@@ -72,9 +72,9 @@ void RegisterGHMPrivateX11::work()
     }
 
     int x11Fd = ConnectionNumber(display);
-    pollfd pollFds[2] = {0};
-    pollFds[0] = pollfd{x11Fd, POLLIN};
-    pollFds[1] = pollfd{eventFd_, POLLIN};
+    struct pollfd pollFds[2] = {0};
+    pollFds[0] = struct pollfd{x11Fd, POLLIN};
+    pollFds[1] = struct pollfd{eventFd_, POLLIN};
 
     setRunSuccess();
     KeyCombination prevKc;
@@ -99,7 +99,6 @@ void RegisterGHMPrivateX11::work()
                     auto key = keyFromX11Keysym(keysym);
                     currKc = {mod, key};
                 }
-                // event.type == KeyRelease
                 else
                 {
                     currKc = {};
@@ -109,12 +108,12 @@ void RegisterGHMPrivateX11::work()
             prevKc = currKc;
         }
 
-        // My event was detected.
+        // Custom event was detected.
         if (pollFds[1].revents & POLLIN)
         {
             EventType et;
-            auto rdsize = read(eventFd_, &et, 8);
-            if (rdsize != 8)
+            auto rsize = read(eventFd_, &et, 8);
+            if (rsize != 8)
                 continue;
 
             if (et == ET_EXIT)
@@ -143,13 +142,13 @@ void RegisterGHMPrivateX11::work()
     eventFd_ = -1;
 }
 
-int RegisterGHMPrivateX11::registerHotkey(const KeyCombination& kc, bool autoRepeat)
+int RegisterGHMPrivateX11::registerHotkeyImpl(const KeyCombination& kc, bool autoRepeat)
 {
     regUnregRc_ = -1;
     regUnregKc_ = kc;
     EventType et = ET_REGISTER;
-    auto wrsize = write(eventFd_, &et, 8);
-    if (wrsize != 8)
+    auto wsize = write(eventFd_, &et, 8);
+    if (wsize != 8)
         return errno;
 
     std::mutex dummyMtx;
@@ -158,13 +157,13 @@ int RegisterGHMPrivateX11::registerHotkey(const KeyCombination& kc, bool autoRep
     return regUnregRc_;
 }
 
-int RegisterGHMPrivateX11::unregisterHotkey(const KeyCombination& kc)
+int RegisterGHMPrivateX11::unregisterHotkeyImpl(const KeyCombination& kc)
 {
     regUnregRc_ = -1;
     regUnregKc_ = kc;
     EventType et = ET_UNREGISTER;
-    auto wrsize = write(eventFd_, &et, 8);
-    if (wrsize != 8)
+    auto wsize = write(eventFd_, &et, 8);
+    if (wsize != 8)
         return errno;
 
     std::mutex dummyMtx;

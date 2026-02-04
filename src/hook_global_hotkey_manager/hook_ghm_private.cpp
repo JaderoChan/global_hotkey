@@ -12,9 +12,9 @@ std::queue<Event> HookGHMPrivate::eventQueue_;
 
 HookGHMPrivate::HookGHMPrivate() : kbdtMgr_(kbdt::KeyboardToolsManager::getInstance()) {}
 
-HookGHMPrivate::~HookGHMPrivate() { uninitialize(); }
+HookGHMPrivate::~HookGHMPrivate() { stop(); }
 
-int HookGHMPrivate::doBeforeThreadRun()
+int HookGHMPrivate::initialize()
 {
     clearEventQueue();
 
@@ -25,7 +25,7 @@ int HookGHMPrivate::doBeforeThreadRun()
     return RC_SUCCESS;
 }
 
-int HookGHMPrivate::doBeforeThreadEnd()
+int HookGHMPrivate::stopWork()
 {
     pushEvent({ET_EXIT});
     int rc = kbdtMgr_.stop();
@@ -127,10 +127,10 @@ void HookGHMPrivate::work()
     }
 }
 
-int HookGHMPrivate::registerHotkey(const KeyCombination& kc, bool autoRepeat)
+int HookGHMPrivate::registerHotkeyImpl(const KeyCombination& kc, bool autoRepeat)
 { return RC_SUCCESS; }
 
-int HookGHMPrivate::unregisterHotkey(const KeyCombination& kc)
+int HookGHMPrivate::unregisterHotkeyImpl(const KeyCombination& kc)
 { return RC_SUCCESS; }
 
 void HookGHMPrivate::tryInvoke(const KeyCombination& prevKc, const KeyCombination& currKc) const

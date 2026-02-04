@@ -73,30 +73,30 @@
 
 ## 🚩 How to Use?
 
-1. Obtain a `Global Hotkey Manager (GHM)` object via the `getInstance` interface.
+1. Obtain `Global Hotkey Manager (GHM)` object instance via the `GlobalHotkeyManager::getInstance` interface.
 
-2. Initialize the `GHM` via the `initialize` interface.
+2. Start the `GHM` service via the `GlobalHotkeyManager::run` interface.
 
 3. Add, remove, or replace hotkeys using the corresponding interfaces.
 
 4. When a hotkey is triggered, the corresponding callback function will be executed.
 
-5. Uninitialize the `GHM` via the `uninitialize` interface.
+5. Stop the `GHM` service via the `GlobalHotkeyManager::stop` interface.
 
 ---
 
 Below is example code demonstrating the basic workflow:
 
 ```cpp
-GlobalHotkeyManager& ghm = RegisterGlobalHotkeyManager::getInstance();  // Get an instance of the `Register GHM`.
-ghm.initialize();   // Initialize the Global Hotkey Manager.
+GlobalHotkeyManager& ghm = RegisterGlobalHotkeyManager::getInstance();  // Get instance of the Register GHM.
+ghm.run();   // Run the Global Hotkey Manager service.
 
 KeyCombination hotkey1(CTRL, 'G');
 KeyCombination hotkey2(CTRL, 'H');
 KeyCombination hotkey3(CTRL, 'M');
-ghm.add(hotkey1, &callback);                        // Bind a callback function.
-ghm.add(hotkey2, [=]() { if(isOk) emitSignal(); }); // Bind a Lambda function. Emits a signal when the hotkey is triggered and the condition is true.
-ghm.add(hotkey3, [=]() { printf("Hello world!") }); // Simply prints a message.
+ghm.registerHotkey(hotkey1, &callback);                        // Bind a callback function.
+ghm.registerHotkey(hotkey2, [=]() { if(isOk) emitSignal(); }); // Bind a Lambda function. Emits a signal when the hotkey is triggered and the condition is true.
+ghm.registerHotkey(hotkey3, [=]() { printf("Hello world!") }); // Simply prints a message.
 
 // Main loop.
 while (!shouldClose)
@@ -104,7 +104,7 @@ while (!shouldClose)
     // Do Something.
 }
 
-ghm.uninitialize(); // Uninitialize the Global Hotkey Manager.
+ghm.stop(); // Stop the Global Hotkey Manager service and clear resource.
 ```
 
 ## 💡 Examples
@@ -157,11 +157,11 @@ No. `Register GHM` on **Linux** relies on **X11**.
 
 ## 🔔 Notes
 
-- 'Register GHM' under the MacOS system is not supported for the time being.
+- `Register GHM` under the MacOS system is not supported for the time being.
 
-- Operations such as termination, addition, deletion, and hotkey replacement can only be performed after the corresponding 'GHM' has been initialized!
+- Operations such as stop the `GHM` service, register hotkey, unregister hotkey, and replace hotkey can only be performed after the corresponding `GHM` has been initialized!
 
-- Do not perform operations such as terminating, adding, deleting, and hotkey replacement in the worker thread (for the user, this is the thread where the callback function is executed when the hotkey is triggered)!
+- Do not perform operations such as stop the `GHM` service, register hotkey, unregister hotkey, and replace hotkey in the worker thread (for the user, this is the thread where the callback function is executed when the hotkey is triggered)!
 
 - Avoid adding an maybe invalid hotkey, as this is undefined behavior and may lead to unexpected results. This library does not conduct security checks for such operations. These operations whether be perform should be decided by the user.
 

@@ -17,10 +17,10 @@ public:
     ~RegisterGHMPrivateWin();
 
 protected:
-    int doBeforeThreadEnd() override;
+    int stopWork() override;
     void work() override;
-    int registerHotkey(const KeyCombination& kc, bool autoRepeat) override;
-    int unregisterHotkey(const KeyCombination& kc) override;
+    int registerHotkeyImpl(const KeyCombination& kc, bool autoRepeat) override;
+    int unregisterHotkeyImpl(const KeyCombination& kc) override;
 
 private:
     // The following functions should only be called from within the worker thread.

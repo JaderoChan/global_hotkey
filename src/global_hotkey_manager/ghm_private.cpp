@@ -13,11 +13,11 @@ GHMPrivate::GHMPrivate() :
 
 GHMPrivate::~GHMPrivate() = default;
 
-int GHMPrivate::initialize()
+int GHMPrivate::run()
 {
     if (isRunning())            return RC_SUCCESS;
 
-    int rc = doBeforeThreadRun();
+    int rc = initialize();
     if (rc != RC_SUCCESS)
         return rc;
 
@@ -42,13 +42,13 @@ int GHMPrivate::initialize()
     return runningRc_;
 }
 
-int GHMPrivate::uninitialize()
+int GHMPrivate::stop()
 {
     if (!isRunning())           return RC_SUCCESS;
     if (isInWorkerThread())     return RC_BAD_THREAD;
 
-    int rc = removeAll();
-    rc = doBeforeThreadEnd();
+    int rc = unregisterAllHotkeys();
+    rc = stopWork();
 
     std::mutex dummyMtx;
     std::unique_lock<std::mutex> lock(dummyMtx);
@@ -57,13 +57,13 @@ int GHMPrivate::uninitialize()
     return rc;
 }
 
-int GHMPrivate::add(const KeyCombination& kc, const std::function<void ()>& fn, bool autoRepeat)
+int GHMPrivate::registerHotkey(const KeyCombination& kc, const std::function<void ()>& fn, bool autoRepeat)
 {
     if (!isRunning())           return RC_BAD_TIMING;
     if (isInWorkerThread())     return RC_BAD_THREAD;
-    if (has(kc))                return RC_ALREADY_EXIST;
+    if (isHotkeyRegistered(kc))       return RC_ALREADY_EXIST;
 
-    int rc = registerHotkey(kc, autoRepeat);
+    int rc = registerHotkeyImpl(kc, autoRepeat);
     if (rc != RC_SUCCESS)
         return rc;
 
@@ -73,13 +73,13 @@ int GHMPrivate::add(const KeyCombination& kc, const std::function<void ()>& fn, 
     return rc;
 }
 
-int GHMPrivate::remove(const KeyCombination& kc)
+int GHMPrivate::unregisterHotkey(const KeyCombination& kc)
 {
     if (!isRunning())           return RC_BAD_TIMING;
     if (isInWorkerThread())     return RC_BAD_THREAD;
-    if (!has(kc))               return RC_NOT_FOUND;
+    if (!isHotkeyRegistered(kc))      return RC_NOT_FOUND;
 
-    int rc = unregisterHotkey(kc);
+    int rc = unregisterHotkeyImpl(kc);
 
     std::lock_guard<std::mutex> lock(mtx_);
     fns_.erase(kc);
@@ -87,14 +87,14 @@ int GHMPrivate::remove(const KeyCombination& kc)
     return rc;
 }
 
-int GHMPrivate::removeAll()
+int GHMPrivate::unregisterAllHotkeys()
 {
     if (!isRunning())           return RC_BAD_TIMING;
     if (isInWorkerThread())     return RC_BAD_THREAD;
 
     int rc = RC_SUCCESS;
     for (const auto& var : fns_)
-        rc = unregisterHotkey(var.first);
+        rc = unregisterHotkeyImpl(var.first);
 
     std::lock_guard<std::mutex> lock(mtx_);
     fns_.clear();
@@ -102,21 +102,21 @@ int GHMPrivate::removeAll()
     return rc;
 }
 
-int GHMPrivate::replace(const KeyCombination& oldKc, const KeyCombination& newKc)
+int GHMPrivate::replaceHotkey(const KeyCombination& oldKc, const KeyCombination& newKc)
 {
     if (!isRunning())           return RC_BAD_TIMING;
     if (isInWorkerThread())     return RC_BAD_THREAD;
     if (newKc == oldKc)         return RC_SUCCESS;
-    if (!has(oldKc))            return RC_NOT_FOUND;
-    if (has(newKc))             return RC_ALREADY_EXIST;
+    if (!isHotkeyRegistered(oldKc))   return RC_NOT_FOUND;
+    if (isHotkeyRegistered(newKc))    return RC_ALREADY_EXIST;
 
     auto value = getPairValue(oldKc);
-    int rc = unregisterHotkey(oldKc);
+    int rc = unregisterHotkeyImpl(oldKc);
     {
         std::lock_guard<std::mutex> lock(mtx_);
         fns_.erase(oldKc);
     }
-    rc = registerHotkey(newKc, value.first);
+    rc = registerHotkeyImpl(newKc, value.first);
     // No Error Rollback! That is if registering newKc fails, oldKc will still be removed.
     if (rc != RC_SUCCESS)
         return rc;
@@ -127,11 +127,11 @@ int GHMPrivate::replace(const KeyCombination& oldKc, const KeyCombination& newKc
     return rc;
 }
 
-int GHMPrivate::setFunction(const KeyCombination& kc, const std::function<void()>& fn)
+int GHMPrivate::setHotkeyCallback(const KeyCombination& kc, const std::function<void()>& fn)
 {
     if (!isRunning())           return RC_BAD_TIMING;
     if (isInWorkerThread())     return RC_BAD_THREAD;
-    if (!has(kc))               return RC_NOT_FOUND;
+    if (!isHotkeyRegistered(kc))      return RC_NOT_FOUND;
 
     auto value = getPairValue(kc);
     value.second = fn;
@@ -141,23 +141,23 @@ int GHMPrivate::setFunction(const KeyCombination& kc, const std::function<void()
     return RC_SUCCESS;
 }
 
-int GHMPrivate::setAutoRepeat(const KeyCombination& kc, bool autoRepeat)
+int GHMPrivate::setHotkeyAutoRepeat(const KeyCombination& kc, bool autoRepeat)
 {
     if (!isRunning())           return RC_BAD_TIMING;
     if (isInWorkerThread())     return RC_BAD_THREAD;
-    if (!has(kc))               return RC_NOT_FOUND;
+    if (!isHotkeyRegistered(kc))      return RC_NOT_FOUND;
 
     auto value = getPairValue(kc);
     if (value.first == autoRepeat)
         return RC_SUCCESS;
     value.first = autoRepeat;
 
-    int rc = unregisterHotkey(kc);
+    int rc = unregisterHotkeyImpl(kc);
     {
         std::lock_guard<std::mutex> lock(mtx_);
         fns_.erase(kc);
     }
-    rc = registerHotkey(kc, autoRepeat);
+    rc = registerHotkeyImpl(kc, autoRepeat);
     if (rc != RC_SUCCESS)
         return rc;
 
@@ -167,15 +167,15 @@ int GHMPrivate::setAutoRepeat(const KeyCombination& kc, bool autoRepeat)
     return rc;
 }
 
-bool GHMPrivate::has(const KeyCombination& kc) const
+bool GHMPrivate::isHotkeyRegistered(const KeyCombination& kc) const
 {
     std::lock_guard<std::mutex> lock(mtx_);
     return fns_.find(kc) != fns_.end();
 }
 
-bool GHMPrivate::isAutoRepeat(const KeyCombination& kc) const
+bool GHMPrivate::isHotkeyAutoRepeat(const KeyCombination& kc) const
 {
-    if (!has(kc))
+    if (!isHotkeyRegistered(kc))
         return false;
 
     std::lock_guard<std::mutex> lock(mtx_);
@@ -187,7 +187,7 @@ bool GHMPrivate::isRunning() const
     return runningState_ == RS_RUNNING;
 }
 
-std::unordered_set<KeyCombination> GHMPrivate::getAll() const
+std::unordered_set<KeyCombination> GHMPrivate::getRegisteredHotkeys() const
 {
     std::unordered_set<KeyCombination> set;
     for (const auto& var : fns_)
@@ -218,10 +218,10 @@ void GHMPrivate::setRunFail(int errorCode)
     cvRunningState_.notify_one();
 }
 
-int GHMPrivate::doBeforeThreadRun()
+int GHMPrivate::initialize()
 { return RC_SUCCESS; }
 
-int GHMPrivate::doBeforeThreadEnd()
+int GHMPrivate::stopWork()
 { return RC_SUCCESS; }
 
 bool GHMPrivate::isInWorkerThread() const

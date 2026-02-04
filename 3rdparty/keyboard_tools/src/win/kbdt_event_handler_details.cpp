@@ -35,7 +35,7 @@ int initialize()
     return KBDT_RC_SUCCESS;
 }
 
-int finalize()
+int stopWork()
 {
     if (PostThreadMessageA(workerThreadId, WM_DESTROY, 0, 0) != 0)
         return KBDT_RC_SUCCESS;

@@ -60,7 +60,7 @@ int KeyboardToolsManager::run()
 
 int KeyboardToolsManager::stop()
 {
-    int rc = details::finalize();
+    int rc = details::stopWork();
     if (rc != KBDT_RC_SUCCESS)
         return rc;
 

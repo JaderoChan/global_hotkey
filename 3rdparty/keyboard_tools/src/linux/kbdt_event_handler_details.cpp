@@ -274,7 +274,7 @@ int initialize()
     return setups();
 }
 
-int finalize()
+int stopWork()
 {
     return emitWorkEvent(WORK_ET_END, 0);
 }

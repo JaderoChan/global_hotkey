@@ -16,65 +16,67 @@ class GHMPrivate;
 class GLOBAL_HOTKEY_API GlobalHotkeyManager
 {
 public:
-    /// @brief Initialize the Global Hotkey Manager.
-    int initialize();
+    /// @brief Run the Global Hotkey Manager service.
+    int run();
 
-    /// @brief Uninitialize the Global Hotkey Manager and release all resources.
+    /// @brief Stop the Global Hotkey Manager service, and release all resources.
     /// @attention Do not call this function from worker thread (typically within hotkey callbacks),
     ///            as it may cause deadlock.
-    int uninitialize();
+    int stop();
 
     /// @brief Register a global hotkey.
-    /// @param kc The key combination to register as a hotkey.
+    /// @param kc Key combination of the hotkey to register.
     /// @param fn The callback function to execute when the hotkey is activated.
     /// @param autoRepeat Whether to repeatedly trigger the callback while the hotkey is held down.
-    int add(const KeyCombination& kc, const std::function<void ()>& fn, bool autoRepeat = false);
+    int registerHotkey(const KeyCombination& kc, const std::function<void ()>& fn, bool autoRepeat = false);
 
     /// @brief Unregister a global hotkey.
-    /// @param kc The key combination to remove.
-    int remove(const KeyCombination& kc);
+    /// @param kc Key combination of the hotkey to unregister.
+    int unregisterHotkey(const KeyCombination& kc);
 
-    /// @brief Unregister all global hotkeys.
-    int removeAll();
+    /// @brief Unregister all registered global hotkeys.
+    int unregisterAllHotkeys();
 
-    /// @brief Replace an existing hotkey with a new key combination.
-    /// @param oldKc The existing key combination to replace.
-    /// @param newKc The new key combination to register.
+    /// @brief Replace an registered hotkey with a new hotkey.
+    /// @param oldKc Key combination of the registered hotkey to replace.
+    /// @param newKc Key combination of the new hotkey to register.
     /// @note If 'oldKc' and 'newKc' are the same, do nothing and return RC_SUCCESS.
     /// @note If registering 'newKc' fails, 'oldKc' will still be removed.
-    int replace(const KeyCombination& oldKc, const KeyCombination& newKc);
+    int replaceHotkey(const KeyCombination& oldKc, const KeyCombination& newKc);
 
     /// @brief Set the callback function for specified hotkey.
-    /// @param kc The key combination to set.
+    /// @param kc Key combination of the hotkey to set.
     /// @param fn The callback function to execute when the hotkey is activated.
-    int setFunction(const KeyCombination& kc, const std::function<void ()>& fn);
+    int setHotkeyCallback(const KeyCombination& kc, const std::function<void ()>& fn);
 
     /// @brief Enable or disable auto-repeat for a registered hotkey.
-    /// @param kc The key combination to modify.
+    /// @param kc Key combination of the hotkey to modify.
     /// @param autoRepeat Whether to enable auto-repeat.
-    /// @see isAutoRepeat()
-    int setAutoRepeat(const KeyCombination& kc, bool autoRepeat);
+    /// @see isHotkeyAutoRepeat()
+    int setHotkeyAutoRepeat(const KeyCombination& kc, bool autoRepeat);
 
     /// @brief Check if a hotkey is registered.
-    /// @param kc The key combination to check.
+    /// @param kc Key combination of the hotkey to check.
     /// @return True if the hotkey is registered, false otherwise.
-    bool has(const KeyCombination& kc) const;
+    /// @note This function is thread-safe.
+    bool isHotkeyRegistered(const KeyCombination& kc) const;
 
     /// @brief Check if auto-repeat is enabled for a hotkey.
-    /// @param kc The key combination to check.
+    /// @param kc Key combination of the hotkey to check.
     /// @return True if auto-repeat is enabled, false otherwise.
     /// @note False will be returned when the specified hotkey does not exist.
-    /// @see setAutoRepeat()
-    bool isAutoRepeat(const KeyCombination& kc) const;
+    /// @see setHotkeyAutoRepeat()
+    bool isHotkeyAutoRepeat(const KeyCombination& kc) const;
 
-    /// @brief Check if the Global Hotkey Manager is active.
-    /// @return True if the manager is running, false otherwise.
+    /// @brief Check if the Global Hotkey Manager service is running.
+    /// @return True if the GHM service is running, false otherwise.
     /// @note This function is thread-safe.
     bool isRunning() const;
 
     /// @brief Get all registered hotkeys.
-    /// @return Set containing all registered key combinations.
-    std::unordered_set<KeyCombination> getAll() const;
+    /// @return A set containing key combinations of all registered hotkey.
+    /// @note This function is thread-safe.
+    std::unordered_set<KeyCombination> getRegisteredHotkeys() const;
 
 protected:
     explicit GlobalHotkeyManager(std::unique_ptr<GHMPrivate> ptr);

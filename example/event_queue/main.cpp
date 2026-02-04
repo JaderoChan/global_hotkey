@@ -10,18 +10,18 @@ static Queue<EventType> eventQueue;
 
 int main()
 {
-    GHM.initialize();
+    GHM.run();
 
-    GHM.add(exitKc, [&]() { eventQueue.push(ET_EXIT); });
-    GHM.add(addKc, [&]() { eventQueue.push(ET_ADD_HOTKEY); });
-    GHM.add(removeKc, [&]() { eventQueue.push(ET_REMOVE_HOTKEY); });
-    GHM.add(replaceKc, [&]() { eventQueue.push(ET_REPLACE_HOTKEY); });
-    GHM.add(simpleWorkKc, [&]() { eventQueue.push(ET_SIMPLE_WORK); });
-    GHM.add(heavyWorkKc, [&]() { eventQueue.push(ET_HEAVY_WORK); });
-    GHM.add(setHeavyWorkLevelKc, [&]() { eventQueue.push(ET_SET_HEAVY_WORK_LEVEL); });
+    GHM.registerHotkey(exitKc, [&]() { eventQueue.push(ET_EXIT); });
+    GHM.registerHotkey(addKc, [&]() { eventQueue.push(ET_ADD_HOTKEY); });
+    GHM.registerHotkey(removeKc, [&]() { eventQueue.push(ET_REMOVE_HOTKEY); });
+    GHM.registerHotkey(replaceKc, [&]() { eventQueue.push(ET_REPLACE_HOTKEY); });
+    GHM.registerHotkey(simpleWorkKc, [&]() { eventQueue.push(ET_SIMPLE_WORK); });
+    GHM.registerHotkey(heavyWorkKc, [&]() { eventQueue.push(ET_HEAVY_WORK); });
+    GHM.registerHotkey(setHeavyWorkLevelKc, [&]() { eventQueue.push(ET_SET_HEAVY_WORK_LEVEL); });
 
-    GHM.add(listKc, [&]() { listAllKeyCombination(); });
-    GHM.add(clearTerminalKc, [&]() { clearTerminal(); });
+    GHM.registerHotkey(listKc, [&]() { listAllKeyCombination(); });
+    GHM.registerHotkey(clearTerminalKc, [&]() { clearTerminal(); });
 
     printPrompt();
     while (true)
@@ -54,7 +54,7 @@ int main()
         }
     }
 
-    GHM.uninitialize();
+    GHM.stop();
 
     return 0;
 }

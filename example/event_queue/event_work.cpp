@@ -11,16 +11,16 @@ static char buf[BUF_SIZE];
 
 void exitWork()
 {
-    int rc = GHM.uninitialize();
+    int rc = GHM.stop();
     if (rc == RC_SUCCESS)
-        printf("Successfully exit!\n");
+        printf("Exit successfully!\n");
     else
         printf("Failed to exit! Error: %s\n", RCMSG(rc));
 }
 
 void addHotkeyWork()
 {
-    printf("Please input string of the hotkey you want to add (e.g. Ctrl+C)\n");
+    printf("Please input string of the hotkey you want to register (e.g. Ctrl+C)\n");
     int ret = scanf("%s", buf);
     KeyCombination kc(buf);
 
@@ -30,7 +30,7 @@ void addHotkeyWork()
         return;
     }
 
-    if (GHM.has(kc))
+    if (GHM.isHotkeyRegistered(kc))
     {
         printf("The hotkey [%s] given is exists!\n", KCSTR(kc));
         return;
@@ -40,20 +40,20 @@ void addHotkeyWork()
     ret = scanf("%s", buf);
 
     std::string str(buf);
-    int rc = GHM.add(kc, [=]() { printf("%s\n", str.c_str()); });
+    int rc = GHM.registerHotkey(kc, [=]() { printf("%s\n", str.c_str()); });
     if (rc == RC_SUCCESS)
-        printf("Successfully add the hotkey [%s]!\n", KCSTR(kc));
+        printf("Register the hotkey [%s]! successfully\n", KCSTR(kc));
     else
-        printf("Failed to add the hotkey [%s]! Error: %s\n", KCSTR(kc), RCMSG(rc));
+        printf("Failed to register the hotkey [%s]! Error: %s\n", KCSTR(kc), RCMSG(rc));
 }
 
 void removeHotkeyWork()
 {
-    printf("Please input string of the hotkey you want to remove (e.g. Ctrl+C)\n");
+    printf("Please input string of the hotkey you want to unregister (e.g. Ctrl+C)\n");
     int ret = scanf("%s", buf);
     KeyCombination kc(buf);
 
-    if (!GHM.has(kc))
+    if (!GHM.isHotkeyRegistered(kc))
     {
         printf("The hotkey [%s] given not exists!\n", KCSTR(kc));
         return;
@@ -61,15 +61,15 @@ void removeHotkeyWork()
 
     if (isImmutableKeyCombination(kc))
     {
-        printf("The hotkey [%s] is can't be remove!\n", KCSTR(kc));
+        printf("The hotkey [%s] is can't be unregister!\n", KCSTR(kc));
         return;
     }
 
-    int rc = GHM.remove(kc);
+    int rc = GHM.unregisterHotkey(kc);
     if (rc == RC_SUCCESS)
-        printf("Successfully remove the hotkey [%s]!\n", KCSTR(kc));
+        printf("Unregister the hotkey [%s]! successfully\n", KCSTR(kc));
     else
-        printf("Failed to remove the hotkey [%s]! Error: %s\n", KCSTR(kc), RCMSG(rc));
+        printf("Failed to unregister the hotkey [%s]! Error: %s\n", KCSTR(kc), RCMSG(rc));
 }
 
 void replaceHotkeyWork()
@@ -78,7 +78,7 @@ void replaceHotkeyWork()
     int ret = scanf("%s", buf);
     KeyCombination oldKc(buf);
 
-    if (!GHM.has(oldKc))
+    if (!GHM.isHotkeyRegistered(oldKc))
     {
         printf("The old hotkey [%s] given not exists!\n", KCSTR(oldKc));
         return;
@@ -90,7 +90,7 @@ void replaceHotkeyWork()
         return;
     }
 
-    printf("Please input string of the new hotkey you want to add (e.g. Ctrl+Shift+C)\n");
+    printf("Please input string of the new hotkey you want to register (e.g. Ctrl+Shift+C)\n");
     ret = scanf("%s", buf);
     KeyCombination newKc(buf);
 
@@ -100,15 +100,15 @@ void replaceHotkeyWork()
         return;
     }
 
-    if (GHM.has(newKc))
+    if (GHM.isHotkeyRegistered(newKc))
     {
         printf("The newKc hotkey [%s] given is exists!\n", KCSTR(newKc));
         return;
     }
 
-    int rc = GHM.replace(oldKc, newKc);
+    int rc = GHM.replaceHotkey(oldKc, newKc);
     if (rc == RC_SUCCESS)
-        printf("Successfully replace the hotkey [%s] to hotkey [%s]!\n", KCSTR(oldKc), KCSTR(newKc));
+        printf("Replace the hotkey [%s] to hotkey [%s]! successfully\n", KCSTR(oldKc), KCSTR(newKc));
     else
         printf("Failed to replace the hotkey [%s] to hotkey [%s]! Error: %s\n",
             KCSTR(oldKc), KCSTR(newKc), RCMSG(rc));
@@ -120,7 +120,7 @@ void setHotkeyAutoRepeatWork()
     int ret = scanf("%s", buf);
     KeyCombination kc(buf);
 
-    if (GHM.has(kc))
+    if (GHM.isHotkeyRegistered(kc))
     {
         printf("The hotkey [%s] given is exists!\n", KCSTR(kc));
         return;
@@ -148,9 +148,9 @@ void setHotkeyAutoRepeatWork()
         }
     }
 
-    int rc = GHM.setAutoRepeat(kc, autoRepeat);
+    int rc = GHM.setHotkeyAutoRepeat(kc, autoRepeat);
     if (rc == RC_SUCCESS)
-        printf("Successfully set the hotkey [%s] to %s!\n",
+        printf("Set the hotkey [%s] to %s! successfully\n",
             KCSTR(kc), autoRepeat ? "auto repeat" : "no auto repeat");
     else
         printf("Failed to set the hotkey [%s] to %s! Error: %s\n",

@@ -14,9 +14,9 @@ RegisterGHMPrivateWin::RegisterGHMPrivateWin() :
     maxHotkeyId_(0)
 {}
 
-RegisterGHMPrivateWin::~RegisterGHMPrivateWin() { uninitialize(); }
+RegisterGHMPrivateWin::~RegisterGHMPrivateWin() { stop(); }
 
-int RegisterGHMPrivateWin::doBeforeThreadEnd()
+int RegisterGHMPrivateWin::stopWork()
 {
     if (PostThreadMessageA(workerThreadId_, WM_DESTROY, 0, 0) != 0)
         return RC_SUCCESS;
@@ -64,7 +64,7 @@ void RegisterGHMPrivateWin::work()
     kcToHotkeyId_.clear();
 }
 
-int RegisterGHMPrivateWin::registerHotkey(const KeyCombination& kc, bool autoRepeat)
+int RegisterGHMPrivateWin::registerHotkeyImpl(const KeyCombination& kc, bool autoRepeat)
 {
     // wParam store the value of native modifiers.
     WPARAM wParam = modifiersToNativeModifiers(kc.modifiers());
@@ -83,7 +83,7 @@ int RegisterGHMPrivateWin::registerHotkey(const KeyCombination& kc, bool autoRep
     return (int) GetLastError();
 }
 
-int RegisterGHMPrivateWin::unregisterHotkey(const KeyCombination& kc)
+int RegisterGHMPrivateWin::unregisterHotkeyImpl(const KeyCombination& kc)
 {
     // wParam store the value of native modifiers.
     WPARAM wParam = modifiersToNativeModifiers(kc.modifiers());

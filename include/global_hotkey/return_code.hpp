@@ -34,14 +34,14 @@ inline std::string getReturnCodeMessage(int rc) noexcept
         case RC_SUCCESS:
             return "Success";
         case RC_ALREADY_EXIST:
-            return "The hotkey to be added already exists";
+            return "The hotkey to be registered already exists";
         case RC_NOT_FOUND:
-            return "The hotkey to be deleted or set does not exist";
+            return "The hotkey to be unregistered or set does not exist";
         case RC_BAD_TIMING:
-            return "Attempt perform uninitialize, add, remove, replace, or similar functions "
-                   "before the Global Hotkey Manager is initialized";
+            return "Attempt stop GHM service, register hotkey, unregister hotkey, replace hotkey, or similar functions "
+                   "before the Global Hotkey Manager is running";
         case RC_BAD_THREAD:
-            return "Attempt perform uninitialize, add, remove, replace, or similar functions "
+            return "Attempt stop GHM service, register hotkey, unregister hotkey, replace hotkey, or similar functions "
                    "in the worker thread (typically within hotkey callbacks)";
         default:
             return "An error related to the platform or framework dependent occurred, error code: " +

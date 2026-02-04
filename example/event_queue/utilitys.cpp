@@ -17,8 +17,8 @@ void printPrompt()
 "\
 ====================\n\
 Press [%s] to exit\n\
-Press [%s] to add a hotkey\n\
-Press [%s] to remove a hotkey\n\
+Press [%s] to register a hotkey\n\
+Press [%s] to unregister a hotkey\n\
 Press [%s] to replace a hotkey\n\
 Press [%s] to list all hotkey\n\
 Press [%s] to perform a simple work\n\
@@ -51,7 +51,7 @@ void clearTerminal()
 
 void listAllKeyCombination()
 {
-    auto kcs = GHM.getAll();
+    auto kcs = GHM.getRegisteredHotkeys();
     printf("====================\n");
     for (const auto& kc : kcs)
     {

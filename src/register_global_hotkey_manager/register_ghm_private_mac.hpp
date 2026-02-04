@@ -23,11 +23,11 @@ public:
     ~RegisterGHMPrivateMac();
 
 protected:
-    int doBeforeThreadRun() override;
-    int doBeforeThreadEnd() override;
+    int initialize() override;
+    int stopWork() override;
     void work() override;
-    int registerHotkey(const KeyCombination& kc, bool autoRepeat) override;
-    int unregisterHotkey(const KeyCombination& kc) override;
+    int registerHotkeyImpl(const KeyCombination& kc, bool autoRepeat) override;
+    int unregisterHotkeyImpl(const KeyCombination& kc) override;
 
 private:
     static void runLoopSourceCallback(void* info);

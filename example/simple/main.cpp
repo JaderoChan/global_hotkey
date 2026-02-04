@@ -71,33 +71,33 @@ int main()
     gbhk::KeyCombination hotkey2(gbhk::CTRL | gbhk::SHIFT, 'J');
     gbhk::KeyCombination hotkey3(gbhk::CTRL | gbhk::SHIFT, gbhk::Key_Backspace);
 
-    int rc = ghm.initialize();
+    int rc = ghm.run();
     if (rc != gbhk::RC_SUCCESS)
     {
-        THROW_RT_ERR("Failed to initialize the Global Hotkey Manager: ", rc);
+        THROW_RT_ERR("Failed to run the Global Hotkey Manager service: ", rc);
     }
-    printf("Successfully initialize the %s GHM!\n", ghmPrefix);
+    printf("Run the %s GHM service successfully!\n", ghmPrefix);
 
-    rc = ghm.add(hotkey1, &hotkeyTriggered1);
+    rc = ghm.registerHotkey(hotkey1, &hotkeyTriggered1);
     if (rc != gbhk::RC_SUCCESS)
     {
-        ghm.uninitialize();
-        THROW_RT_ERR("Failed to add the hotkey 1: ", rc);
+        ghm.stop();
+        THROW_RT_ERR("Failed to register the hotkey 1: ", rc);
     }
-    printf("Successfully add the hotkey: [%s]\n", hotkey1.toString().c_str());
+    printf("Register the hotkey: [%s] successfully\n", hotkey1.toString().c_str());
 
     // The hotkey 2 is auto repeat.
-    rc = ghm.add(hotkey2, &hotkeyTriggered2, true);
+    rc = ghm.registerHotkey(hotkey2, &hotkeyTriggered2, true);
     if (rc != gbhk::RC_SUCCESS)
     {
-        ghm.uninitialize();
-        THROW_RT_ERR("Failed to add the hotkey 2: ", rc);
+        ghm.stop();
+        THROW_RT_ERR("Failed to register the hotkey 2: ", rc);
     }
-    printf("Successfully add the hotkey: [%s] (auto repeat)\n", hotkey2.toString().c_str());
+    printf("Register the hotkey: [%s] (auto repeat) successfully\n", hotkey2.toString().c_str());
 
     std::atomic<bool> shouldClose(false);
     std::condition_variable cv;
-    rc = ghm.add(hotkey3, [&]()
+    rc = ghm.registerHotkey(hotkey3, [&]()
     {
         printf("Hotkey 3 be triggered!\n");
         shouldClose = true;
@@ -105,10 +105,10 @@ int main()
     });
     if (rc != gbhk::RC_SUCCESS)
     {
-        ghm.uninitialize();
-        THROW_RT_ERR("Failed to add the hotkey: ", rc);
+        ghm.stop();
+        THROW_RT_ERR("Failed to register the hotkey: ", rc);
     }
-    printf("Successfully add the hotkey: [%s]\n", hotkey3.toString().c_str());
+    printf("Register the hotkey: [%s] successfully\n", hotkey3.toString().c_str());
     printf("Press the [%s] to exit!\n\n", hotkey3.toString().c_str());
 
     std::mutex dummyMtx;
@@ -116,10 +116,10 @@ int main()
     cv.wait(lock, [&]() { return shouldClose.load(); });
 
     printf("Exit...\n");
-    rc = ghm.uninitialize();
+    rc = ghm.stop();
     if (rc != gbhk::RC_SUCCESS)
-        THROW_RT_ERR("Failed to uninitialize the Global Hotkey Manager: ", rc);
-    printf("The Global Hotkey Manager is ended!\n");
+        THROW_RT_ERR("Failed to stop the Global Hotkey Manager service: ", rc);
+    printf("The Global Hotkey Manager service is stoped!\n");
 
     return 0;
 }

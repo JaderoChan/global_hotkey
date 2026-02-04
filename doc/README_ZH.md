@@ -73,30 +73,30 @@
 
 ## 🚩 如何使用？
 
-1. 通过`getInstance`接口获取一个`热键管理器 (GHM)`对象。
+1. 通过`GlobalHotkeyManager::getInstance`接口获取`热键管理器 (GHM)`对象实例。
 
-2. 通过`initialize`接口初始化`GHM`。
+2. 通过`GlobalHotkeyManager::run`接口运行`GHM`服务。
 
 3. 通过相应的接口增加、移除或替换热键。
 
 4. 热键被触发时将执行对应的回调函数。
 
-5. 通过`uninitialize`接口释放`GHM`
+5. 通过`GlobalHotkeyManager::stop`接口终止`GHM`服务
 
 ---
 
 下面展示了一个基本流程的示例代码
 
 ```cpp
-GlobalHotkeyManager& ghm = RegisterGlobalHotkeyManager::getInstance();  // 获取`注册式热键管理器`实例对象。
-ghm.initialize();   // 初始化热键管理器。
+GlobalHotkeyManager& ghm = RegisterGlobalHotkeyManager::getInstance();  // 获取 注册式热键管理器 实例对象。
+ghm.run();   // 启动热键管理器服务。
 
 KeyCombination hotkey1(CTRL, 'G');
 KeyCombination hotkey2(CTRL, 'H');
 KeyCombination hotkey3(CTRL, 'M');
-ghm.add(hotkey1, &callback);                        // 绑定一个回调函数。
-ghm.add(hotkey2, [=]() { if(isOk) emitSignal(); }); // 绑定一个Lambda函数。在热键触发且条件为真时发射一个信号。
-ghm.add(hotkey3, [=]() { printf("Hello world!") }); // 仅仅打印一个消息。
+ghm.registerHotkey(hotkey1, &callback);                        // 绑定一个回调函数。
+ghm.registerHotkey(hotkey2, [=]() { if(isOk) emitSignal(); }); // 绑定一个Lambda函数。在热键触发且条件为真时发射一个信号。
+ghm.registerHotkey(hotkey3, [=]() { printf("Hello world!") }); // 仅仅打印一个消息。
 
 // 主循环。
 while (!shouldClose)
@@ -104,7 +104,7 @@ while (!shouldClose)
     // Do Something.
 }
 
-ghm.uninitialize(); // 释放热键管理器。
+ghm.stop(); // 释放热键管理器。
 ```
 
 ## 💡 示例
@@ -159,11 +159,11 @@ ghm.uninitialize(); // 释放热键管理器。
 
 - MacOS系统下的`Register GHM`暂不支持。
 
-- 中止、增加、删除和热键替换等操作，必须在对应的`GHM`初始化之后才可进行！
+- 中止`GHM`服务、注册热键、注销热键和替换热键等操作，必须在对应的`GHM`初始化之后才可进行！
 
-- 不要在工作线程中（对于使用者而言，这是热键被触发时回调函数执行的线程）进行中止、增加、删除和热键替换等操作！
+- 不要在工作线程中（对于使用者而言，这是热键被触发时回调函数执行的线程）进行中止`GHM`服务、注册热键、注销热键和替换热键等操作！
 
-- 避免添加一个可能无效的热键，这是未定义行为，可能造成非预期结果。本库对此类操作不做安全性检查，这些操作应该由用户决定！
+- 避免注册一个可能无效的热键，这是未定义行为，可能造成非预期结果。本库对此类操作不做安全性检查，这些操作应该由用户决定！
 
 - 热键被触发时，其回调函数将会在`GHM`的工作线程中运行，所以热键的回调函数不应执行繁重的任务，以免出现工作线程阻塞，合理的做法是正确使用线程、异步机制或消息队列（例如**Qt**中的信号槽）。
 
