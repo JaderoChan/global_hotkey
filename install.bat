@@ -1,5 +1,6 @@
 @echo off
 
+set SCRIPT_FILENAME=%0
 set BUILD_SHARED=OFF
 set BUILD_EXAMPLE=OFF
 set BUILD_EXAMPLE_USE_HOOK=OFF
@@ -9,7 +10,7 @@ goto :parameterHandler
 
 :echoHelperAndExit
     echo Error: Invalid parameter!
-    echo Usage: %0 [--build-example] [--build-example-use-hook] [--build-shared] [--prefix ^<install prefix^>]
+    echo Usage: %SCRIPT_FILENAME% [--build-example] [--build-example-use-hook] [--build-shared] [--prefix ^<install prefix^>]
     exit /b 1
 
 :parameterHandler
@@ -48,6 +49,7 @@ cmake -B build ^
 cmake --build build --config release -j && ^
 cmake --install build %INSTALL_PREFIX_CMD%
 
+set "SCRIPT_FILENAME="
 set "BUILD_SHARED="
 set "BUILD_EXAMPLE="
 set "BUILD_EXAMPLE_USE_HOOK="
