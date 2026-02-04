@@ -78,6 +78,14 @@ void RegisterGHMPrivateMac::work()
     CFRunLoopRun();
 
     CFRelease(source_);
+
+    sourceContext_ = {0};
+    source_ = NULL;
+    runLoop_ = NULL;
+    regUnregRc_ = 0;
+    eventType_ = ET_NONE;
+    regUnregKc_ = KeyCombination();
+    kcToHotkeyRef_.clear();
 }
 
 int RegisterGHMPrivateMac::registerHotkey(const KeyCombination& kc, bool autoRepeat)

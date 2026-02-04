@@ -136,6 +136,11 @@ void RegisterGHMPrivateX11::work()
 
     XCloseDisplay(display);
     close(eventFd_);
+
+    ErrorHandler::ec = RC_SUCCESS;
+    regUnregRc_ = 0;
+    regUnregKc_ = KeyCombination();
+    eventFd_ = -1;
 }
 
 int RegisterGHMPrivateX11::registerHotkey(const KeyCombination& kc, bool autoRepeat)

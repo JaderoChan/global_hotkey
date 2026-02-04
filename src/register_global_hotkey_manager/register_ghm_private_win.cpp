@@ -56,6 +56,8 @@ void RegisterGHMPrivateWin::work()
         }
     }
 
+    workerThreadId_ = 0;
+    regUnregRc_ = 0;
     maxHotkeyId_ = 0;
     freeHotkeyIds_.clear();
     hotkeyIdToKc_.clear();

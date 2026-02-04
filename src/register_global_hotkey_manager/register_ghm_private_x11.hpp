@@ -53,7 +53,7 @@ private:
     std::condition_variable cvRegUnregRc_;
     std::atomic<int> regUnregRc_;
     std::atomic<KeyCombination> regUnregKc_;
-    int eventFd_ = 0;
+    int eventFd_ = -1;
 };
 
 } // namespace gbhk
