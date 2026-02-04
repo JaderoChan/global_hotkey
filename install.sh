@@ -37,8 +37,9 @@ while [[ $# -gt 0 ]]; do
     shift
 done
 
-if [[ -n "$INSTALL_PREFIX" ]]; then
-    INSTALL_PREFIX_CMD=--prefix \"$INSTALL_PREFIX\"
+INSTALL_PREFIX_CMD=
+if [[ "$INSTALL_PREFIX" ]]; then
+    INSTALL_PREFIX_CMD="--prefix $INSTALL_PREFIX"
 fi
 
 cmake -B build \
