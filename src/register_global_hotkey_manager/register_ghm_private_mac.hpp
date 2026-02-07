@@ -31,7 +31,7 @@ protected:
 
 private:
     static void runLoopSourceCallback(void* info);
-    static OSStatus hotkeyEventHandler(EventHandlerCallRef handler, EventRef event, void* userData);
+    static OSStatus hotkeyEventHandler(EventHandlerCallRef nextHandler, EventRef event, void* userData);
 
     static int nativeRegisterHotkey();
     static int nativeUnregisterHotkey();

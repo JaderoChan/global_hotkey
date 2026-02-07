@@ -20,7 +20,7 @@ int RegisterGHMPrivateMac::initialize()
 {
     sourceContext_ = {
         .version = 0,
-        .info = &source_,
+        .info = this,
         .retain = NULL,
         .release = NULL,
         .copyDescription = NULL,
@@ -54,10 +54,12 @@ void RegisterGHMPrivateMac::work()
     eventTypeSpecs[0].eventKind = kEventHotKeyPressed;
     eventTypeSpecs[1].eventClass = kEventClassKeyboard;
     eventTypeSpecs[1].eventKind = kEventHotKeyReleased;
+
+    EventHandlerRef eventHandler;
     auto status = InstallApplicationEventHandler(
         &RegisterGHMPrivateMac::hotkeyEventHandler,
         2, eventTypeSpecs,
-        NULL, NULL
+        this, &eventHandler
     );
     if (status != noErr)
     {
@@ -77,6 +79,8 @@ void RegisterGHMPrivateMac::work()
     setRunSuccess();
     CFRunLoopRun();
 
+    if (eventHandler)
+        RemoveEventHandler(eventHandler);
     CFRelease(source_);
 
     sourceContext_ = {0};
@@ -134,7 +138,7 @@ void RegisterGHMPrivateMac::runLoopSourceCallback(void* info)
     cvRegUnregRc_.notify_one();
 }
 
-OSStatus RegisterGHMPrivateMac::hotkeyEventHandler(EventHandlerCallRef handler, EventRef event, void* userData)
+OSStatus RegisterGHMPrivateMac::hotkeyEventHandler(EventHandlerCallRef nextHandler, EventRef event, void* userData)
 {
     if (GetEventClass(event) == kEventClassKeyboard)
     {
