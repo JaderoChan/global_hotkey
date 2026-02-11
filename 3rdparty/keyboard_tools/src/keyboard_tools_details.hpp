@@ -21,7 +21,7 @@ namespace details
 /**
  * @brief Platform-specific initialize before the worker thread starts.
  * @note This function is called before the worker thread begins execution.
- * @return KBDT_RC_SUCCESS on success, error code on failure.
+ * @return `KBDT_RC_SUCCESS` on success, error code on failure.
  */
 int initialize();
 
@@ -29,14 +29,14 @@ int initialize();
  * @brief Platform-specific stop the worker thread.
  * @note This function is called before the worker thread exits.
  * @note The worker thread will only exit after this function returns.
- * @return KBDT_RC_SUCCESS on success, error code on failure.
+ * @return `KBDT_RC_SUCCESS` on success, error code on failure.
  */
 int stopWork();
 
 /**
  * @brief Platform-specific implementation to set the key event handler.
  * @param handler Function pointer to handle key events.
- * @return KBDT_RC_SUCCESS on success, error code on failure.
+ * @return `KBDT_RC_SUCCESS` on success, error code on failure.
  */
 int setEventHandler(KeyEventHandler handler);
 

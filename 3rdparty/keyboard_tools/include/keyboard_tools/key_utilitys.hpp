@@ -122,8 +122,8 @@ enum Key : int32_t
 
     // Applications keys
     Key_Escape,
-    Key_Pause,              // Not is Key_Media_Play_Pause
-    Key_Play,               // Not is Key_Media_Play_Pause
+    Key_Pause,              // Not is `Key_Media_Play_Pause`
+    Key_Play,               // Not is `Key_Media_Play_Pause`
     Key_Help,
     Key_Menu,
 

@@ -43,14 +43,14 @@ public:
 
     /**
      * @brief Run the keyboard tools service.
-     * @return KBDT_RC_SUCCESS on success, error code on failure.
+     * @return `KBDT_RC_SUCCESS` on success, error code on failure.
      */
     int run();
 
     /**
      * @brief Stop the keyboard tools service.
      * @attention Do not call this function from within the event handler thread.
-     * @return KBDT_RC_SUCCESS on success, error code on failure.
+     * @return `KBDT_RC_SUCCESS` on success, error code on failure.
      */
     int stop();
 
@@ -58,7 +58,7 @@ public:
      * @brief Set the key event handler callback.
      * @param handler Function pointer to handle key events.
      * @note It only be set while service is running.
-     * @return KBDT_RC_SUCCESS on success, error code on failure.
+     * @return `KBDT_RC_SUCCESS` on success, error code on failure.
      */
     int setEventHandler(KeyEventHandler handler);
 

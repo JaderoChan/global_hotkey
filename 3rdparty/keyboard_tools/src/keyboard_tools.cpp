@@ -25,8 +25,8 @@ static std::atomic<int> runningRc{-1};
 static void threadWork()
 {
     details::work();
-    // If the work exits normally (running state is RS_RUNNING), set the state to RS_FREE.
-    // If the work exits due to an error (running state is RS_TERMINATE), preserve the error state.
+    // If the work exits normally (running state is `RS_RUNNING`), set the state to `RS_FREE`.
+    // If the work exits due to an error (running state is `RS_TERMINATE`), preserve the error state.
     if (runningState == RS_RUNNING)
         runningState = RS_FREE;
     runningStateCv.notify_one();

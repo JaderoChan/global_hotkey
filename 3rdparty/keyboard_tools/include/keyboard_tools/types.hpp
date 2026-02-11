@@ -6,18 +6,14 @@
 namespace kbdt
 {
 
-/**
- * @brief Key event types.
- */
+/** @brief Key event types. */
 enum KeyEventType
 {
     KET_RELEASED,   ///< Key released event
     KET_PRESSED     ///< Key pressed event
 };
 
-/**
- * @brief Key event structure.
- */
+/** @brief Key event structure. */
 struct KeyEvent
 {
     KeyEventType type;  ///< Type of the key event
@@ -26,7 +22,7 @@ struct KeyEvent
 
 /**
  * @brief Key event handler callback type.
- * @note - If the event handler returns true, the event continues to propagate, otherwise, the event is blocked.
+ * @note If the event handler returns true, the event continues to propagate, otherwise, the event is blocked.
  * (Available only on Windows and MacOS platforms)
  */
 using KeyEventHandler = bool (*)(KeyEvent);

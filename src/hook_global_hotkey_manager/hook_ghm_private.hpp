@@ -43,7 +43,7 @@ private:
     static std::condition_variable cvHasEvent_;
     static std::queue<Event> eventQueue_;
 
-    // Block until has event pushed.
+    // Block thread until has event pushed.
     static Event takeEvent();
     static void pushEvent(const Event& event);
     static void clearEventQueue();

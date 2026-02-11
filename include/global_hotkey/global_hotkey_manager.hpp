@@ -40,8 +40,8 @@ public:
     /// @brief Replace an registered hotkey with a new hotkey.
     /// @param oldKc Key combination of the registered hotkey to replace.
     /// @param newKc Key combination of the new hotkey to register.
-    /// @note - If 'oldKc' and 'newKc' are the same, do nothing and return RC_SUCCESS.
-    /// @note - If registering 'newKc' fails, 'oldKc' will still be removed.
+    /// @note - If `oldKc` and `newKc` are the same, do nothing and return `RC_SUCCESS`.
+    /// @note - If registering `newKc` fails, the `oldKc` will still be removed.
     int replaceHotkey(const KeyCombination& oldKc, const KeyCombination& newKc);
 
     /// @brief Set the callback function for specified hotkey.
