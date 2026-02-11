@@ -52,7 +52,7 @@ public:
     /// @brief Enable or disable auto-repeat for a registered hotkey.
     /// @param kc Key combination of the hotkey to modify.
     /// @param autoRepeat Whether to enable auto-repeat.
-    /// @see isHotkeyAutoRepeat()
+    /// @sa isHotkeyAutoRepeat()
     int setHotkeyAutoRepeat(const KeyCombination& kc, bool autoRepeat);
 
     /// @brief Check if a hotkey is registered.
@@ -65,7 +65,7 @@ public:
     /// @param kc Key combination of the hotkey to check.
     /// @return True if auto-repeat is enabled, false otherwise.
     /// @note False will be returned when the specified hotkey does not exist.
-    /// @see setHotkeyAutoRepeat()
+    /// @sa setHotkeyAutoRepeat()
     bool isHotkeyAutoRepeat(const KeyCombination& kc) const;
 
     /// @brief Check if the Global Hotkey Manager service is running.
