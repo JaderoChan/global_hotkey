@@ -17,7 +17,7 @@ enum KeyEventType : uint8_t
 struct KeyEvent
 {
     KeyEventType type;  ///< Type of the key event
-    int nativeKey;      ///< Native key code
+    uint32_t nativeKey; ///< Native key code
 };
 
 /**

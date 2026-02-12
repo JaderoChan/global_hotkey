@@ -18,7 +18,7 @@ void keyEventToInputEvent(const KeyEvent& event, struct input_event& ie)
 void keyEventFromInputEvent(KeyEvent& event, const struct input_event& ie)
 {
     event.type = (ie.value == 0 ? KET_RELEASED : KET_PRESSED);
-    event.nativeKey = ie.code;
+    event.nativeKey = (uint32_t) ie.code;
 }
 
 } // namespace details

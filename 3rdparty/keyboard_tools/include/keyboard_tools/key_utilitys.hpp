@@ -197,9 +197,9 @@ KEYBOARD_TOOLS_API Key keyFromStr(const char* str) noexcept;
 
 KEYBOARD_TOOLS_API Key keyFromStr(const std::string& str) noexcept;
 
-KEYBOARD_TOOLS_API int keyToNativeKey(Key key) noexcept;
+KEYBOARD_TOOLS_API uint32_t keyToNativeKey(Key key) noexcept;
 
-KEYBOARD_TOOLS_API Key keyFromNativeKey(int nativeKey) noexcept;
+KEYBOARD_TOOLS_API Key keyFromNativeKey(uint32_t nativeKey) noexcept;
 
 } // namespace kbdt
 

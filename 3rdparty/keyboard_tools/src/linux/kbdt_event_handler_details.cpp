@@ -29,7 +29,7 @@ namespace details
 
 static KeyEventHandler eventHandler = nullptr;
 
-static std::atomic<int64_t> workEventData{-1};
+static std::atomic<uint64_t> workEventData{0};
 
 static std::vector<struct pollfd> pollFds(2);  // Reserve 2 pollfd for 'workEventFd' and 'inotifyFd'.
 static std::vector<std::string> evdevNames;
@@ -51,10 +51,10 @@ static bool isKeyboardDevice(int fd)
 
     char keyBits[KEY_MAX / 8 + 1];
     ioctl(fd, EVIOCGBIT(EV_KEY, sizeof(keyBits)), keyBits);
-    int checkedKeys[] = {
+    uint32_t checkedKeys[] = {
         KEY_0, KEY_A, KEY_SPACE, KEY_ESC
     };
-    size_t checkedCount = sizeof(checkedKeys) / sizeof(int);
+    size_t checkedCount = sizeof(checkedKeys) / sizeof(uint32_t);
     for (size_t i = 0; i < checkedCount; ++i)
     {
         if ((keyBits[checkedKeys[i] / 8] & (1 << checkedKeys[i] % 8)) == 0)
@@ -63,7 +63,7 @@ static bool isKeyboardDevice(int fd)
     return true;
 }
 
-static int emitWorkEvent(int64_t eventType, int64_t eventData)
+static int emitWorkEvent(uint64_t eventType, uint64_t eventData)
 {
     workEventData = eventData;
     ssize_t wsize = write(pollFds[0].fd, &eventType, 8);
@@ -279,7 +279,7 @@ int stopWork()
 
 int setEventHandler(KeyEventHandler handler)
 {
-    return emitWorkEvent(WORK_ET_SET_HANDLER, (int64_t) handler);
+    return emitWorkEvent(WORK_ET_SET_HANDLER, (uint64_t) handler);
 }
 
 void work()
@@ -296,7 +296,7 @@ void work()
         struct pollfd pollFd = pollFds[0];
         if (pollFd.revents & POLLIN)
         {
-            int64_t et;
+            uint64_t et;
             ssize_t rsize = read(pollFd.fd, &et, 8);
             if (rsize == 8)
             {

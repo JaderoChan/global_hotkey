@@ -36,7 +36,7 @@ void keyEventToCGEvent(const KeyEvent& event, CGEventRef& cgEvent)
 
 void keyEventFromCGEvent(KeyEvent& event, CGEventType cgEventType, CGEventRef cgEvent)
 {
-    event.nativeKey = (int) CGEventGetIntegerValueField(cgEvent, kCGKeyboardEventKeycode);
+    event.nativeKey = (uint32_t) CGEventGetIntegerValueField(cgEvent, kCGKeyboardEventKeycode);
     switch (cgEventType)
     {
         case kCGEventKeyDown:

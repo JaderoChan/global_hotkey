@@ -59,7 +59,7 @@ void work()
     }
 
     workerThreadId = GetCurrentThreadId();
-    MSG msg;
+    MSG msg = {0};
     // Force the system to create the message queue.
     PeekMessageA(&msg, NULL, WM_USER, WM_USER, PM_NOREMOVE);
     // Indicate the worker thread is created successfully after create the message queue.
