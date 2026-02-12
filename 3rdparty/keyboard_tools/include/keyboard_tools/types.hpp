@@ -2,6 +2,7 @@
 #define KEYBOARD_TOOLS_TYPES_HPP
 
 #include <cstdint>  // uint8_t
+#include <cstddef>
 
 namespace kbdt
 {
