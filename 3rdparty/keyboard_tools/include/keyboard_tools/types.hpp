@@ -1,13 +1,13 @@
 #ifndef KEYBOARD_TOOLS_TYPES_HPP
 #define KEYBOARD_TOOLS_TYPES_HPP
 
-#include <cstddef>  // size_t
+#include <cstdint>  // uint8_t
 
 namespace kbdt
 {
 
 /** @brief Key event types. */
-enum KeyEventType
+enum KeyEventType : uint8_t
 {
     KET_RELEASED,   ///< Key released event
     KET_PRESSED     ///< Key pressed event

@@ -9,7 +9,7 @@
 namespace kbdt
 {
 
-enum Key : int32_t
+enum Key : uint32_t
 {
     // Number keys
     Key_0       = 0x0030,

@@ -10,7 +10,7 @@
 namespace kbdt
 {
 
-enum RunningState
+enum RunningState : uint8_t
 {
     RS_FREE,
     RS_RUNNING,
