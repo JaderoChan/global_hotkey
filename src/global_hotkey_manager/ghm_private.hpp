@@ -43,12 +43,12 @@ protected:
     std::pair<bool, std::function<void ()>> getPairValue(const KeyCombination& kc) const;
 
     /// @brief Signal that the worker thread has run successfully.
-    /// @note The running return code will be set to `RC_SUCCESS`.
+    /// @details The running return code will be set to `RC_SUCCESS`.
     void setRunSuccess();
 
     /// @brief Signal that the worker thread failed to run.
     /// @param errorCode The error code indicating the failure reason.
-    /// @note The running return code will be set to the specified error code.
+    /// @details The running return code will be set to the specified error code.
     void setRunFail(int errorCode);
 
     // Interface for subclasses to implement platform-specific behavior
