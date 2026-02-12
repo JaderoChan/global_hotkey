@@ -217,7 +217,7 @@ static void unsetups()
     workEventData = -1;
 }
 
-constexpr int fdEventBufferSize = 255;
+constexpr int fdEventBufferSize = 256;
 static char fdEventBuffer[fdEventBufferSize] = {0};
 
 static void handleDevicesChanged()
