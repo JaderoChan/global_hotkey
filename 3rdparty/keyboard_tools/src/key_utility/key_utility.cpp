@@ -1,4 +1,4 @@
-#include <keyboard_tools/key_utilitys.hpp>
+#include <keyboard_tools/key_utility.hpp>
 
 #include <cctype>   // isspace, isalnum, toupper
 #include <cstddef>  // size_t

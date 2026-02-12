@@ -22,7 +22,7 @@ struct KeyEvent
 };
 
 /**
- * @brief Key event handler callback type.
+ * @brief The function type of the key event handler.
  * @note If the event handler returns true, the event continues to propagate, otherwise, the event is blocked.
  * (Available only on Windows and MacOS platforms)
  */

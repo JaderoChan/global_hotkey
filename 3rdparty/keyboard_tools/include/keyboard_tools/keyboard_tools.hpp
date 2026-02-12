@@ -55,8 +55,8 @@ public:
     int stop();
 
     /**
-     * @brief Set the key event handler callback.
-     * @param handler Function pointer to handle key events.
+     * @brief Set the key event handler callback function.
+     * @param handler Function for handling key events.
      * @note It only be set while service is running.
      * @return `KBDT_RC_SUCCESS` on success, error code on failure.
      */
@@ -92,7 +92,7 @@ size_t sendEvents(const std::vector<KeyEvent>& events);
 bool sendEvent(const KeyEvent& event);
 
 /**
- * @brief Check whether the propagation blocking of the key event is supported.
+ * @brief Check whether blocking the propagation of key events is supported.
  */
 constexpr bool isEventPropagationBlockSupported()
 {

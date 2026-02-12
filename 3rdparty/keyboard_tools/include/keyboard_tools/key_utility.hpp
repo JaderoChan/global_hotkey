@@ -1,5 +1,5 @@
-#ifndef KEYBOARD_TOOLS_KEY_UTILITYS_HPP
-#define KEYBOARD_TOOLS_KEY_UTILITYS_HPP
+#ifndef KEYBOARD_TOOLS_KEY_UTILITY_HPP
+#define KEYBOARD_TOOLS_KEY_UTILITY_HPP
 
 #include <cstdint>  // uint32_t
 #include <string>
@@ -203,4 +203,4 @@ KEYBOARD_TOOLS_API Key keyFromNativeKey(uint32_t nativeKey) noexcept;
 
 } // namespace kbdt
 
-#endif // !KEYBOARD_TOOLS_KEY_UTILITYS_HPP
+#endif // !KEYBOARD_TOOLS_KEY_UTILITY_HPP
