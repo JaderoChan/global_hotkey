@@ -60,8 +60,8 @@ protected:
 
     /// @brief Perform platform-specific stop the worker thread.
     /// @return `RC_SUCCESS` on success, or a platform-specific error code on failure.
-    /// @note - This function is called before the worker thread exits.
-    /// @note - The thread exit semaphore is only signaled after this function returns.
+    /// @note This function is called before the worker thread exits.
+    /// @note The thread exit semaphore is only signaled after this function returns.
     virtual int stopWork();
 
     /// @brief Main work function for the platform-specific worker thread.
