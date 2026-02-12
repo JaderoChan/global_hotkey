@@ -81,7 +81,7 @@ protected:
     virtual int unregisterHotkeyImpl(const KeyCombination& kc) = 0;
 
 private:
-    enum RunningState
+    enum RunningState : uint8_t
     {
         RS_FREE,
         RS_RUNNING,

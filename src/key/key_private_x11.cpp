@@ -6,9 +6,9 @@
 namespace gbhk
 {
 
-int modifiersToX11Modifiers(const Modifiers& modifiers) noexcept
+uint32_t modifiersToX11Modifiers(const Modifiers& modifiers) noexcept
 {
-    int mod = 0;
+    uint32_t mod = 0;
     if (modifiers.has(META))
         mod |= Mod4Mask;
     if (modifiers.has(CTRL))
@@ -20,7 +20,7 @@ int modifiersToX11Modifiers(const Modifiers& modifiers) noexcept
     return mod;
 }
 
-int keyToX11Keysym(const Key& key) noexcept
+uint32_t keyToX11Keysym(const Key& key) noexcept
 {
     switch (key)
     {
@@ -183,7 +183,7 @@ int keyToX11Keysym(const Key& key) noexcept
     }
 }
 
-Modifiers modifiersFromX11Modifiers(int x11Modifiers) noexcept
+Modifiers modifiersFromX11Modifiers(uint32_t x11Modifiers) noexcept
 {
     Modifiers mod;
     if (x11Modifiers & Mod4Mask)
@@ -197,7 +197,7 @@ Modifiers modifiersFromX11Modifiers(int x11Modifiers) noexcept
     return mod;
 }
 
-Key keyFromX11Keysym(int x11Keysym) noexcept
+Key keyFromX11Keysym(uint32_t x11Keysym) noexcept
 {
     switch (x11Keysym)
     {

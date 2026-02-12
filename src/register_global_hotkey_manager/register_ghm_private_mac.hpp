@@ -9,7 +9,7 @@
 namespace gbhk
 {
 
-enum EventType
+enum EventType : uint8_t
 {
     ET_NONE,
     ET_REGISTER,

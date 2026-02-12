@@ -270,7 +270,7 @@ static bool isEqualStr(const std::string& str1, const std::string& str2) noexcep
     return true;
 }
 
-static int modifierFlagFromString(const std::string& str) noexcept
+static uint32_t modifierFlagFromString(const std::string& str) noexcept
 {
     if (str.empty())        return 0;
     if (IS_META(str, ""))   return META;

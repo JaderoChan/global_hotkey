@@ -5,13 +5,13 @@
 namespace gbhk
 {
 
-int modifiersToNativeModifiers(const Modifiers& modifiers) noexcept
+uint32_t modifiersToNativeModifiers(const Modifiers& modifiers) noexcept
 {
     // Not supported for native Linux.
     return 0;
 }
 
-int keyToNativeKey(const Key& key) noexcept
+uint32_t keyToNativeKey(const Key& key) noexcept
 {
     switch (key)
     {
@@ -185,14 +185,14 @@ int keyToNativeKey(const Key& key) noexcept
     }
 }
 
-Modifiers modifiersFromNativeModifiers(int nativeModifiers) noexcept
+Modifiers modifiersFromNativeModifiers(uint32_t nativeModifiers) noexcept
 {
     // Not supported for native Linux.
     return Modifiers();
 }
 
 /// @ref https://github.com/torvalds/linux/blob/master/include/uapi/linux/input-event-codes.h
-Key keyFromNativeKey(int nativeKey) noexcept
+Key keyFromNativeKey(uint32_t nativeKey) noexcept
 {
     switch (nativeKey)
     {

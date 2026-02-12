@@ -5,9 +5,9 @@
 namespace gbhk
 {
 
-int modifiersToNativeModifiers(const Modifiers& modifiers) noexcept
+uint32_t modifiersToNativeModifiers(const Modifiers& modifiers) noexcept
 {
-    int mod = 0;
+    uint32_t mod = 0;
     if (modifiers.has(META))
         mod |= cmdKey;
     if (modifiers.has(CTRL))
@@ -19,7 +19,7 @@ int modifiersToNativeModifiers(const Modifiers& modifiers) noexcept
     return mod;
 }
 
-int keyToNativeKey(const Key& key) noexcept
+uint32_t keyToNativeKey(const Key& key) noexcept
 {
     switch (key)
     {
@@ -177,7 +177,7 @@ int keyToNativeKey(const Key& key) noexcept
     }
 }
 
-Modifiers modifiersFromNativeModifiers(int nativeModifiers) noexcept
+Modifiers modifiersFromNativeModifiers(uint32_t nativeModifiers) noexcept
 {
     Modifiers mod;
     if (nativeModifiers & cmdKey)
@@ -191,7 +191,7 @@ Modifiers modifiersFromNativeModifiers(int nativeModifiers) noexcept
     return mod;
 }
 
-Key keyFromNativeKey(int nativeKey) noexcept
+Key keyFromNativeKey(uint32_t nativeKey) noexcept
 {
     switch (nativeKey)
     {

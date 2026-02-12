@@ -16,8 +16,8 @@ public:
     constexpr inline KeyCombination() noexcept = default;
     constexpr inline KeyCombination(const Modifiers& modifiers, const Key& key) noexcept :
         mod_(modifiers), key_(key) {}
-    constexpr inline explicit KeyCombination(int64_t toCombinedValue) noexcept :
-        mod_((int32_t) (toCombinedValue >> 32)), key_((int32_t) toCombinedValue) {}
+    constexpr inline explicit KeyCombination(uint64_t toCombinedValue) noexcept :
+        mod_((uint32_t) (toCombinedValue >> 32)), key_((uint32_t) toCombinedValue) {}
     KeyCombination(const std::string& str, char connector = '+') noexcept
     { *this = std::move(fromString(str, '+')); }
     KeyCombination(const char* str, char connector = '+') noexcept :
@@ -26,10 +26,10 @@ public:
     static KeyCombination fromString(const std::string& str, char connector = '+') noexcept;
     std::string toString(char connector = '+', bool showKeyValue = false) const noexcept;
 
-    static constexpr inline KeyCombination fromCombinedValue(int64_t value) noexcept
-    { return KeyCombination((int32_t) (value >> 32), (int32_t) value); }
-    constexpr inline int64_t toCombinedValue() const noexcept
-    { return ((int64_t) mod_ << 32) | ((int64_t) key_ << 0); }
+    static constexpr inline KeyCombination fromCombinedValue(uint64_t value) noexcept
+    { return KeyCombination((uint32_t) (value >> 32), (uint32_t) value); }
+    constexpr inline uint64_t toCombinedValue() const noexcept
+    { return ((uint64_t) mod_ << 32) | ((uint64_t) key_ << 0); }
 
     constexpr inline Modifiers modifiers() const noexcept { return mod_; }
     constexpr inline Key key() const noexcept { return key_; }
@@ -55,8 +55,8 @@ public:
 private:
     friend struct std::hash<KeyCombination>;
 
-    Modifiers mod_ = 0;
-    Key key_       = 0;
+    Modifiers mod_;
+    Key key_;
 };
 
 } // namespace gbhk
@@ -69,8 +69,8 @@ struct hash<gbhk::KeyCombination>
 {
     size_t operator()(const gbhk::KeyCombination& obj) const noexcept
     {
-        size_t h1 = std::hash<int32_t>()(obj.mod_);
-        size_t h2 = std::hash<int32_t>()(obj.key_);
+        size_t h1 = std::hash<uint32_t>()(obj.mod_);
+        size_t h2 = std::hash<uint32_t>()(obj.key_);
         return h1 ^ (h2 << 1);
     }
 };

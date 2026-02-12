@@ -10,7 +10,7 @@
 namespace gbhk
 {
 
-enum ModifierFlag : int32_t
+enum ModifierFlag : uint32_t
 {
     META        = 0X01, // Win or Command or Super
     CTRL        = 0X02,
@@ -25,7 +25,7 @@ enum ModifierFlag : int32_t
 };
 
 // For avoid conflicts with macro definitions, the `KeyFlag` naming style different from other enums in this library.
-enum KeyFlag : int32_t
+enum KeyFlag : uint32_t
 {
     // Number keys
     Key_0       = 0x0030,
@@ -212,7 +212,7 @@ class GLOBAL_HOTKEY_API Modifiers
 public:
     constexpr inline Modifiers() noexcept {}
     constexpr inline Modifiers(ModifierFlag modifier) noexcept : data_(modifier) {}
-    constexpr inline Modifiers(int32_t modifiers) noexcept : data_(modifiers) {}
+    constexpr inline Modifiers(uint32_t modifiers) noexcept : data_(modifiers) {}
     constexpr inline Modifiers(const std::initializer_list<ModifierFlag>& modifiers) noexcept :
         data_(initializerListHelper(modifiers.begin(), modifiers.end())) {}
     Modifiers(const std::string& str, char connector = '+') noexcept
@@ -223,8 +223,8 @@ public:
     static Modifiers fromString(const std::string& str, char connector = '+') noexcept;
     std::string toString(char connector = '+') const noexcept;
 
-    constexpr inline int32_t value() const noexcept { return data_; }
-    constexpr inline operator int32_t() const noexcept { return data_; }
+    constexpr inline uint32_t value() const noexcept { return data_; }
+    constexpr inline operator uint32_t() const noexcept { return data_; }
 
     constexpr inline bool has(ModifierFlag modifier) const noexcept
     { return (data_ & modifier) != 0; }
@@ -254,18 +254,18 @@ public:
     friend constexpr inline bool operator!=(Modifiers lhs, ModifierFlag rhs) noexcept { return lhs.data_ != rhs; }
     friend constexpr inline bool operator==(ModifierFlag lhs, Modifiers rhs) noexcept { return lhs == rhs.data_; }
     friend constexpr inline bool operator!=(ModifierFlag lhs, Modifiers rhs) noexcept { return lhs != rhs.data_; }
-    friend constexpr inline bool operator==(Modifiers lhs, int32_t rhs) noexcept { return lhs.data_ == rhs; }
-    friend constexpr inline bool operator!=(Modifiers lhs, int32_t rhs) noexcept { return lhs.data_ != rhs; }
-    friend constexpr inline bool operator==(int32_t lhs, Modifiers rhs) noexcept { return lhs == rhs.data_; }
-    friend constexpr inline bool operator!=(int32_t lhs, Modifiers rhs) noexcept { return lhs != rhs.data_; }
+    friend constexpr inline bool operator==(Modifiers lhs, uint32_t rhs) noexcept { return lhs.data_ == rhs; }
+    friend constexpr inline bool operator!=(Modifiers lhs, uint32_t rhs) noexcept { return lhs.data_ != rhs; }
+    friend constexpr inline bool operator==(uint32_t lhs, Modifiers rhs) noexcept { return lhs == rhs.data_; }
+    friend constexpr inline bool operator!=(uint32_t lhs, Modifiers rhs) noexcept { return lhs != rhs.data_; }
 
 private:
-    static constexpr inline int32_t initializerListHelper(
+    static constexpr inline uint32_t initializerListHelper(
         std::initializer_list<ModifierFlag>::const_iterator it,
         std::initializer_list<ModifierFlag>::const_iterator end) noexcept
     { return (it == end ? 0 : (*it | initializerListHelper(it + 1, end))); }
 
-    int32_t data_ = 0;
+    uint32_t data_ = 0;
 };
 
 class GLOBAL_HOTKEY_API Key
@@ -274,15 +274,15 @@ public:
     constexpr inline Key() noexcept {}
     constexpr inline Key(KeyFlag key) noexcept : data_(key) {}
     constexpr inline Key(char key) noexcept : data_(toUpper(key)) {}
-    constexpr inline Key(int32_t key) noexcept : data_(key) {}
+    constexpr inline Key(uint32_t key) noexcept : data_(key) {}
     Key(const std::string& str) noexcept { *this = std::move(fromString(str)); }
     Key(const char* str) noexcept : Key(std::string(str)) {}
 
     static Key fromString(const std::string& str) noexcept;
     std::string toString() const noexcept;
 
-    constexpr inline int32_t value() const noexcept { return data_; }
-    constexpr inline operator int32_t() const noexcept { return data_; }
+    constexpr inline uint32_t value() const noexcept { return data_; }
+    constexpr inline operator uint32_t() const noexcept { return data_; }
 
     /// @brief Check if this object represents a valid key value.
     /// @return true if the key value is non-zero, false if the value is zero.
@@ -299,16 +299,16 @@ public:
     friend constexpr inline bool operator!=(Key lhs, char rhs) noexcept { return lhs.data_ != Key::toUpper(rhs); }
     friend constexpr inline bool operator==(char lhs, Key rhs) noexcept { return Key::toUpper(lhs) == rhs.data_; }
     friend constexpr inline bool operator!=(char lhs, Key rhs) noexcept { return Key::toUpper(lhs) != rhs.data_; }
-    friend constexpr inline bool operator==(Key lhs, int32_t rhs) noexcept { return lhs.data_ == rhs; }
-    friend constexpr inline bool operator!=(Key lhs, int32_t rhs) noexcept { return lhs.data_ != rhs; }
-    friend constexpr inline bool operator==(int32_t lhs, Key rhs) noexcept { return lhs == rhs.data_; }
-    friend constexpr inline bool operator!=(int32_t lhs, Key rhs) noexcept { return lhs != rhs.data_; }
+    friend constexpr inline bool operator==(Key lhs, uint32_t rhs) noexcept { return lhs.data_ == rhs; }
+    friend constexpr inline bool operator!=(Key lhs, uint32_t rhs) noexcept { return lhs.data_ != rhs; }
+    friend constexpr inline bool operator==(uint32_t lhs, Key rhs) noexcept { return lhs == rhs.data_; }
+    friend constexpr inline bool operator!=(uint32_t lhs, Key rhs) noexcept { return lhs != rhs.data_; }
 
 private:
-    static constexpr inline int32_t toUpper(char key) noexcept
+    static constexpr inline uint32_t toUpper(char key) noexcept
     { return ((key >= 'a' && key <= 'z') ? key - 'a' + 'A' : key); }
 
-    int32_t data_ = 0;
+    uint32_t data_ = 0;
 };
 
 }

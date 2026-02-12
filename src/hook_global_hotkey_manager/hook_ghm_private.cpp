@@ -59,7 +59,7 @@ void HookGHMPrivate::work()
     setRunSuccess();
     bool shouldExit = false;
     KeyCombination prevKc;
-    Modifiers pressedMod = 0;
+    Modifiers pressedMod;
     while (!shouldExit)
     {
         Event ev = takeEvent();
@@ -96,7 +96,7 @@ void HookGHMPrivate::work()
                     bool isCtrlAltDel = (pressedMod == (CTRL | ALT) && key == Key_Delete);
                     if (isCtrlShiftEsc || isCtrlAltDel)
                     {
-                        pressedMod = 0;
+                        pressedMod = 0U;
                         break;
                     }
                 #endif

@@ -22,7 +22,7 @@ private:
 };
 
 // 8 byte for `write()` and `read()` of the fd created by `eventfd()`.
-enum EventType : int64_t
+enum EventType : uint64_t
 {
     ET_EXIT = 1,
     ET_REGISTER,
