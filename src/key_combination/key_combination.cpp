@@ -15,11 +15,11 @@ KeyCombination KeyCombination::fromString(const std::string& str, char connector
     return {mod, key};
 }
 
-std::string KeyCombination::toString(char connector, bool showKeyValue) const noexcept
+std::string KeyCombination::toString(ModifierTextFormat format, char connector, bool showKeyValue) const noexcept
 {
     std::string str;
     std::string connectorStr(1, connector);
-    str += mod_.toString(connector);
+    str += mod_.toString(format, connector);
     str += (!str.empty() ? connectorStr : "") + key_.toString();
     if (showKeyValue)
         str += "(" + std::to_string(key_) + ")";

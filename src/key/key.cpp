@@ -11,22 +11,32 @@ namespace gbhk
 #define IS_ALNUM(c) std::isalnum(static_cast<unsigned char>(c))
 #define TO_UPPER(c) std::toupper(static_cast<unsigned char>(c))
 
-#ifdef GLOBAL_HOTKEY_WIN
-    #define META_TEXT   "Win"
-    #define ALT_TEXT    "Alt"
-#elif defined(GLOBAL_HOTKEY_MAC)
-    #define META_TEXT   "Command"
-    #define ALT_TEXT    "Option"
-#elif defined(GLOBAL_HOTKEY_LINUX)
-    #define META_TEXT   "Super"
-    #define ALT_TEXT    "Alt"
-#else
-    #define META_TEXT   "Meta"
-    #define ALT_TEXT    "Alt"
-#endif // GLOBAL_HOTKEY_WIN
+#define META_PORTABLE_TEXT  "Meta"
+#define CTRL_PORTABLE_TEXT  "Ctrl"
+#define ALT_PORTABLE_TEXT   "Alt"
+#define SHIFT_PORTABLE_TEXT "Shift"
 
-#define CTRL_TEXT       "Ctrl"
-#define SHIFT_TEXT      "Shift"
+#ifdef GLOBAL_HOTKEY_WIN
+    #define META_NATIVE_TEXT    "Win"
+    #define CTRL_NATIVE_TEXT    "Ctrl"
+    #define ALT_NATIVE_TEXT     "Alt"
+    #define SHIFT_NATIVE_TEXT   "Shift"
+#elif defined(GLOBAL_HOTKEY_MAC)
+    #define META_NATIVE_TEXT    "\xE2\x8C\x98"  // ⌘
+    #define CTRL_NATIVE_TEXT    "\xE2\x8C\x83"  // ⌃
+    #define ALT_NATIVE_TEXT     "\xE2\x8C\xA5"  // ⌥
+    #define SHIFT_NATIVE_TEXT   "\xE2\x87\xAA"  // ⇪
+#elif defined(GLOBAL_HOTKEY_LINUX)
+    #define META_NATIVE_TEXT    "Super"
+    #define CTRL_NATIVE_TEXT    "Ctrl"
+    #define ALT_NATIVE_TEXT     "Alt"
+    #define SHIFT_NATIVE_TEXT   "Shift"
+#else
+    #define META_NATIVE_TEXT    META_PORTABLE_TEXT
+    #define CTRL_NATIVE_TEXT    CTRL_PORTABLE_TEXT
+    #define ALT_NATIVE_TEXT     ALT_PORTABLE_TEXT
+    #define SHIFT_NATIVE_TEXT   SHIFT_PORTABLE_TEXT
+#endif // GLOBAL_HOTKEY_WIN
 
 #define IS_META(str, prefix) \
 (isEqualStr(str, prefix "win") || isEqualStr(str, prefix "windows") || \
@@ -43,31 +53,31 @@ isEqualStr(str, prefix "^") || isEqualStr(str, prefix "\xE2\x8C\x83"))
 #define IS_SHIFT(str, prefix) \
 (isEqualStr(str, prefix "shift") || isEqualStr(str, prefix "\xE2\x87\xAA"))
 
-static std::string modifierFlagString(ModifierFlag flag) noexcept
+static std::string modifierFlagString(ModifierTextFormat format, ModifierFlag flag) noexcept
 {
     switch (flag)
     {
-        case META:  return META_TEXT;
-        case CTRL:  return CTRL_TEXT;
-        case ALT:   return ALT_TEXT;
-        case SHIFT: return SHIFT_TEXT;
+        case META:  return format == MOD_TEXT_FORMAT_NATIVE ? META_NATIVE_TEXT : META_PORTABLE_TEXT;
+        case CTRL:  return format == MOD_TEXT_FORMAT_NATIVE ? CTRL_NATIVE_TEXT : CTRL_PORTABLE_TEXT;
+        case ALT:   return format == MOD_TEXT_FORMAT_NATIVE ? ALT_NATIVE_TEXT : ALT_PORTABLE_TEXT;
+        case SHIFT: return format == MOD_TEXT_FORMAT_NATIVE ? SHIFT_NATIVE_TEXT : SHIFT_PORTABLE_TEXT;
         default:    return "";
     }
 }
 
-std::string Modifiers::toString(char connector) const noexcept
+std::string Modifiers::toString(ModifierTextFormat format, char connector) const noexcept
 {
     std::string str;
     std::string connectorStr(1, connector);
 
     if (has(META))
-        str += modifierFlagString(META);
+        str += modifierFlagString(format, META);
     if (has(CTRL))
-        str += (!str.empty() ? connectorStr : "") + modifierFlagString(CTRL);
+        str += (!str.empty() ? connectorStr : "") + modifierFlagString(format, CTRL);
     if (has(ALT))
-        str += (!str.empty() ? connectorStr : "") + modifierFlagString(ALT);
+        str += (!str.empty() ? connectorStr : "") + modifierFlagString(format, ALT);
     if (has(SHIFT))
-        str += (!str.empty() ? connectorStr : "") + modifierFlagString(SHIFT);
+        str += (!str.empty() ? connectorStr : "") + modifierFlagString(format, SHIFT);
 
     return str;
 }
@@ -229,18 +239,18 @@ std::string Key::toString() const noexcept
         case Key_Angle_Bracket:     return "<>";
 
         // Modifier keys
-        case Key_Mod_Meta:          return META_TEXT;
-        case Key_Mod_Meta_Left:     return ("Left " META_TEXT);
-        case Key_Mod_Meta_Right:    return ("Right " META_TEXT);
-        case Key_Mod_Ctrl:          return CTRL_TEXT;
-        case Key_Mod_Ctrl_Left:     return ("Left " CTRL_TEXT);
-        case Key_Mod_Ctrl_Right:    return ("Right " CTRL_TEXT);
-        case Key_Mod_Alt:           return ALT_TEXT;
-        case Key_Mod_Alt_Left:      return ("Left " ALT_TEXT);
-        case Key_Mod_Alt_Right:     return ("Right " ALT_TEXT);
-        case Key_Mod_Shift:         return SHIFT_TEXT;
-        case Key_Mod_Shift_Left:    return ("Left " SHIFT_TEXT);
-        case Key_Mod_Shift_Right:   return ("Right " SHIFT_TEXT);
+        case Key_Mod_Meta:          return META_PORTABLE_TEXT;
+        case Key_Mod_Meta_Left:     return ("Left " META_PORTABLE_TEXT);
+        case Key_Mod_Meta_Right:    return ("Right " META_PORTABLE_TEXT);
+        case Key_Mod_Ctrl:          return CTRL_PORTABLE_TEXT;
+        case Key_Mod_Ctrl_Left:     return ("Left " CTRL_PORTABLE_TEXT);
+        case Key_Mod_Ctrl_Right:    return ("Right " CTRL_PORTABLE_TEXT);
+        case Key_Mod_Alt:           return ALT_PORTABLE_TEXT;
+        case Key_Mod_Alt_Left:      return ("Left " ALT_PORTABLE_TEXT);
+        case Key_Mod_Alt_Right:     return ("Right " ALT_PORTABLE_TEXT);
+        case Key_Mod_Shift:         return SHIFT_PORTABLE_TEXT;
+        case Key_Mod_Shift_Left:    return ("Left " SHIFT_PORTABLE_TEXT);
+        case Key_Mod_Shift_Right:   return ("Right " SHIFT_PORTABLE_TEXT);
 
         default:                    return "";
     }

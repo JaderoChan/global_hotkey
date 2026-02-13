@@ -207,6 +207,12 @@ enum KeyFlag : uint32_t
     Key_Mod_Option_Right    = Key_Mod_Alt_Right
 };
 
+enum ModifierTextFormat : uint8_t
+{
+    MOD_TEXT_FORMAT_PORTABLE,
+    MOD_TEXT_FORMAT_NATIVE
+};
+
 class GLOBAL_HOTKEY_API Modifiers
 {
 public:
@@ -221,7 +227,7 @@ public:
         Modifiers(std::string(str), connector) {}
 
     static Modifiers fromString(const std::string& str, char connector = '+') noexcept;
-    std::string toString(char connector = '+') const noexcept;
+    std::string toString(ModifierTextFormat format = MOD_TEXT_FORMAT_PORTABLE, char connector = '+') const noexcept;
 
     constexpr inline uint32_t value() const noexcept { return data_; }
     constexpr inline operator uint32_t() const noexcept { return data_; }

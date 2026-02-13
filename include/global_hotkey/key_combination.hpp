@@ -24,7 +24,10 @@ public:
         KeyCombination(std::string(str), connector) {}
 
     static KeyCombination fromString(const std::string& str, char connector = '+') noexcept;
-    std::string toString(char connector = '+', bool showKeyValue = false) const noexcept;
+    std::string toString(
+        ModifierTextFormat format = MOD_TEXT_FORMAT_PORTABLE,
+        char connector = '+',
+        bool showKeyValue = false) const noexcept;
 
     static constexpr inline KeyCombination fromCombinedValue(uint64_t value) noexcept
     { return KeyCombination((uint32_t) (value >> 32), (uint32_t) value); }
