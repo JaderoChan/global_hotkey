@@ -155,7 +155,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 )
 
 if(NOT GLOBAL_HOTKEY_DISABLE_HOOK)
-    message(STATUS "Start configure the 'keyboard tools' library...")
+    message(STATUS "${GLOBAL_HOTKEY_MSG_PREFIX} Start configure the 'keyboard tools' library...")
     set(THIRDPARTY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty)
     include(FetchContent)
     FetchContent_Declare(
@@ -164,7 +164,7 @@ if(NOT GLOBAL_HOTKEY_DISABLE_HOOK)
     )
     set(KEYBOARD_TOOLS_WITH_KEYUTIL OFF)
     FetchContent_MakeAvailable(keyboard_tools)
-    message(STATUS "Success to configure the 'keyboard tools' library.")
+    message(STATUS "${GLOBAL_HOTKEY_MSG_PREFIX} Success to configure the 'keyboard tools' library.")
 endif()
 
 if(APPLE)
