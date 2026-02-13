@@ -22,10 +22,10 @@ namespace gbhk
     #define ALT_NATIVE_TEXT     "Alt"
     #define SHIFT_NATIVE_TEXT   "Shift"
 #elif defined(GLOBAL_HOTKEY_MAC)
-    #define META_NATIVE_TEXT    "\xE2\x8C\x98"  // ⌘
-    #define CTRL_NATIVE_TEXT    "\xE2\x8C\x83"  // ⌃
-    #define ALT_NATIVE_TEXT     "\xE2\x8C\xA5"  // ⌥
-    #define SHIFT_NATIVE_TEXT   "\xE2\x87\xAA"  // ⇪
+    #define META_NATIVE_TEXT    "\xE2\x8C\x98"
+    #define CTRL_NATIVE_TEXT    "\xE2\x8C\x83"
+    #define ALT_NATIVE_TEXT     "\xE2\x8C\xA5"
+    #define SHIFT_NATIVE_TEXT   "\xE2\x87\xAA"
 #elif defined(GLOBAL_HOTKEY_LINUX)
     #define META_NATIVE_TEXT    "Super"
     #define CTRL_NATIVE_TEXT    "Ctrl"
