@@ -111,10 +111,10 @@ if(APPLE)
 
     find_library(CARBON_LIBRARY Carbon)
     if(CARBON_LIBRARY)
-        message(STATUS "{KBDT_MSG_PREFIX} Found Carbon: ${CARBON_LIBRARY}.")
+        message(STATUS "${KBDT_MSG_PREFIX} Found Carbon: ${CARBON_LIBRARY}.")
         target_link_libraries(${PROJECT_NAME} PRIVATE ${CARBON_LIBRARY})
     else()
-        message(FATAL_ERROR "{KBDT_MSG_PREFIX} Not found Carbon.")
+        message(FATAL_ERROR "${KBDT_MSG_PREFIX} Not found Carbon.")
     endif()
 
     find_library(COREGRAPHICS_LIBRARY CoreGraphics)
