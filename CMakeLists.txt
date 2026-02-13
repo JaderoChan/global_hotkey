@@ -180,10 +180,10 @@ if(APPLE)
 
     find_library(CARBON_LIBRARY Carbon)
     if(CARBON_LIBRARY)
-        message(STATUS "{GLOBAL_HOTKEY_MSG_PREFIX} Found Carbon: ${CARBON_LIBRARY}.")
+        message(STATUS "${GLOBAL_HOTKEY_MSG_PREFIX} Found Carbon: ${CARBON_LIBRARY}.")
         target_link_libraries(${PROJECT_NAME} PRIVATE ${CARBON_LIBRARY})
     else()
-        message(FATAL_ERROR "{GLOBAL_HOTKEY_MSG_PREFIX} Not found Carbon.")
+        message(FATAL_ERROR "${GLOBAL_HOTKEY_MSG_PREFIX} Not found Carbon.")
     endif()
 
     if(NOT GLOBAL_HOTKEY_DISABLE_HOOK)
