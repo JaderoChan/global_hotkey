@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.25)
 
-project(global_hotkey VERSION 2.0.4 LANGUAGES CXX)
+project(global_hotkey VERSION 2.1.0 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(GLOBAL_HOTKEY_MSG_PREFIX "[Global Hotkey]")
