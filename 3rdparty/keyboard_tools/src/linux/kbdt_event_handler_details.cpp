@@ -34,10 +34,10 @@ static std::atomic<uint64_t> workEventData{0};
 static std::vector<struct pollfd> pollFds(2);  // Reserve 2 pollfd for 'workEventFd' and 'inotifyFd'.
 static std::vector<std::string> evdevNames;
 
-static bool isCharacterDevice(const std::string& filename)
+static bool isCharacterDevice(const std::string& filepath)
 {
     struct stat st;
-    if (stat(filename.c_str(), &st) == -1)
+    if (stat(filepath.c_str(), &st) == -1)
         return false;
     return S_ISCHR(st.st_mode);
 }
@@ -123,12 +123,12 @@ static void unsetupInotifyFd()
 
 static void addEvdevFd(const std::string& evdevName)
 {
-    std::string filename = EVDEV_DIR + evdevName;
+    std::string filepath = EVDEV_DIR + evdevName;
 
-    if (!isCharacterDevice(filename))
+    if (!isCharacterDevice(filepath))
         return;
 
-    int evdevFd = open(filename.c_str(), O_RDONLY | O_NONBLOCK);
+    int evdevFd = open(filepath.c_str(), O_RDONLY | O_NONBLOCK);
     if (evdevFd == -1)
         return;
 

@@ -39,8 +39,8 @@ public:
         if (isSetup())
             return false;
 
-        constexpr const char* uinputFilename = "/dev/uinput";
-        fd_ = open(uinputFilename, O_WRONLY | O_NONBLOCK);
+        constexpr const char* uinputFilepath = "/dev/uinput";
+        fd_ = open(uinputFilepath, O_WRONLY | O_NONBLOCK);
         if (fd_ == -1)
             return false;
 
