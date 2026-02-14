@@ -164,7 +164,7 @@ if(NOT GLOBAL_HOTKEY_DISABLE_HOOK)
     )
     set(KEYBOARD_TOOLS_WITH_KEYUTIL OFF)
     FetchContent_MakeAvailable(keyboard_tools)
-    message(STATUS "${GLOBAL_HOTKEY_MSG_PREFIX} Success to configure the 'keyboard tools' library.")
+    message(STATUS "${GLOBAL_HOTKEY_MSG_PREFIX} Configure the 'keyboard tools' library successfully.")
 endif()
 
 if(APPLE)
