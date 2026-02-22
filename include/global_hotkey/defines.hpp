@@ -16,12 +16,7 @@
 #ifdef _WIN32
     #define GLOBAL_HOTKEY_WIN
 #elif defined(__APPLE__)
-    #include <TargetConditionals.h>
-    #if TARGET_OS_MAC
-        #define GLOBAL_HOTKEY_MAC
-    #else
-        #error "Unsupported Apple platform"
-    #endif // TARGET_OS_MAC
+    #define GLOBAL_HOTKEY_MAC
 #elif defined(__linux__)
     #define GLOBAL_HOTKEY_LINUX
 #else
