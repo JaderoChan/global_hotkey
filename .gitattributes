@@ -1,1 +1,17 @@
 * text=auto eol=lf
+
+/.git*          text
+.editorconfig   text
+LICENSE*        text
+
+*.sh            text
+*.bash          text
+*.zsh           text
+*.json          text
+*.md            text
+*.log           text
+
+# CMake input template
+*.in            text
+
+*.bat           text eol=crlf
