@@ -45,7 +45,7 @@
 2. 项目使用`CMake`进行组织，仅需下面几行脚本即可编译使用！
 
     ```shell
-    git clone https://github.com/JaderoChan/global_hotkey.git
+    git clone --recurse-submodules https://github.com/JaderoChan/global_hotkey.git
     cd global_hotkey
     cmake -B build
     cmake --build build

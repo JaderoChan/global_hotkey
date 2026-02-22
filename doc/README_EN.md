@@ -45,7 +45,7 @@
 2. The project uses `CMake` for organization. Just run these few scripts to build and use it!
 
     ```shell
-    git clone https://github.com/JaderoChan/global_hotkey.git
+    git clone --recurse-submodules https://github.com/JaderoChan/global_hotkey.git
     cd global_hotkey
     cmake -B build
     cmake --build build
