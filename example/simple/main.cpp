@@ -112,8 +112,8 @@ int main()
     printf("Press the [%s] to exit!\n\n", hotkey3.toString().c_str());
 
     std::mutex dummyMtx;
-    std::unique_lock<std::mutex> lock(dummyMtx);
-    cv.wait(lock, [&]() { return shouldClose.load(); });
+    std::unique_lock<std::mutex> dummyLocker(dummyMtx);
+    cv.wait(dummyLocker, [&]() { return shouldClose.load(); });
 
     printf("Exit...\n");
     rc = ghm.stop();

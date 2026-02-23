@@ -101,8 +101,8 @@ int RegisterGHMPrivateMac::registerHotkeyImpl(const KeyCombination& kc, bool aut
     CFRunLoopWakeUp(runLoop_);
 
     std::mutex dummyMtx;
-    std::unique_lock<std::mutex> lock(dummyMtx);
-    cvRegUnregRc_.wait(lock, [this]() { return regUnregRc_ != -1; });
+    std::unique_lock<std::mutex> dummyLocker(dummyMtx);
+    cvRegUnregRc_.wait(dummyLocker, [this]() { return regUnregRc_ != -1; });
     return regUnregRc_;
 }
 
@@ -115,8 +115,8 @@ int RegisterGHMPrivateMac::unregisterHotkeyImpl(const KeyCombination& kc)
     CFRunLoopWakeUp(runLoop_);
 
     std::mutex dummyMtx;
-    std::unique_lock<std::mutex> lock(dummyMtx);
-    cvRegUnregRc_.wait(lock, [this]() { return regUnregRc_ != -1; });
+    std::unique_lock<std::mutex> dummyLocker(dummyMtx);
+    cvRegUnregRc_.wait(dummyLocker, [this]() { return regUnregRc_ != -1; });
     return regUnregRc_;
 }
 

@@ -15,6 +15,8 @@ GHMPrivate::~GHMPrivate() = default;
 
 int GHMPrivate::run()
 {
+    std::lock_guard<std::mutex> locker(runAndStopMtx_);
+
     if (isRunning())            return RC_SUCCESS;
 
     int rc = initialize();
@@ -32,8 +34,8 @@ int GHMPrivate::run()
 
     // Wait for the worker thread to set the running state and the running return code.
     std::mutex dummyMtx;
-    std::unique_lock<std::mutex> lock(dummyMtx);
-    cvRunningState_.wait(lock, [this]() { return runningState_ != RS_FREE; });
+    std::unique_lock<std::mutex> dummyLocker(dummyMtx);
+    cvRunningState_.wait(dummyLocker, [this]() { return runningState_ != RS_FREE; });
 
     // Reset variables if start the worker thread fail.
     if (runningState_ == RS_TERMINATE)
@@ -54,8 +56,8 @@ int GHMPrivate::stop()
     rc = stopWork();
 
     std::mutex dummyMtx;
-    std::unique_lock<std::mutex> lock(dummyMtx);
-    cvRunningState_.wait(lock, [this]() { return runningState_ != RS_RUNNING; });
+    std::unique_lock<std::mutex> dummyLocker(dummyMtx);
+    cvRunningState_.wait(dummyLocker, [this]() { return runningState_ != RS_RUNNING; });
 
     return rc;
 }
@@ -70,7 +72,7 @@ int GHMPrivate::registerHotkey(const KeyCombination& kc, const std::function<voi
     if (rc != RC_SUCCESS)
         return rc;
 
-    std::lock_guard<std::mutex> lock(mtx_);
+    std::lock_guard<std::mutex> locker(FnsMtx_);
     fns_[kc] = {autoRepeat, fn};
 
     return rc;
@@ -84,7 +86,7 @@ int GHMPrivate::unregisterHotkey(const KeyCombination& kc)
 
     int rc = unregisterHotkeyImpl(kc);
 
-    std::lock_guard<std::mutex> lock(mtx_);
+    std::lock_guard<std::mutex> lock(FnsMtx_);
     fns_.erase(kc);
 
     return rc;
@@ -99,7 +101,7 @@ int GHMPrivate::unregisterAllHotkeys()
     for (const auto& var : fns_)
         rc = unregisterHotkeyImpl(var.first);
 
-    std::lock_guard<std::mutex> lock(mtx_);
+    std::lock_guard<std::mutex> locker(FnsMtx_);
     fns_.clear();
 
     return rc;
@@ -116,7 +118,7 @@ int GHMPrivate::replaceHotkey(const KeyCombination& oldKc, const KeyCombination&
     auto value = getPairValue(oldKc);
     int rc = unregisterHotkeyImpl(oldKc);
     {
-        std::lock_guard<std::mutex> lock(mtx_);
+        std::lock_guard<std::mutex> locker(FnsMtx_);
         fns_.erase(oldKc);
     }
     rc = registerHotkeyImpl(newKc, value.first);
@@ -125,7 +127,7 @@ int GHMPrivate::replaceHotkey(const KeyCombination& oldKc, const KeyCombination&
     if (rc != RC_SUCCESS)
         return rc;
 
-    std::lock_guard<std::mutex> lock(mtx_);
+    std::lock_guard<std::mutex> locker(FnsMtx_);
     fns_[newKc] = value;
 
     return rc;
@@ -139,7 +141,7 @@ int GHMPrivate::setHotkeyCallback(const KeyCombination& kc, const std::function<
 
     auto value = getPairValue(kc);
     value.second = fn;
-    std::lock_guard<std::mutex> lock(mtx_);
+    std::lock_guard<std::mutex> locker(FnsMtx_);
     fns_[kc] = value;
 
     return RC_SUCCESS;
@@ -158,14 +160,14 @@ int GHMPrivate::setHotkeyAutoRepeat(const KeyCombination& kc, bool autoRepeat)
 
     int rc = unregisterHotkeyImpl(kc);
     {
-        std::lock_guard<std::mutex> lock(mtx_);
+        std::lock_guard<std::mutex> locker(FnsMtx_);
         fns_.erase(kc);
     }
     rc = registerHotkeyImpl(kc, autoRepeat);
     if (rc != RC_SUCCESS)
         return rc;
 
-    std::lock_guard<std::mutex> lock(mtx_);
+    std::lock_guard<std::mutex> locker(FnsMtx_);
     fns_[kc] = value;
 
     return rc;
@@ -173,7 +175,7 @@ int GHMPrivate::setHotkeyAutoRepeat(const KeyCombination& kc, bool autoRepeat)
 
 bool GHMPrivate::isHotkeyRegistered(const KeyCombination& kc) const
 {
-    std::lock_guard<std::mutex> lock(mtx_);
+    std::lock_guard<std::mutex> locker(FnsMtx_);
     return fns_.find(kc) != fns_.end();
 }
 
@@ -182,7 +184,7 @@ bool GHMPrivate::isHotkeyAutoRepeat(const KeyCombination& kc) const
     if (!isHotkeyRegistered(kc))
         return false;
 
-    std::lock_guard<std::mutex> lock(mtx_);
+    std::lock_guard<std::mutex> locker(FnsMtx_);
     return fns_.at(kc).first;
 }
 
@@ -193,6 +195,8 @@ bool GHMPrivate::isRunning() const
 
 std::unordered_set<KeyCombination> GHMPrivate::getRegisteredHotkeys() const
 {
+    std::lock_guard<std::mutex> locker(FnsMtx_);
+
     std::unordered_set<KeyCombination> set;
     for (const auto& var : fns_)
         set.insert(var.first);
@@ -201,7 +205,8 @@ std::unordered_set<KeyCombination> GHMPrivate::getRegisteredHotkeys() const
 
 std::pair<bool, std::function<void ()>> GHMPrivate::getPairValue(const KeyCombination& kc) const
 {
-    std::lock_guard<std::mutex> lock(mtx_);
+    std::lock_guard<std::mutex> locker(FnsMtx_);
+
     const auto& it = fns_.find(kc);
     if (it == fns_.end())
         return std::pair<bool, std::function<void ()>>();

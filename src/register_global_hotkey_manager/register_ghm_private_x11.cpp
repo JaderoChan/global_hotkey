@@ -152,8 +152,8 @@ int RegisterGHMPrivateX11::registerHotkeyImpl(const KeyCombination& kc, bool aut
         return errno;
 
     std::mutex dummyMtx;
-    std::unique_lock<std::mutex> lock(dummyMtx);
-    cvRegUnregRc_.wait(lock, [this]() { return regUnregRc_ != -1; });
+    std::unique_lock<std::mutex> dummyLocker(dummyMtx);
+    cvRegUnregRc_.wait(dummyLocker, [this]() { return regUnregRc_ != -1; });
     return regUnregRc_;
 }
 
@@ -167,8 +167,8 @@ int RegisterGHMPrivateX11::unregisterHotkeyImpl(const KeyCombination& kc)
         return errno;
 
     std::mutex dummyMtx;
-    std::unique_lock<std::mutex> lock(dummyMtx);
-    cvRegUnregRc_.wait(lock, [this]() { return regUnregRc_ != -1; });
+    std::unique_lock<std::mutex> dummyLocker(dummyMtx);
+    cvRegUnregRc_.wait(dummyLocker, [this]() { return regUnregRc_ != -1; });
     return regUnregRc_;
 }
 

@@ -93,12 +93,13 @@ private:
     std::condition_variable cvRunningState_;
     std::atomic<RunningState> runningState_;
     std::atomic<int> runningRc_;
+    mutable std::mutex runAndStopMtx_;
 
     std::thread workerThread_;
     std::thread::id workerThreadId_;
 
-    mutable std::mutex mtx_;    // Used for protect fns variable.
     std::unordered_map<KeyCombination, std::pair<bool, std::function<void ()>>> fns_;
+    mutable std::mutex FnsMtx_; // Used for protect fns variable.
 };
 
 } // namespace gbhk

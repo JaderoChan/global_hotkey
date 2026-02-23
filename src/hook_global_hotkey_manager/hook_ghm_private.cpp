@@ -145,8 +145,8 @@ void HookGHMPrivate::tryInvoke(const KeyCombination& prevKc, const KeyCombinatio
 
 Event HookGHMPrivate::takeEvent()
 {
-    std::unique_lock<std::mutex> lock(mtx_);
-    cvHasEvent_.wait(lock, []() { return !eventQueue_.empty(); });
+    std::unique_lock<std::mutex> locker(mtx_);
+    cvHasEvent_.wait(locker, []() { return !eventQueue_.empty(); });
     Event ev = eventQueue_.front();
     eventQueue_.pop();
     return ev;
@@ -155,7 +155,7 @@ Event HookGHMPrivate::takeEvent()
 void HookGHMPrivate::pushEvent(const Event& event)
 {
     {
-        std::lock_guard<std::mutex> lock(mtx_);
+        std::lock_guard<std::mutex> locker(mtx_);
         eventQueue_.push(event);
     }
     cvHasEvent_.notify_one();
@@ -163,7 +163,7 @@ void HookGHMPrivate::pushEvent(const Event& event)
 
 void HookGHMPrivate::clearEventQueue()
 {
-    std::lock_guard<std::mutex> lock(mtx_);
+    std::lock_guard<std::mutex> locker(mtx_);
     while (!eventQueue_.empty())
         eventQueue_.pop();
 }

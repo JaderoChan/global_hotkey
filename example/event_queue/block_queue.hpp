@@ -11,7 +11,7 @@ class Queue
 public:
     void push(const T& item)
     {
-        std::lock_guard<std::mutex> lock(mtx_);
+        std::lock_guard<std::mutex> locker(mtx_);
         queue_.emplace(item);
         if (queue_.size() == 1)
             cvHas_.notify_all();
@@ -19,8 +19,8 @@ public:
 
     T take()
     {
-        std::unique_lock<std::mutex> lock(mtx_);
-        cvHas_.wait(lock, [this]() { return !queue_.empty(); });
+        std::unique_lock<std::mutex> locker(mtx_);
+        cvHas_.wait(locker, [this]() { return !queue_.empty(); });
         T item = queue_.front();
         queue_.pop();
         return item;
@@ -28,7 +28,7 @@ public:
 
     void clear()
     {
-        std::lock_guard<std::mutex> lock(mtx_);
+        std::lock_guard<std::mutex> locker(mtx_);
         while (!queue_.empty())
             queue_.pop();
     }
