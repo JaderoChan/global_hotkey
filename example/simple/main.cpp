@@ -1,8 +1,6 @@
 #include <cstdio>               // printf
 #include <atomic>               // atomic
 #include <condition_variable>   // condition_variable
-#include <mutex>                // mutex
-#include <stdexcept>            // runtime_error
 #include <string>
 
 #include <global_hotkey/global_hotkey.hpp>
@@ -48,7 +46,10 @@ int main()
 #ifdef GLOBAL_HOTKEY_BUILD_EXAMPLE_USE_HOOK
     gbhk::GlobalHotkeyManager& ghm = gbhk::HookGlobalHotkeyManager::getInstance();
     if (!isPermissionAccessible())
-        throw std::runtime_error("Permission Denied!");
+    {
+        printf("Permission Denied!\n");
+        return 1;
+    }
     const char* ghmPrefix = "Hook";
 #else
     gbhk::GlobalHotkeyManager& ghm = gbhk::RegisterGlobalHotkeyManager::getInstance();
