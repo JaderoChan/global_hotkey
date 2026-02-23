@@ -115,7 +115,7 @@ int GHMPrivate::replaceHotkey(const KeyCombination& oldKc, const KeyCombination&
     if (!isHotkeyRegistered(oldKc))   return RC_NOT_FOUND;
     if (isHotkeyRegistered(newKc))    return RC_ALREADY_EXIST;
 
-    auto value = getPairValue(oldKc);
+    const auto value = getPairValue(oldKc);
     int rc = unregisterHotkeyImpl(oldKc);
     {
         std::lock_guard<std::mutex> locker(FnsMtx_);

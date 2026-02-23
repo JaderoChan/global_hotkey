@@ -202,8 +202,8 @@ int RegisterGHMPrivateX11::nativeUnregisterHotkey(Display* display)
 void RegisterGHMPrivateX11::tryInvoke(const KeyCombination& prevKc, const KeyCombination& currKc) const
 {
     auto pair = getPairValue(currKc);
-    auto& autoRepeat = pair.first;
-    auto& fn = pair.second;
+    const auto& autoRepeat = pair.first;
+    const auto& fn = pair.second;
     bool shouldInvoke = fn && (currKc != prevKc || autoRepeat);
     if (shouldInvoke)
         fn();

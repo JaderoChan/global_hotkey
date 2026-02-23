@@ -143,8 +143,8 @@ void RegisterGHMPrivateWin::tryInvoke(WPARAM wParam, LPARAM lParam) const
     int hotkeyId = (int) wParam;
     if (hotkeyIdToKc_.find(hotkeyId) != hotkeyIdToKc_.end())
     {
-        auto& kc = hotkeyIdToKc_.at(hotkeyId);
-        std::function<void()> fn = getPairValue(kc).second;
+        const auto kc = hotkeyIdToKc_.at(hotkeyId);
+        const auto fn = getPairValue(kc).second;
         if (fn)
             fn();
     }

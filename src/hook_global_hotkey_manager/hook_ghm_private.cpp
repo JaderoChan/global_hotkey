@@ -135,9 +135,9 @@ int HookGHMPrivate::unregisterHotkeyImpl(const KeyCombination& kc)
 
 void HookGHMPrivate::tryInvoke(const KeyCombination& prevKc, const KeyCombination& currKc) const
 {
-    auto pair = getPairValue(currKc);
-    auto& autoRepeat = pair.first;
-    auto& fn = pair.second;
+    const auto pair = getPairValue(currKc);
+    const auto& autoRepeat = pair.first;
+    const auto& fn = pair.second;
     bool shouldInvoke = fn && (currKc != prevKc || autoRepeat);
     if (shouldInvoke)
         fn();
