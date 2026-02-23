@@ -15,12 +15,12 @@ void exitWork()
     if (rc == RC_SUCCESS)
         printf("Exit successfully!\n");
     else
-        printf("Failed to exit! Error: %s\n", RCMSG(rc));
+        printf("Failed to exit! Error message: %s.\n", RCMSG(rc));
 }
 
 void addHotkeyWork()
 {
-    printf("Please input string of the hotkey you want to register (e.g. Ctrl+C)\n");
+    printf("Please input string of the hotkey you want to register (e.g. Ctrl+C):\n");
     int ret = scanf("%s", buf);
     KeyCombination kc(buf);
 
@@ -36,20 +36,20 @@ void addHotkeyWork()
         return;
     }
 
-    printf("Please input text it be print when the hotkey be triggered\n");
+    printf("Please input text it be print when the hotkey be triggered:\n");
     ret = scanf("%s", buf);
 
     std::string str(buf);
     int rc = GHM.registerHotkey(kc, [=]() { printf("%s\n", str.c_str()); });
     if (rc == RC_SUCCESS)
-        printf("Register the hotkey [%s]! successfully\n", KCSTR(kc));
+        printf("Register the hotkey [%s] successfully!\n", KCSTR(kc));
     else
-        printf("Failed to register the hotkey [%s]! Error: %s\n", KCSTR(kc), RCMSG(rc));
+        printf("Failed to register the hotkey [%s]! Error message: %s.\n", KCSTR(kc), RCMSG(rc));
 }
 
 void removeHotkeyWork()
 {
-    printf("Please input string of the hotkey you want to unregister (e.g. Ctrl+C)\n");
+    printf("Please input string of the hotkey you want to unregister (e.g. Ctrl+C):\n");
     int ret = scanf("%s", buf);
     KeyCombination kc(buf);
 
@@ -67,14 +67,14 @@ void removeHotkeyWork()
 
     int rc = GHM.unregisterHotkey(kc);
     if (rc == RC_SUCCESS)
-        printf("Unregister the hotkey [%s]! successfully\n", KCSTR(kc));
+        printf("Unregister the hotkey [%s] successfully!\n", KCSTR(kc));
     else
-        printf("Failed to unregister the hotkey [%s]! Error: %s\n", KCSTR(kc), RCMSG(rc));
+        printf("Failed to unregister the hotkey [%s]! Error message: %s.\n", KCSTR(kc), RCMSG(rc));
 }
 
 void replaceHotkeyWork()
 {
-    printf("Please input string of the old hotkey you want to replace (e.g. Ctrl+C)\n");
+    printf("Please input string of the old hotkey you want to replace (e.g. Ctrl+C):\n");
     int ret = scanf("%s", buf);
     KeyCombination oldKc(buf);
 
@@ -86,11 +86,11 @@ void replaceHotkeyWork()
 
     if (isImmutableKeyCombination(oldKc))
     {
-        printf("The hotkey [%s] is can't be replace!\n", KCSTR(oldKc));
+        printf("The hotkey [%s] can't be replaced!\n", KCSTR(oldKc));
         return;
     }
 
-    printf("Please input string of the new hotkey you want to register (e.g. Ctrl+Shift+C)\n");
+    printf("Please input string of the new hotkey you want to register (e.g. Ctrl+Shift+C):\n");
     ret = scanf("%s", buf);
     KeyCombination newKc(buf);
 
@@ -102,21 +102,21 @@ void replaceHotkeyWork()
 
     if (GHM.isHotkeyRegistered(newKc))
     {
-        printf("The newKc hotkey [%s] given is exists!\n", KCSTR(newKc));
+        printf("The new hotkey [%s] given is exists!\n", KCSTR(newKc));
         return;
     }
 
     int rc = GHM.replaceHotkey(oldKc, newKc);
     if (rc == RC_SUCCESS)
-        printf("Replace the hotkey [%s] to hotkey [%s]! successfully\n", KCSTR(oldKc), KCSTR(newKc));
+        printf("Replace the hotkey [%s] to hotkey [%s] successfully!\n", KCSTR(oldKc), KCSTR(newKc));
     else
-        printf("Failed to replace the hotkey [%s] to hotkey [%s]! Error: %s\n",
+        printf("Failed to replace the hotkey [%s] to hotkey [%s]! Error message: %s.\n",
             KCSTR(oldKc), KCSTR(newKc), RCMSG(rc));
 }
 
 void setHotkeyAutoRepeatWork()
 {
-    printf("Please input string of the hotkey you want to set is auto repeat (e.g. Ctrl+C)\n");
+    printf("Please input string of the hotkey you want to set is auto repeat (e.g. Ctrl+C):\n");
     int ret = scanf("%s", buf);
     KeyCombination kc(buf);
 
@@ -127,7 +127,7 @@ void setHotkeyAutoRepeatWork()
     }
 
     bool autoRepeat = false;
-    printf("Please input \"Y/N (Yes/No)\" to set whether the hotkey is auto repeat\n");
+    printf("Please input \"Y/N (Yes/No)\" to set whether the hotkey is auto repeat:\n");
     ret = scanf("%s", buf);
     while (true)
     {
@@ -143,23 +143,23 @@ void setHotkeyAutoRepeatWork()
         }
         else
         {
-            printf("Invalid input, please retry\n");
+            printf("Invalid input, please retry!\n");
             ret = scanf("%s", buf);
         }
     }
 
     int rc = GHM.setHotkeyAutoRepeat(kc, autoRepeat);
     if (rc == RC_SUCCESS)
-        printf("Set the hotkey [%s] to %s! successfully\n",
+        printf("Set the hotkey [%s] to %s successfully!\n",
             KCSTR(kc), autoRepeat ? "auto repeat" : "no auto repeat");
     else
-        printf("Failed to set the hotkey [%s] to %s! Error: %s\n",
+        printf("Failed to set the hotkey [%s] to %s! Error message: %s.\n",
             KCSTR(kc), autoRepeat ? "auto repeat" : "no auto repeat", RCMSG(rc));
 }
 
 void simpleWork()
 {
-    printf("This is a simple work. Just print a message\n");
+    printf("This is a simple work. Just print a message.\n");
 }
 
 // In seconds.
@@ -169,17 +169,17 @@ void heavyWork()
 {
     printf(
 "This is a heavy work. It will take a long time [current level: %d] to finish\n\
-(print a message every 1 second, the level indicates how long it will take)\n", heavyWorkLevel);
+(print a message every 1 second, the level indicates how long it will take).\n", heavyWorkLevel);
     int level = heavyWorkLevel;
     std::thread th = std::thread([=]() {
         int i = 0;
         while (i < level)
         {
-            printf("Heavy work: %d\n", i);
+            printf("Heavy work: %d.\n", i);
             std::this_thread::sleep_for(std::chrono::milliseconds(1000));
             i++;
         }
-        printf("Heavy work: %d\n", i);
+        printf("Heavy work: %d.\n", i);
         printf("Heavy work finished!\n");
     });
     th.detach();
@@ -187,12 +187,12 @@ void heavyWork()
 
 void setHeavyWorkLevelWork()
 {
-    printf("Please input level of the heavy work\n");
+    printf("Please input level of the heavy work:\n");
     int level = 0;
     int ret = scanf("%d", &level);
     if (level < 1)
     {
-        printf("Invalid input, please retry\n");
+        printf("Invalid input, please retry!\n");
         ret = scanf("%d", &level);
     }
     heavyWorkLevel = level;
