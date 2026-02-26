@@ -64,7 +64,7 @@ int main()
     if (rc != gbhk::RC_SUCCESS)
     {
         printf("Failed to run the Global Hotkey Manager service. Error message: %s.\n",
-            gbhk::getReturnCodeMessage(rc));
+            gbhk::getReturnCodeMessage(rc).c_str());
         return 1;
     }
     printf("Run the %s GHM service successfully!\n", ghmPrefix);
@@ -75,7 +75,7 @@ int main()
         ghm.stop();
         printf("Failed to register the hotkey [%s]. Error message: %s.\n",
             hotkey1.toString().c_str(),
-            gbhk::getReturnCodeMessage(rc));
+            gbhk::getReturnCodeMessage(rc).c_str());
         return 1;
     }
     printf("Register the hotkey: [%s] successfully\n", hotkey1.toString().c_str());
@@ -87,7 +87,7 @@ int main()
         ghm.stop();
         printf("Failed to register the hotkey [%s]. Error message: %s.\n",
             hotkey2.toString().c_str(),
-            gbhk::getReturnCodeMessage(rc));
+            gbhk::getReturnCodeMessage(rc).c_str());
         return 1;
     }
     printf("Register the hotkey: [%s] (auto repeat) successfully\n", hotkey2.toString().c_str());
@@ -105,7 +105,7 @@ int main()
         ghm.stop();
         printf("Failed to register the hotkey [%s]. Error message: %s.\n",
             hotkey3.toString().c_str(),
-            gbhk::getReturnCodeMessage(rc));
+            gbhk::getReturnCodeMessage(rc).c_str());
         return 1;
     }
     printf("Register the hotkey: [%s] successfully\n", hotkey3.toString().c_str());
@@ -120,7 +120,7 @@ int main()
     if (rc != gbhk::RC_SUCCESS)
     {
         printf("Failed to stop the Global Hotkey Manager service. Error message: %s.\n",
-            gbhk::getReturnCodeMessage(rc));
+            gbhk::getReturnCodeMessage(rc).c_str());
         return 1;
     }
     printf("The Global Hotkey Manager service is stoped!\n");
