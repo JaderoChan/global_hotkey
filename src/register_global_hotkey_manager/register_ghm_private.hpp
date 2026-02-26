@@ -9,6 +9,9 @@ namespace gbhk
 class RegisterGHMPrivate : public GHMPrivate
 {
 public:
+    static RegisterGHMPrivate& getInstance();
+
+protected:
     RegisterGHMPrivate();
     ~RegisterGHMPrivate();
 };

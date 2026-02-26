@@ -103,13 +103,13 @@ int RegisterGHMPrivateWin::unregisterHotkeyImpl(const KeyCombination& kc)
 
 int RegisterGHMPrivateWin::nativeRegisterHotkey(WPARAM wParam, LPARAM lParam)
 {
-    Modifiers mod = modifiersFromNativeModifiers(wParam);
-    Key key = keyFromNativeKey(lParam);
-    KeyCombination kc(mod, key);
-
     int hotkeyId = (freeHotkeyIds_.empty() ? maxHotkeyId_.load() : freeHotkeyIds_.back());
     if (RegisterHotKey(NULL, hotkeyId, wParam, lParam) != 0)
     {
+        Modifiers mod = modifiersFromNativeModifiers(wParam);
+        Key key = keyFromNativeKey(lParam);
+        KeyCombination kc(mod, key);
+
         hotkeyIdToKc_[hotkeyId] = kc;
         kcToHotkeyId_[kc] = hotkeyId;
         if (freeHotkeyIds_.empty())

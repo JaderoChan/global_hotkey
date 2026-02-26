@@ -35,14 +35,16 @@ private:
 
     static int nativeRegisterHotkey();
     static int nativeUnregisterHotkey();
-    // TODO
-    void tryInvoke() const;
+    static void tryInvoke(const KeyCombination& prevKc, const KeyCombination& currKc);
 
     static std::condition_variable cvRegUnregRc_;
     static std::atomic<int> regUnregRc_;
     static std::atomic<EventType> eventType_;
     static std::atomic<KeyCombination> regUnregKc_;
     static std::unordered_map<KeyCombination, EventHotKeyRef> kcToHotkeyRef_;
+
+    static KeyCombination prevKc_;
+    static KeyCombination currKc_;
 
     CFRunLoopSourceContext sourceContext_ = {0};
     CFRunLoopSourceRef source_ = NULL;

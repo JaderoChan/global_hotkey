@@ -12,7 +12,7 @@ HookGlobalHotkeyManager& HookGlobalHotkeyManager::getInstance()
 }
 
 HookGlobalHotkeyManager::HookGlobalHotkeyManager() :
-    GlobalHotkeyManager(std::unique_ptr<GHMPrivate>(new HookGHMPrivate()))
+    GlobalHotkeyManager(HookGHMPrivate::getInstance())
 {}
 
 HookGlobalHotkeyManager::~HookGlobalHotkeyManager() = default;

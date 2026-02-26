@@ -14,6 +14,12 @@ HookGHMPrivate::HookGHMPrivate() : kbdtMgr_(kbdt::KeyboardToolsManager::getInsta
 
 HookGHMPrivate::~HookGHMPrivate() { stop(); }
 
+HookGHMPrivate& HookGHMPrivate::getInstance()
+{
+    static HookGHMPrivate instance;
+    return instance;
+}
+
 int HookGHMPrivate::initialize()
 {
     clearEventQueue();

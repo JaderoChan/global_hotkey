@@ -17,9 +17,6 @@ namespace gbhk
 class GHMPrivate
 {
 public:
-    GHMPrivate();
-    virtual ~GHMPrivate();
-
     int run();
     int stop();
     int registerHotkey(const KeyCombination& kc, const std::function<void ()>& fn, bool autoRepeat);
@@ -79,6 +76,12 @@ protected:
     /// @param kc Key combination of the hotkey to unregister.
     /// @return `RC_SUCCESS` on success, or a platform-specific error code on failure.
     virtual int unregisterHotkeyImpl(const KeyCombination& kc) = 0;
+
+protected:
+    GHMPrivate();
+    virtual ~GHMPrivate();
+    GHMPrivate(const GHMPrivate&) = delete;
+    GHMPrivate& operator=(const GHMPrivate&) = delete;
 
 private:
     enum RunningState : uint8_t

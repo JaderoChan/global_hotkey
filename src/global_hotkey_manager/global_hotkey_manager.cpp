@@ -5,44 +5,44 @@
 namespace gbhk
 {
 
-GlobalHotkeyManager::GlobalHotkeyManager(std::unique_ptr<GHMPrivate> ptr) : ptr_(std::move(ptr)) {}
+GlobalHotkeyManager::GlobalHotkeyManager(GHMPrivate& pri) : pri_(pri) {}
 
 GlobalHotkeyManager::~GlobalHotkeyManager() = default;
 
 int GlobalHotkeyManager::run()
-{ return ptr_->run(); }
+{ return pri_.run(); }
 
 int GlobalHotkeyManager::stop()
-{ return ptr_->stop(); }
+{ return pri_.stop(); }
 
 int GlobalHotkeyManager::registerHotkey(const KeyCombination& kc, const std::function<void ()>& fn, bool autoRepeat)
-{ return ptr_->registerHotkey(kc, fn, autoRepeat); }
+{ return pri_.registerHotkey(kc, fn, autoRepeat); }
 
 int GlobalHotkeyManager::unregisterHotkey(const KeyCombination& kc)
-{ return ptr_->unregisterHotkey(kc); }
+{ return pri_.unregisterHotkey(kc); }
 
 int GlobalHotkeyManager::unregisterAllHotkeys()
-{ return ptr_->unregisterAllHotkeys(); }
+{ return pri_.unregisterAllHotkeys(); }
 
 int GlobalHotkeyManager::replaceHotkey(const KeyCombination& oldKc, const KeyCombination& newKc)
-{ return ptr_->replaceHotkey(oldKc, newKc); }
+{ return pri_.replaceHotkey(oldKc, newKc); }
 
 int GlobalHotkeyManager::setHotkeyCallback(const KeyCombination& kc, const std::function<void ()>& fn)
-{ return ptr_->setHotkeyCallback(kc, fn); }
+{ return pri_.setHotkeyCallback(kc, fn); }
 
 int GlobalHotkeyManager::setHotkeyAutoRepeat(const KeyCombination& kc, bool autoRepeat)
-{ return ptr_->setHotkeyAutoRepeat(kc, autoRepeat); }
+{ return pri_.setHotkeyAutoRepeat(kc, autoRepeat); }
 
 bool GlobalHotkeyManager::isHotkeyRegistered(const KeyCombination& kc) const
-{ return ptr_->isHotkeyRegistered(kc); }
+{ return pri_.isHotkeyRegistered(kc); }
 
 bool GlobalHotkeyManager::isHotkeyAutoRepeat(const KeyCombination& kc) const
-{ return ptr_->isHotkeyAutoRepeat(kc); }
+{ return pri_.isHotkeyAutoRepeat(kc); }
 
 bool GlobalHotkeyManager::isRunning() const
-{ return ptr_->isRunning(); }
+{ return pri_.isRunning(); }
 
 std::unordered_set<KeyCombination> GlobalHotkeyManager::getRegisteredHotkeys() const
-{ return ptr_->getRegisteredHotkeys(); }
+{ return pri_.getRegisteredHotkeys(); }
 
 } // namespace gbhk

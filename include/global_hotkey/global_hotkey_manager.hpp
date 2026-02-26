@@ -2,7 +2,6 @@
 #define GLOBAL_HOTKEY_GLOBAL_HOTKEY_MANAGER_HPP
 
 #include <functional>   // function
-#include <memory>       // unique_ptr
 #include <unordered_set>
 
 #include "defines.hpp"
@@ -79,13 +78,13 @@ public:
     std::unordered_set<KeyCombination> getRegisteredHotkeys() const;
 
 protected:
-    explicit GlobalHotkeyManager(std::unique_ptr<GHMPrivate> ptr);
+    explicit GlobalHotkeyManager(GHMPrivate& pri);
     virtual ~GlobalHotkeyManager();
     GlobalHotkeyManager(const GlobalHotkeyManager&) = delete;
     GlobalHotkeyManager& operator=(const GlobalHotkeyManager&) = delete;
 
     /// @brief Implementation-specific private data (PIMPL idiom).
-    std::unique_ptr<GHMPrivate> ptr_;
+    GHMPrivate& pri_;
 };
 
 } // namespace gbhk

@@ -12,6 +12,9 @@ std::atomic<EventType> RegisterGHMPrivateMac::eventType_{ET_NONE};
 std::atomic<KeyCombination> RegisterGHMPrivateMac::regUnregKc_;
 std::unordered_map<KeyCombination, EventHotKeyRef> RegisterGHMPrivateMac::kcToHotkeyRef_;
 
+KeyCombination RegisterGHMPrivateMac::prevKc_;
+KeyCombination RegisterGHMPrivateMac::currKc_;
+
 RegisterGHMPrivateMac::RegisterGHMPrivateMac() = default;
 
 RegisterGHMPrivateMac::~RegisterGHMPrivateMac() { stop(); }
@@ -159,17 +162,21 @@ OSStatus RegisterGHMPrivateMac::hotkeyEventHandler(EventHandlerCallRef nextHandl
         if (status != noErr)
             return status;
 
-        auto nativeModifiers = hotkeyId.signature;
-        auto nativeKey = hotkeyId.id;
-
         if (eventKind == kEventHotKeyPressed)
         {
-            printf("KeyPressed: %d\n", nativeKey);
+            auto nativeModifiers = hotkeyId.signature;
+            auto nativeKey = hotkeyId.id;
+            auto mod = modifiersFromNativeModifiers(nativeModifiers);
+            auto key = keyFromNativeKey(nativeKey);
+            currKc_ = {mod, key};
         }
         else
         {
-            printf("KeyReleased: %d\n", nativeKey);
+            currKc_ = {};
         }
+
+        tryInvoke(prevKc_, currKc_);
+        prevKc_ = currKc_;
     }
 
     return noErr;
@@ -207,9 +214,14 @@ int RegisterGHMPrivateMac::nativeUnregisterHotkey()
     return RC_SUCCESS;
 }
 
-void RegisterGHMPrivateMac::tryInvoke() const
+void RegisterGHMPrivateMac::tryInvoke(const KeyCombination& prevKc, const KeyCombination& currKc)
 {
-    // TODO
+    auto pair = static_cast<RegisterGHMPrivateMac&>(getInstance()).getPairValue(currKc);
+    const auto& autoRepeat = pair.first;
+    const auto& fn = pair.second;
+    bool shouldInvoke = fn && (currKc != prevKc || autoRepeat);
+    if (shouldInvoke)
+        fn();
 }
 
 } // namespace gbhk

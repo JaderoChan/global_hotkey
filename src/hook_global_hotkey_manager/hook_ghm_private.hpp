@@ -26,8 +26,7 @@ struct Event
 class HookGHMPrivate final : public GHMPrivate
 {
 public:
-    HookGHMPrivate();
-    ~HookGHMPrivate();
+    static HookGHMPrivate& getInstance();
 
 protected:
     int initialize() override;
@@ -37,6 +36,9 @@ protected:
     int unregisterHotkeyImpl(const KeyCombination& kc) override;
 
 private:
+    HookGHMPrivate();
+    ~HookGHMPrivate();
+
     void tryInvoke(const KeyCombination& prevKc, const KeyCombination& currKc) const;
 
     static std::mutex mtx_;
