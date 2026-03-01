@@ -248,10 +248,10 @@ public:
     constexpr Modifiers& remove(ModifierFlag modifier) noexcept { data_ &= ~modifier; return *this; }
     constexpr Modifiers& remove(Modifiers modifiers) noexcept { data_ &= ~modifiers.data_; return *this; }
 #else
-    inline Modifiers& add(ModifierFlag modifier) noexcept { data_ |= modifier; return *this; }
-    inline Modifiers& add(Modifiers modifiers) noexcept { data_ |= modifiers.data_; return *this; }
-    inline Modifiers& remove(ModifierFlag modifier) noexcept { data_ &= ~modifier; return *this; }
-    inline Modifiers& remove(Modifiers modifiers) noexcept { data_ &= ~modifiers.data_; return *this; }
+    Modifiers& add(ModifierFlag modifier) noexcept { data_ |= modifier; return *this; }
+    Modifiers& add(Modifiers modifiers) noexcept { data_ |= modifiers.data_; return *this; }
+    Modifiers& remove(ModifierFlag modifier) noexcept { data_ &= ~modifier; return *this; }
+    Modifiers& remove(Modifiers modifiers) noexcept { data_ &= ~modifiers.data_; return *this; }
 #endif // GLOBAL_HOTKEY_CPPVERS >= 201703L
 
     friend constexpr bool operator==(Modifiers lhs, Modifiers rhs) noexcept { return lhs.data_ == rhs.data_; }

@@ -46,8 +46,8 @@ public:
     constexpr void setModifiers(const Modifiers& modifiers) noexcept { mod_ = modifiers; }
     constexpr void setKey(const Key& key) noexcept { key_ = key; }
 #else
-    inline void setModifiers(const Modifiers& modifiers) noexcept { mod_ = modifiers; }
-    inline void setKey(const Key& key) noexcept { key_ = key; }
+    void setModifiers(const Modifiers& modifiers) noexcept { mod_ = modifiers; }
+    void setKey(const Key& key) noexcept { key_ = key; }
 #endif // GLOBAL_HOTKEY_CPPVERS >= 201703L
 
     friend constexpr bool operator==(const KeyCombination& lhs, const KeyCombination& rhs) noexcept
