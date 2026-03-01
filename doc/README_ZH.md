@@ -48,7 +48,7 @@
     git clone --recurse-submodules https://github.com/JaderoChan/global_hotkey.git
     cd global_hotkey
     cmake -B build
-    cmake --build build
+    cmake --build build -j --config Release
     ```
 
 ### ⚙️ 编译选项
@@ -119,7 +119,7 @@ ghm.stop(); // 释放热键管理器。
 
 ---
 
-本库使用MIT许可证，这意味着你可以拿它做任何事情。尽管不是必须，但在程序中进行署名是值得赞誉的！
+本库使用 **MIT** 许可证，这意味着你可以拿它做任何事情。尽管不是必须，但在程序中进行署名是值得赞誉的！
 
 ### `Register GHM` 和 `Hook GHM` 有什么区别？
 
@@ -139,13 +139,13 @@ ghm.stop(); // 释放热键管理器。
 
 例如 `HooK GHM` 除 `热键管理器 (GHM)` 自身的工作线程外，还需要额外维护一个 `键盘监听 (Keyboard Hook)` 模块的线程，如果你的程序需要进行深度的定制，你可以在此基础上进行更针对性的修改。
 
-### 支持Wayland窗口系统吗？
+### 支持 **Wayland** 窗口系统吗？
 
 ---
 
 仅支持 `Hook GHM`，而 `Hook GHM` 需要管理员权限才可以正常工作。
 
-### Wayland窗口系统下可以使用 `Register GHM` 吗？
+### **Wayland** 窗口系统下可以使用 `Register GHM` 吗？
 
 ---
 
@@ -157,7 +157,7 @@ ghm.stop(); // 释放热键管理器。
 
 ## 🔔 注意
 
-- MacOS系统下的 `Register GHM` 不支持控制台程序。
+- **MacOS** 系统下的 `Register GHM` 需要使用者在主循环中创建事件循环。
 
 - 中止 `GHM` 服务、注册热键、注销热键和替换热键等操作，必须在对应的 `GHM` 初始化之后才可进行！
 

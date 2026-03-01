@@ -48,7 +48,7 @@
     git clone --recurse-submodules https://github.com/JaderoChan/global_hotkey.git
     cd global_hotkey
     cmake -B build
-    cmake --build build
+    cmake --build build -j --config Release
     ```
 
 ### ⚙️ Build Options
@@ -119,7 +119,7 @@ ghm.stop(); // Release the hotkey manager.
 
 ---
 
-This library uses the MIT license, which means you can do anything with it. Attribution is not required but appreciated!
+This library uses the **MIT** license, which means you can do anything with it. Attribution is not required but appreciated!
 
 ### What is the difference between `Register GHM` and `Hook GHM`?
 
@@ -139,13 +139,13 @@ This project decouples many modules, and some need their own threads.
 
 For example, in addition to the GHM worker thread, `Hook GHM` needs a separate thread for the keyboard hook module. If you need deep customization, you can tailor it further.
 
-### Does it support Wayland?
+### Does it support **Wayland**?
 
 ---
 
 Only `Hook GHM`, and it requires admin privileges.
 
-### Can `Register GHM` be used under Wayland?
+### Can `Register GHM` be used under **Wayland**?
 
 ---
 
@@ -157,7 +157,7 @@ No. On **Linux**, `Register GHM` depends on **X11**.
 
 ## 🔔 Notes
 
-- On macOS, `Register GHM` does not support console programs.
+- An event loop must be running on the main thread for `Register GHM` on **MacOS**.
 
 - Stopping the GHM service, registering, unregistering, and replacing hotkeys must only be performed after the GHM is initialized.
 
