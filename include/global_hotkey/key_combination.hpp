@@ -13,10 +13,10 @@ namespace gbhk
 class GLOBAL_HOTKEY_API KeyCombination
 {
 public:
-    constexpr inline KeyCombination() noexcept = default;
-    constexpr inline KeyCombination(const Modifiers& modifiers, const Key& key) noexcept :
+    constexpr KeyCombination() noexcept = default;
+    constexpr KeyCombination(const Modifiers& modifiers, const Key& key) noexcept :
         mod_(modifiers), key_(key) {}
-    constexpr inline explicit KeyCombination(uint64_t toCombinedValue) noexcept :
+    constexpr explicit KeyCombination(uint64_t toCombinedValue) noexcept :
         mod_((uint32_t) (toCombinedValue >> 32)), key_((uint32_t) toCombinedValue) {}
     KeyCombination(const std::string& str, char connector = '+') noexcept
     { *this = std::move(fromString(str, '+')); }
@@ -29,30 +29,30 @@ public:
         char connector = '+',
         bool showKeyValue = false) const noexcept;
 
-    static constexpr inline KeyCombination fromCombinedValue(uint64_t value) noexcept
+    static constexpr KeyCombination fromCombinedValue(uint64_t value) noexcept
     { return KeyCombination((uint32_t) (value >> 32), (uint32_t) value); }
-    constexpr inline uint64_t toCombinedValue() const noexcept
+    constexpr uint64_t toCombinedValue() const noexcept
     { return ((uint64_t) mod_ << 32) | ((uint64_t) key_ << 0); }
 
-    constexpr inline Modifiers modifiers() const noexcept { return mod_; }
-    constexpr inline Key key() const noexcept { return key_; }
+    constexpr Modifiers modifiers() const noexcept { return mod_; }
+    constexpr Key key() const noexcept { return key_; }
 
     /// @brief Check if this key combination represents a valid hotkey.
     /// @return true if the combination contains at least one modifier and a valid key value, false otherwise.
-    constexpr inline bool isValid() const noexcept { return mod_.isValid() && key_.isValid(); }
+    constexpr bool isValid() const noexcept { return mod_.isValid() && key_.isValid(); }
 
 #if GLOBAL_HOTKEY_CPPVERS >= 201703L
     // In C++17, constexpr member functions are no longer implicitly const.
-    constexpr inline void setModifiers(const Modifiers& modifiers) noexcept { mod_ = modifiers; }
-    constexpr inline void setKey(const Key& key) noexcept { key_ = key; }
+    constexpr void setModifiers(const Modifiers& modifiers) noexcept { mod_ = modifiers; }
+    constexpr void setKey(const Key& key) noexcept { key_ = key; }
 #else
     inline void setModifiers(const Modifiers& modifiers) noexcept { mod_ = modifiers; }
     inline void setKey(const Key& key) noexcept { key_ = key; }
 #endif // GLOBAL_HOTKEY_CPPVERS >= 201703L
 
-    friend constexpr inline bool operator==(const KeyCombination& lhs, const KeyCombination& rhs) noexcept
+    friend constexpr bool operator==(const KeyCombination& lhs, const KeyCombination& rhs) noexcept
     { return lhs.mod_ == rhs.mod_ && lhs.key_ == rhs.key_; }
-    friend constexpr inline bool operator!=(const KeyCombination& lhs, const KeyCombination& rhs) noexcept
+    friend constexpr bool operator!=(const KeyCombination& lhs, const KeyCombination& rhs) noexcept
     { return lhs.mod_ != rhs.mod_ || lhs.key_ != rhs.key_; }
 
 private:
