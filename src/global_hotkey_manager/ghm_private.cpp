@@ -17,7 +17,7 @@ int GHMPrivate::run()
 {
     std::lock_guard<std::mutex> locker(runAndStopMtx_);
 
-    if (isRunning())            return RC_SUCCESS;
+    if (isRunning())                return RC_SUCCESS;
 
     int rc = initialize();
     if (rc != RC_SUCCESS)
@@ -49,8 +49,8 @@ int GHMPrivate::run()
 
 int GHMPrivate::stop()
 {
-    if (!isRunning())           return RC_SUCCESS;
-    if (isInWorkerThread())     return RC_BAD_THREAD;
+    if (!isRunning())               return RC_SUCCESS;
+    if (isInWorkerThread())         return RC_BAD_THREAD;
 
     int rc = unregisterAllHotkeys();
     rc = stopWork();
@@ -64,9 +64,9 @@ int GHMPrivate::stop()
 
 int GHMPrivate::registerHotkey(const KeyCombination& kc, const std::function<void ()>& fn, bool autoRepeat)
 {
-    if (!isRunning())           return RC_BAD_TIMING;
-    if (isInWorkerThread())     return RC_BAD_THREAD;
-    if (isHotkeyRegistered(kc))       return RC_ALREADY_EXIST;
+    if (!isRunning())               return RC_BAD_TIMING;
+    if (isInWorkerThread())         return RC_BAD_THREAD;
+    if (isHotkeyRegistered(kc))     return RC_ALREADY_EXIST;
 
     int rc = registerHotkeyImpl(kc, autoRepeat);
     if (rc != RC_SUCCESS)
@@ -80,9 +80,9 @@ int GHMPrivate::registerHotkey(const KeyCombination& kc, const std::function<voi
 
 int GHMPrivate::unregisterHotkey(const KeyCombination& kc)
 {
-    if (!isRunning())           return RC_BAD_TIMING;
-    if (isInWorkerThread())     return RC_BAD_THREAD;
-    if (!isHotkeyRegistered(kc))      return RC_NOT_FOUND;
+    if (!isRunning())               return RC_BAD_TIMING;
+    if (isInWorkerThread())         return RC_BAD_THREAD;
+    if (!isHotkeyRegistered(kc))    return RC_NOT_FOUND;
 
     int rc = unregisterHotkeyImpl(kc);
 
@@ -94,8 +94,8 @@ int GHMPrivate::unregisterHotkey(const KeyCombination& kc)
 
 int GHMPrivate::unregisterAllHotkeys()
 {
-    if (!isRunning())           return RC_BAD_TIMING;
-    if (isInWorkerThread())     return RC_BAD_THREAD;
+    if (!isRunning())               return RC_BAD_TIMING;
+    if (isInWorkerThread())         return RC_BAD_THREAD;
 
     int rc = RC_SUCCESS;
     for (const auto& var : fns_)
@@ -109,11 +109,11 @@ int GHMPrivate::unregisterAllHotkeys()
 
 int GHMPrivate::replaceHotkey(const KeyCombination& oldKc, const KeyCombination& newKc)
 {
-    if (!isRunning())           return RC_BAD_TIMING;
-    if (isInWorkerThread())     return RC_BAD_THREAD;
-    if (newKc == oldKc)         return RC_SUCCESS;
-    if (!isHotkeyRegistered(oldKc))   return RC_NOT_FOUND;
-    if (isHotkeyRegistered(newKc))    return RC_ALREADY_EXIST;
+    if (!isRunning())               return RC_BAD_TIMING;
+    if (isInWorkerThread())         return RC_BAD_THREAD;
+    if (newKc == oldKc)             return RC_SUCCESS;
+    if (!isHotkeyRegistered(oldKc)) return RC_NOT_FOUND;
+    if (isHotkeyRegistered(newKc))  return RC_ALREADY_EXIST;
 
     const auto value = getPairValue(oldKc);
     int rc = unregisterHotkeyImpl(oldKc);
@@ -135,9 +135,9 @@ int GHMPrivate::replaceHotkey(const KeyCombination& oldKc, const KeyCombination&
 
 int GHMPrivate::setHotkeyCallback(const KeyCombination& kc, const std::function<void()>& fn)
 {
-    if (!isRunning())           return RC_BAD_TIMING;
-    if (isInWorkerThread())     return RC_BAD_THREAD;
-    if (!isHotkeyRegistered(kc))      return RC_NOT_FOUND;
+    if (!isRunning())               return RC_BAD_TIMING;
+    if (isInWorkerThread())         return RC_BAD_THREAD;
+    if (!isHotkeyRegistered(kc))    return RC_NOT_FOUND;
 
     auto value = getPairValue(kc);
     value.second = fn;
@@ -149,9 +149,9 @@ int GHMPrivate::setHotkeyCallback(const KeyCombination& kc, const std::function<
 
 int GHMPrivate::setHotkeyAutoRepeat(const KeyCombination& kc, bool autoRepeat)
 {
-    if (!isRunning())           return RC_BAD_TIMING;
-    if (isInWorkerThread())     return RC_BAD_THREAD;
-    if (!isHotkeyRegistered(kc))      return RC_NOT_FOUND;
+    if (!isRunning())               return RC_BAD_TIMING;
+    if (isInWorkerThread())         return RC_BAD_THREAD;
+    if (!isHotkeyRegistered(kc))    return RC_NOT_FOUND;
 
     auto value = getPairValue(kc);
     if (value.first == autoRepeat)
