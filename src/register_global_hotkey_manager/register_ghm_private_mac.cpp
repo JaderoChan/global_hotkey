@@ -125,7 +125,7 @@ int RegisterGHMPrivateMac::unregisterHotkeyImpl(const KeyCombination& kc)
 
 void RegisterGHMPrivateMac::runLoopSourceCallback(void* info)
 {
-    CFRunLoopSourceRef* sref = (CFRunLoopSourceRef*) info;
+    CFRunLoopSourceRef* sref = static_cast<CFRunLoopSourceRef*>(info);
     switch (eventType_.load())
     {
         case ET_REGISTER:
