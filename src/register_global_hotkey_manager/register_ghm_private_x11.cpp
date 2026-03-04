@@ -60,10 +60,10 @@ int RegisterGHMPrivateX11::stopWork()
 
 void RegisterGHMPrivateX11::work()
 {
-    Display* display = NULL;
+    Display* display = nullptr;
     {
         ErrorHandler eh;
-        display = XOpenDisplay(NULL);
+        display = XOpenDisplay(nullptr);
         if (eh.ec != RC_SUCCESS)
         {
             setRunFail(eh.ec);

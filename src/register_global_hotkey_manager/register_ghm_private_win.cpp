@@ -28,11 +28,11 @@ void RegisterGHMPrivateWin::work()
     workerThreadId_ = GetCurrentThreadId();
     MSG msg = {0};
     // Force the system to create the message queue.
-    PeekMessageA(&msg, NULL, WM_USER, WM_USER, PM_NOREMOVE);
+    PeekMessageA(&msg, nullptr, WM_USER, WM_USER, PM_NOREMOVE);
     // Indicate the worker thread is created successfully after create the message queue.
     // This can ensure that the `PostThreadMessage()` be performed only when the message queue exists.
     setRunSuccess();
-    // Retrieves only messages on the current thread's message queue whose hwnd value is NULL.
+    // Retrieves only messages on the current thread's message queue whose hwnd value is nullptr.
     // In this case the thread message as posted by `PostThreadMessage()`.
     while (GetMessageA(&msg, reinterpret_cast<HWND>(static_cast<intptr_t>(-1)), 0, 0) != 0)
     {
@@ -104,7 +104,7 @@ int RegisterGHMPrivateWin::unregisterHotkeyImpl(const KeyCombination& kc)
 int RegisterGHMPrivateWin::nativeRegisterHotkey(WPARAM wParam, LPARAM lParam)
 {
     int hotkeyId = (freeHotkeyIds_.empty() ? maxHotkeyId_.load() : freeHotkeyIds_.back());
-    if (RegisterHotKey(NULL, hotkeyId, wParam, lParam) != 0)
+    if (RegisterHotKey(nullptr, hotkeyId, wParam, lParam) != 0)
     {
         Modifiers mod = modifiersFromNativeModifiers(wParam);
         Key key = keyFromNativeKey(lParam);
@@ -128,7 +128,7 @@ int RegisterGHMPrivateWin::nativeUnregisterHotkey(WPARAM wParam, LPARAM lParam)
     KeyCombination kc(mod, key);
 
     int hotkeyId = kcToHotkeyId_[kc];
-    if (UnregisterHotKey(NULL, hotkeyId) != 0)
+    if (UnregisterHotKey(nullptr, hotkeyId) != 0)
     {
         hotkeyIdToKc_.erase(hotkeyId);
         kcToHotkeyId_.erase(kc);

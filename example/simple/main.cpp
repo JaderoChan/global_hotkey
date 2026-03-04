@@ -20,7 +20,7 @@
 
         static bool isAssistiveAccessible()
         {
-            return AXIsProcessTrustedWithOptions(NULL);
+            return AXIsProcessTrustedWithOptions(nullptr);
         }
     #endif // GLOBAL_HOTKEY_MAC
 #endif // GLOBAL_HOTKEY_BUILD_EXAMPLE_USE_HOOK

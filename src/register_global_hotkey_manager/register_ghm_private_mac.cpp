@@ -24,13 +24,13 @@ int RegisterGHMPrivateMac::initialize()
     sourceContext_ = {
         .version = 0,
         .info = this,
-        .retain = NULL,
-        .release = NULL,
-        .copyDescription = NULL,
-        .equal = NULL,
-        .hash = NULL,
-        .schedule = NULL,
-        .cancel = NULL,
+        .retain = nullptr,
+        .release = nullptr,
+        .copyDescription = nullptr,
+        .equal = nullptr,
+        .hash = nullptr,
+        .schedule = nullptr,
+        .cancel = nullptr,
         .perform = &RegisterGHMPrivateMac::runLoopSourceCallback
     };
     return RC_SUCCESS;
@@ -45,7 +45,7 @@ int RegisterGHMPrivateMac::stopWork()
 void RegisterGHMPrivateMac::work()
 {
     runLoop_ = CFRunLoopGetCurrent();
-    if (runLoop_ == NULL)
+    if (runLoop_ == nullptr)
     {
         // TODO: Need error code.
         setRunFail(-1);
@@ -70,8 +70,8 @@ void RegisterGHMPrivateMac::work()
         return;
     }
 
-    source_ = CFRunLoopSourceCreate(NULL, 0, &sourceContext_);
-    if (source_ == NULL)
+    source_ = CFRunLoopSourceCreate(nullptr, 0, &sourceContext_);
+    if (source_ == nullptr)
     {
         // TODO: Need error code.
         setRunFail(-1);
@@ -87,8 +87,8 @@ void RegisterGHMPrivateMac::work()
     CFRelease(source_);
 
     sourceContext_ = {0};
-    source_ = NULL;
-    runLoop_ = NULL;
+    source_ = nullptr;
+    runLoop_ = nullptr;
     regUnregRc_ = 0;
     eventType_ = ET_NONE;
     regUnregKc_ = KeyCombination();
@@ -154,9 +154,9 @@ OSStatus RegisterGHMPrivateMac::hotkeyEventHandler(EventHandlerCallRef nextHandl
             event,
             kEventParamDirectObject,
             typeEventHotKeyID,
-            NULL,
+            nullptr,
             sizeof(hotkeyId),
-            NULL,
+            nullptr,
             &hotkeyId
         );
         if (status != noErr)

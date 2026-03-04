@@ -47,8 +47,8 @@ private:
     static KeyCombination currKc_;
 
     CFRunLoopSourceContext sourceContext_ = {0};
-    CFRunLoopSourceRef source_ = NULL;
-    CFRunLoopRef runLoop_ = NULL;
+    CFRunLoopSourceRef source_ = nullptr;
+    CFRunLoopRef runLoop_ = nullptr;
 };
 
 } // namespace gbhk
