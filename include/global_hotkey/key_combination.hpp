@@ -17,7 +17,7 @@ public:
     constexpr KeyCombination(const Modifiers& modifiers, const Key& key) noexcept :
         mod_(modifiers), key_(key) {}
     constexpr explicit KeyCombination(uint64_t combinedValue) noexcept :
-        mod_((uint32_t) (combinedValue >> 32)), key_((uint32_t) combinedValue) {}
+        mod_(static_cast<uint32_t>(combinedValue >> 32)), key_(static_cast<uint32_t>(combinedValue)) {}
     KeyCombination(const std::string& str, char connector = '+') noexcept
     { *this = std::move(fromString(str, '+')); }
     KeyCombination(const char* str, char connector = '+') noexcept :
@@ -30,9 +30,9 @@ public:
         bool showKeyValue = false) const noexcept;
 
     static constexpr KeyCombination fromCombinedValue(uint64_t combinedValue) noexcept
-    { return KeyCombination((uint32_t) (combinedValue >> 32), (uint32_t) combinedValue); }
+    { return KeyCombination(combinedValue); }
     constexpr uint64_t toCombinedValue() const noexcept
-    { return ((uint64_t) mod_ << 32) | ((uint64_t) key_ << 0); }
+    { return (static_cast<uint64_t>(mod_) << 32) | (static_cast<uint64_t>(key_) << 0); }
 
     constexpr Modifiers modifiers() const noexcept { return mod_; }
     constexpr Key key() const noexcept { return key_; }

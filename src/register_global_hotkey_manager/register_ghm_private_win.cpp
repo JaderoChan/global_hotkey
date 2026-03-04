@@ -20,7 +20,7 @@ int RegisterGHMPrivateWin::stopWork()
 {
     if (PostThreadMessageA(workerThreadId_, WM_DESTROY, 0, 0) != 0)
         return RC_SUCCESS;
-    return (int) GetLastError();
+    return static_cast<int>(GetLastError());
 }
 
 void RegisterGHMPrivateWin::work()
@@ -34,7 +34,7 @@ void RegisterGHMPrivateWin::work()
     setRunSuccess();
     // Retrieves only messages on the current thread's message queue whose hwnd value is NULL.
     // In this case the thread message as posted by `PostThreadMessage()`.
-    while (GetMessageA(&msg, (HWND) -1, 0, 0) != 0)
+    while (GetMessageA(&msg, reinterpret_cast<HWND>(static_cast<intptr_t>(-1)), 0, 0) != 0)
     {
         if (msg.message == WM_HOTKEY)
         {
@@ -80,7 +80,7 @@ int RegisterGHMPrivateWin::registerHotkeyImpl(const KeyCombination& kc, bool aut
         cvRegUnregRc_.wait(dummyLocker, [this]() { return regUnregRc_ != -1; });
         return regUnregRc_;
     }
-    return (int) GetLastError();
+    return static_cast<int>(GetLastError());
 }
 
 int RegisterGHMPrivateWin::unregisterHotkeyImpl(const KeyCombination& kc)
@@ -98,7 +98,7 @@ int RegisterGHMPrivateWin::unregisterHotkeyImpl(const KeyCombination& kc)
         cvRegUnregRc_.wait(dummyLocker, [this]() { return regUnregRc_ != -1; });
         return regUnregRc_;
     }
-    return (int) GetLastError();
+    return static_cast<int>(GetLastError());
 }
 
 int RegisterGHMPrivateWin::nativeRegisterHotkey(WPARAM wParam, LPARAM lParam)
@@ -118,7 +118,7 @@ int RegisterGHMPrivateWin::nativeRegisterHotkey(WPARAM wParam, LPARAM lParam)
             freeHotkeyIds_.pop_back();
         return RC_SUCCESS;
     }
-    return (int) GetLastError();
+    return static_cast<int>(GetLastError());
 }
 
 int RegisterGHMPrivateWin::nativeUnregisterHotkey(WPARAM wParam, LPARAM lParam)
@@ -135,12 +135,12 @@ int RegisterGHMPrivateWin::nativeUnregisterHotkey(WPARAM wParam, LPARAM lParam)
         freeHotkeyIds_.push_back(hotkeyId);
         return RC_SUCCESS;
     }
-    return (int) GetLastError();
+    return static_cast<int>(GetLastError());
 }
 
 void RegisterGHMPrivateWin::tryInvoke(WPARAM wParam, LPARAM lParam) const
 {
-    int hotkeyId = (int) wParam;
+    int hotkeyId = static_cast<int>(wParam);
     if (hotkeyIdToKc_.find(hotkeyId) != hotkeyIdToKc_.end())
     {
         const auto kc = hotkeyIdToKc_.at(hotkeyId);

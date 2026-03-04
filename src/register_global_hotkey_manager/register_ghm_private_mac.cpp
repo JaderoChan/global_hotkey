@@ -185,10 +185,10 @@ OSStatus RegisterGHMPrivateMac::hotkeyEventHandler(EventHandlerCallRef nextHandl
 int RegisterGHMPrivateMac::nativeRegisterHotkey()
 {
     KeyCombination kc = regUnregKc_;
-    UInt32 mod = (UInt32) modifiersToNativeModifiers(kc.modifiers());
-    UInt32 key = (UInt32) keyToNativeKey(kc.key());
+    UInt32 mod = static_cast<UInt32>(modifiersToNativeModifiers(kc.modifiers()));
+    UInt32 key = static_cast<UInt32>(keyToNativeKey(kc.key()));
 
-    EventHotKeyID hotkeyId = {(OSType) mod, key};
+    EventHotKeyID hotkeyId = {static_cast<OSType>(mod), key};
     EventHotKeyRef eventHotkey = 0;
     auto status = RegisterEventHotKey(
         key,
@@ -199,7 +199,7 @@ int RegisterGHMPrivateMac::nativeRegisterHotkey()
         &eventHotkey
     );
     if (status != noErr)
-        return (int) status;
+        return static_cast<int>(status);
     kcToHotkeyRef_[regUnregKc_] = eventHotkey;
     return RC_SUCCESS;
 }
@@ -209,7 +209,7 @@ int RegisterGHMPrivateMac::nativeUnregisterHotkey()
     EventHotKeyRef eventHotkey = kcToHotkeyRef_[regUnregKc_];
     auto status = UnregisterEventHotKey(eventHotkey);
     if (status != noErr)
-        return (int) status;
+        return static_cast<int>(status);
     kcToHotkeyRef_.erase(regUnregKc_);
     return RC_SUCCESS;
 }
