@@ -159,7 +159,7 @@ ghm.stop(); // 释放热键管理器。
 
 - **MacOS** 系统下的 `Register GHM` 需要使用者在主循环中创建事件循环。
 
-- 中止 `GHM` 服务、注册热键、注销热键和替换热键等操作，必须在对应的 `GHM` 初始化之后才可进行！
+- 中止 `GHM` 服务、注册热键、注销热键和替换热键等操作，必须在对应的 `GHM` 运行之后才可进行！
 
 - 不要在工作线程中（对于使用者而言，这是热键被触发时回调函数执行的线程）进行中止 `GHM` 服务、注册热键、注销热键和替换热键等操作！
 
@@ -175,4 +175,4 @@ ghm.stop(); // 释放热键管理器。
 
 ---
 
-出于某些原因，本库 `1.4.0` 版本之前的 **commit** 记录已被清空，此前的 **历史commit** 可以通过[global hotkey old](https://github.com/jaderochan/global_hotkey_old)公共存档库进行查看。
+出于某些原因，本库 `1.4.0` 版本之前的 **commit** 记录已被清空，此前的 **历史commit** 可以通过 [global hotkey old](https://github.com/jaderochan/global_hotkey_old) 公共存档库进行查看。
