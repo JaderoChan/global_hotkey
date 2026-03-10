@@ -37,12 +37,14 @@ else()
     )
 
     if(WIN32)
-        file(GLOB SRC ${SRC} ${CMAKE_CURRENT_SOURCE_DIR}/src/register_global_hotkey_manager/*win*.cpp)
+        file(GLOB PLATFORMS_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/register_global_hotkey_manager/*win*.cpp)
     elseif(APPLE)
-        file(GLOB SRC ${SRC} ${CMAKE_CURRENT_SOURCE_DIR}/src/register_global_hotkey_manager/*mac*.cpp)
+        file(GLOB PLATFORMS_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/register_global_hotkey_manager/*mac*.cpp)
     elseif(LINUX)
-        file(GLOB SRC ${SRC} ${CMAKE_CURRENT_SOURCE_DIR}/src/register_global_hotkey_manager/*x11*.cpp)
+        file(GLOB PLATFORMS_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/register_global_hotkey_manager/*x11*.cpp)
     endif()
+
+    list(APPEND SRC ${PLATFORMS_SRC})
 endif()
 
 # Process the "GLOBAL_HOTKEY_DISABLE_HOOK" option to collect relevant files。
@@ -201,7 +203,7 @@ if(LINUX)
     message(STATUS "${GLOBAL_HOTKEY_MSG_PREFIX} Linux platform detected.")
 
     if(NOT GLOBAL_HOTKEY_DISABLE_REGISTER)
-        find_path(X11_INCLUDE_DIR X11/Xlib.h PATHS usr/include)
+        find_path(X11_INCLUDE_DIR X11/Xlib.h PATHS /usr/include)
         find_library(X11_LIBRARY NAMES X11 PATHS /usr/lib /usr/lib/x86_64-linux-gnu)
         if(X11_INCLUDE_DIR AND X11_LIBRARY)
             message(STATUS "${GLOBAL_HOTKEY_MSG_PREFIX} Found X11: ${X11_LIBRARY}.")
