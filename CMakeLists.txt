@@ -25,7 +25,7 @@ if(NOT DEFINED GLOBAL_HOTKEY_MASTER_PROJECT)
 endif()
 
 # Process the "GLOBAL_HOTKEY_DISABLE_REGISTER" option to collect relevant files。
-set(SRC)
+set(SRC)    # Clear any existing variables that may exist.
 option(GLOBAL_HOTKEY_DISABLE_REGISTER "Disable register Global Hotkey Manager" OFF)
 if(GLOBAL_HOTKEY_DISABLE_REGISTER)
     message(STATUS "${GLOBAL_HOTKEY_MSG_PREFIX} Register Global Hotkey Manager be disable.")
@@ -36,16 +36,16 @@ else()
         ${CMAKE_CURRENT_SOURCE_DIR}/src/register_global_hotkey_manager/register_ghm_private.cpp
     )
 
-    set(PLATFORMS_SRC)
+    set(PLATFORM_SRC)   # Clear any existing variables that may exist.
     if(WIN32)
-        file(GLOB PLATFORMS_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/register_global_hotkey_manager/*win*.cpp)
+        file(GLOB PLATFORM_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/register_global_hotkey_manager/*win*.cpp)
     elseif(APPLE)
-        file(GLOB PLATFORMS_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/register_global_hotkey_manager/*mac*.cpp)
+        file(GLOB PLATFORM_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/register_global_hotkey_manager/*mac*.cpp)
     elseif(LINUX)
-        file(GLOB PLATFORMS_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/register_global_hotkey_manager/*x11*.cpp)
+        file(GLOB PLATFORM_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/register_global_hotkey_manager/*x11*.cpp)
     endif()
 
-    list(APPEND SRC ${PLATFORMS_SRC})
+    list(APPEND SRC ${PLATFORM_SRC})
 endif()
 
 # Process the "GLOBAL_HOTKEY_DISABLE_HOOK" option to collect relevant files。
