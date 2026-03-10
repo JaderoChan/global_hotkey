@@ -36,6 +36,7 @@ else()
         ${CMAKE_CURRENT_SOURCE_DIR}/src/register_global_hotkey_manager/register_ghm_private.cpp
     )
 
+    set(PLATFORMS_SRC)
     if(WIN32)
         file(GLOB PLATFORMS_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/register_global_hotkey_manager/*win*.cpp)
     elseif(APPLE)
