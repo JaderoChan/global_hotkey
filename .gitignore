@@ -1,26 +1,24 @@
-# Object Files
-*.o
-*.obj
-
-# Librarys & Executables
-*.a
-*.lib
-*.so
-*.dll
-*.out
-*.exe
-*.app
-
-# PDB Files
-*.pdb
-
-# MacOS Folder Config
-.DS_Store
-
-# Folders
 .vscode/
-.tmp/
+.vs/
+__pycache__/
+
 build/
+*.app/
+
 tmp/
 temp/
+backup/
 install/
+
+.DS_Store
+
+*.a
+*.so
+*.o
+*.lib
+*.dll
+*.bin
+*.exe
+*.pdb
+
+*.log

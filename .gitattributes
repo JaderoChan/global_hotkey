@@ -11,7 +11,7 @@ LICENSE*        text
 # CMake input template
 *.in            text
 
-*.sh            binary
-*.bash          binary
-*.zsh           binary
-*.bat           binary
+*.sh            text
+*.bash          text
+*.zsh           text
+*.bat           text eol=crlf
