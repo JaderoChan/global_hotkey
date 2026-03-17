@@ -38,11 +38,11 @@ else()
 
     set(PLATFORM_SRC)   # Clear any existing variables that may exist.
     if(WIN32)
-        file(GLOB PLATFORM_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/register_global_hotkey_manager/*win*.cpp)
+        file(GLOB PLATFORM_SRC CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/register_global_hotkey_manager/*win*.cpp)
     elseif(APPLE)
-        file(GLOB PLATFORM_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/register_global_hotkey_manager/*mac*.cpp)
+        file(GLOB PLATFORM_SRC CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/register_global_hotkey_manager/*mac*.cpp)
     elseif(LINUX)
-        file(GLOB PLATFORM_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/register_global_hotkey_manager/*x11*.cpp)
+        file(GLOB PLATFORM_SRC CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/register_global_hotkey_manager/*x11*.cpp)
     endif()
 
     list(APPEND SRC ${PLATFORM_SRC})
@@ -127,13 +127,6 @@ option(
 )
 if(GLOBAL_HOTKEY_OPTIMIZE_SYSTEM_RESERVE_HOTKEY)
     target_compile_definitions(${PROJECT_NAME} PRIVATE GLOBAL_HOTKEY_OPTIMIZE_SYSTEM_RESERVE_HOTKEY)
-endif()
-
-# Set the suffix of the library file in Windows.
-if(WIN32)
-    message(STATUS "${GLOBAL_HOTKEY_MSG_PREFIX} Windows platform detected.")
-    set(CMAKE_STATIC_LIBRARY_SUFFIX ".lib")
-    set(CMAKE_IMPORT_LIBRARY_SUFFIX ".lib")
 endif()
 
 set_target_properties(${PROJECT_NAME} PROPERTIES DEBUG_POSTFIX d)
@@ -234,7 +227,7 @@ install(
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
 
-file(GLOB HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/include/global_hotkey/*.hpp)
+file(GLOB HEADERS CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/include/global_hotkey/*.hpp)
 if(GLOBAL_HOTKEY_DISABLE_HOOK)
     list(FILTER HEADERS EXCLUDE REGEX ".*hook_global_hotkey_manager\.hpp")
 endif()
