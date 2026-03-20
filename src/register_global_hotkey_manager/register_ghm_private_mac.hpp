@@ -37,10 +37,11 @@ private:
     static int nativeUnregisterHotkey();
     static void tryInvoke(const KeyCombination& prevKc, const KeyCombination& currKc);
 
-    static std::condition_variable cvRegUnregRc_;
-    static std::atomic<int> regUnregRc_;
-    static std::atomic<EventType> eventType_;
-    static std::atomic<KeyCombination> regUnregKc_;
+    static int regUnregRc_;
+    static KeyCombination regUnregKc_;
+    static EventType eventType_;
+    static std::mutex regUnregRcKcTypeMtx_;
+    static std::condition_variable regUnregRcCv_;
     static std::unordered_map<KeyCombination, EventHotKeyRef> kcToHotkeyRef_;
 
     static KeyCombination prevKc_;

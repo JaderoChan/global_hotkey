@@ -6,10 +6,11 @@
 namespace gbhk
 {
 
-std::condition_variable RegisterGHMPrivateMac::cvRegUnregRc_;
-std::atomic<int> RegisterGHMPrivateMac::regUnregRc_{0};
-std::atomic<EventType> RegisterGHMPrivateMac::eventType_{ET_NONE};
-std::atomic<KeyCombination> RegisterGHMPrivateMac::regUnregKc_;
+int RegisterGHMPrivateMac::regUnregRc_ = -2;
+KeyCombination RegisterGHMPrivateMac::regUnregKc_;
+std::mutex RegisterGHMPrivateMac::regUnregRcKcTypeMtx_;
+std::condition_variable RegisterGHMPrivateMac::regUnregRcCv_;
+EventType RegisterGHMPrivateMac::eventType_ = ET_NONE;
 std::unordered_map<KeyCombination, EventHotKeyRef> RegisterGHMPrivateMac::kcToHotkeyRef_;
 
 KeyCombination RegisterGHMPrivateMac::prevKc_;
@@ -89,7 +90,7 @@ void RegisterGHMPrivateMac::work()
     sourceContext_ = {0};
     source_ = nullptr;
     runLoop_ = nullptr;
-    regUnregRc_ = 0;
+    regUnregRc_ = -2;
     eventType_ = ET_NONE;
     regUnregKc_ = KeyCombination();
     kcToHotkeyRef_.clear();
@@ -97,48 +98,56 @@ void RegisterGHMPrivateMac::work()
 
 int RegisterGHMPrivateMac::registerHotkeyImpl(const KeyCombination& kc, bool autoRepeat)
 {
-    regUnregRc_ = -1;
-    eventType_ = ET_REGISTER;
-    regUnregKc_ = kc;
+    {
+        std::lock_guard<std::mutex> locker(regUnregRcKcTypeMtx_);
+        regUnregRc_ = -1;
+        regUnregKc_ = kc;
+        eventType_ = ET_REGISTER;
+    }
+
     CFRunLoopSourceSignal(source_);
     CFRunLoopWakeUp(runLoop_);
 
-    std::mutex dummyMtx;
-    std::unique_lock<std::mutex> dummyLocker(dummyMtx);
-    cvRegUnregRc_.wait(dummyLocker, [this]() { return regUnregRc_ != -1; });
+    std::unique_lock<std::mutex> locker(regUnregRcKcTypeMtx_);
+    regUnregRcCv_.wait(locker, [this]() { return regUnregRc_ != -1; });
     return regUnregRc_;
 }
 
 int RegisterGHMPrivateMac::unregisterHotkeyImpl(const KeyCombination& kc)
 {
-    regUnregRc_ = -1;
-    eventType_ = ET_UNREGISTER;
-    regUnregKc_ = kc;
+    {
+        std::lock_guard<std::mutex> locker(regUnregRcKcTypeMtx_);
+        regUnregRc_ = -1;
+        regUnregKc_ = kc;
+        eventType_ = ET_UNREGISTER;
+    }
+
     CFRunLoopSourceSignal(source_);
     CFRunLoopWakeUp(runLoop_);
 
-    std::mutex dummyMtx;
-    std::unique_lock<std::mutex> dummyLocker(dummyMtx);
-    cvRegUnregRc_.wait(dummyLocker, [this]() { return regUnregRc_ != -1; });
+    std::unique_lock<std::mutex> locker(regUnregRcKcTypeMtx_);
+    regUnregRcCv_.wait(locker, [this]() { return regUnregRc_ != -1; });
     return regUnregRc_;
 }
 
 void RegisterGHMPrivateMac::runLoopSourceCallback(void* info)
 {
-    CFRunLoopSourceRef* sref = static_cast<CFRunLoopSourceRef*>(info);
-    switch (eventType_.load())
     {
-        case ET_REGISTER:
-            regUnregRc_ = nativeRegisterHotkey();
-            break;
-        case ET_UNREGISTER:
-            regUnregRc_ = nativeUnregisterHotkey();
-            break;
-        default:
-            regUnregRc_ = RC_SUCCESS;
-            break;
+        std::lock_guard<std::mutex> locker(regUnregRcKcTypeMtx_);
+        switch (eventType_)
+        {
+            case ET_REGISTER:
+                regUnregRc_ = nativeRegisterHotkey();
+                break;
+            case ET_UNREGISTER:
+                regUnregRc_ = nativeUnregisterHotkey();
+                break;
+            default:
+                regUnregRc_ = RC_SUCCESS;
+                break;
+        }
     }
-    cvRegUnregRc_.notify_one();
+    regUnregRcCv_.notify_one();
 }
 
 OSStatus RegisterGHMPrivateMac::hotkeyEventHandler(EventHandlerCallRef nextHandler, EventRef event, void* userData)

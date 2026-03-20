@@ -1,7 +1,6 @@
 #ifndef GLOBAL_HOTKEY_GHM_PRIVATE_HPP
 #define GLOBAL_HOTKEY_GHM_PRIVATE_HPP
 
-#include <atomic>               // atomic
 #include <condition_variable>   // condition_variable
 #include <functional>           // function
 #include <mutex>                // mutex, lock_guard, unique_lock
@@ -93,16 +92,19 @@ private:
 
     bool isInWorkerThread() const;
 
-    std::condition_variable cvRunningState_;
-    std::atomic<RunningState> runningState_;
-    std::atomic<int> runningRc_;
-    mutable std::mutex runAndStopMtx_;
+    RunningState runningState_ = RS_FREE;
+    mutable std::mutex runningStateMtx_;
+    std::condition_variable runningStateCv_;
+    int runningRc_ = 0;
+
+    mutable std::mutex operateMtx_;
 
     std::thread workerThread_;
     std::thread::id workerThreadId_;
+    mutable std::mutex workThreadIdMtx_;
 
     std::unordered_map<KeyCombination, std::pair<bool, std::function<void ()>>> fns_;
-    mutable std::mutex FnsMtx_; // Used for protect fns variable.
+    mutable std::mutex fnsMtx_; // Used for protect fns variable.
 };
 
 } // namespace gbhk

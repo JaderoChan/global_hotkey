@@ -6,9 +6,9 @@
 namespace gbhk
 {
 
-std::mutex HookGHMPrivate::mtx_;
-std::condition_variable HookGHMPrivate::cvHasEvent_;
 std::queue<Event> HookGHMPrivate::eventQueue_;
+std::mutex HookGHMPrivate::eventQueueMtx_;
+std::condition_variable HookGHMPrivate::eventQueueCv_;
 
 HookGHMPrivate::HookGHMPrivate() : kbdtMgr_(kbdt::KeyboardToolsManager::getInstance()) {}
 
@@ -151,8 +151,8 @@ void HookGHMPrivate::tryInvoke(const KeyCombination& prevKc, const KeyCombinatio
 
 Event HookGHMPrivate::takeEvent()
 {
-    std::unique_lock<std::mutex> locker(mtx_);
-    cvHasEvent_.wait(locker, []() { return !eventQueue_.empty(); });
+    std::unique_lock<std::mutex> locker(eventQueueMtx_);
+    eventQueueCv_.wait(locker, []() { return !eventQueue_.empty(); });
     Event ev = eventQueue_.front();
     eventQueue_.pop();
     return ev;
@@ -161,15 +161,15 @@ Event HookGHMPrivate::takeEvent()
 void HookGHMPrivate::pushEvent(const Event& event)
 {
     {
-        std::lock_guard<std::mutex> locker(mtx_);
+        std::lock_guard<std::mutex> locker(eventQueueMtx_);
         eventQueue_.push(event);
     }
-    cvHasEvent_.notify_one();
+    eventQueueCv_.notify_one();
 }
 
 void HookGHMPrivate::clearEventQueue()
 {
-    std::lock_guard<std::mutex> locker(mtx_);
+    std::lock_guard<std::mutex> locker(eventQueueMtx_);
     while (!eventQueue_.empty())
         eventQueue_.pop();
 }

@@ -41,9 +41,9 @@ private:
 
     void tryInvoke(const KeyCombination& prevKc, const KeyCombination& currKc) const;
 
-    static std::mutex mtx_;
-    static std::condition_variable cvHasEvent_;
     static std::queue<Event> eventQueue_;
+    static std::mutex eventQueueMtx_;
+    static std::condition_variable eventQueueCv_;
 
     // Block thread until has event pushed.
     static Event takeEvent();

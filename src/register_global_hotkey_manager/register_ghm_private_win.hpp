@@ -29,9 +29,10 @@ private:
     void tryInvoke(WPARAM wParam, LPARAM lParam) const;
 
     DWORD workerThreadId_ = 0;
-    std::condition_variable cvRegUnregRc_;
-    std::atomic<int> regUnregRc_;
-    std::atomic<int> maxHotkeyId_;
+    int regUnregRc_ = -2;
+    mutable std::mutex regUnregRcMtx_;
+    std::condition_variable regUnregRcCv_;
+    int maxHotkeyId_ = 0;
     std::vector<int> freeHotkeyIds_;
     std::unordered_map<int, KeyCombination> hotkeyIdToKc_;
     std::unordered_map<KeyCombination, int> kcToHotkeyId_;

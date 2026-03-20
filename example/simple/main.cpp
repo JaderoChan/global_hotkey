@@ -1,5 +1,5 @@
 #include <cstdio>               // printf
-#include <atomic>               // atomic
+#include <mutex>                // mutex
 #include <condition_variable>   // condition_variable
 #include <string>
 
@@ -92,12 +92,16 @@ int main()
     }
     printf("Register the hotkey: [%s] (auto repeat) successfully\n", hotkey2.toString().c_str());
 
-    std::atomic<bool> shouldClose(false);
+    bool shouldClose = false;
+    std::mutex mtx;
     std::condition_variable cv;
     rc = ghm.registerHotkey(hotkey3, [&]()
     {
         printf("%s be triggered!\n", hotkey3.toString().c_str());
-        shouldClose = true;
+        {
+            std::lock_guard<std::mutex> locker(mtx);
+            shouldClose = true;
+        }
         cv.notify_one();
     });
     if (rc != gbhk::RC_SUCCESS)
@@ -111,9 +115,8 @@ int main()
     printf("Register the hotkey: [%s] successfully\n", hotkey3.toString().c_str());
     printf("Press the [%s] to exit!\n\n", hotkey3.toString().c_str());
 
-    std::mutex dummyMtx;
-    std::unique_lock<std::mutex> dummyLocker(dummyMtx);
-    cv.wait(dummyLocker, [&]() { return shouldClose.load(); });
+    std::unique_lock<std::mutex> locker(mtx);
+    cv.wait(locker, [&]() { return shouldClose; });
 
     printf("Exit...\n");
     rc = ghm.stop();

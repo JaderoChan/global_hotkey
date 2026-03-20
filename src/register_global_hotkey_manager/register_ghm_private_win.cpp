@@ -9,10 +9,7 @@ namespace gbhk
 #define WM_REGISTER_HOTKEY      (WM_USER + 1)
 #define WM_UNREGISTER_HOTKEY    (WM_USER + 2)
 
-RegisterGHMPrivateWin::RegisterGHMPrivateWin() :
-    regUnregRc_(0),
-    maxHotkeyId_(0)
-{}
+RegisterGHMPrivateWin::RegisterGHMPrivateWin() {}
 
 RegisterGHMPrivateWin::~RegisterGHMPrivateWin() { stop(); }
 
@@ -42,13 +39,19 @@ void RegisterGHMPrivateWin::work()
         }
         else if (msg.message == WM_REGISTER_HOTKEY)
         {
-            regUnregRc_ = nativeRegisterHotkey(msg.wParam, msg.lParam);
-            cvRegUnregRc_.notify_one();
+            {
+                std::lock_guard<std::mutex> locker(regUnregRcMtx_);
+                regUnregRc_ = nativeRegisterHotkey(msg.wParam, msg.lParam);
+            }
+            regUnregRcCv_.notify_one();
         }
         else if (msg.message == WM_UNREGISTER_HOTKEY)
         {
-            regUnregRc_ = nativeUnregisterHotkey(msg.wParam, msg.lParam);
-            cvRegUnregRc_.notify_one();
+            {
+                std::lock_guard<std::mutex> locker(regUnregRcMtx_);
+                regUnregRc_ = nativeUnregisterHotkey(msg.wParam, msg.lParam);
+            }
+            regUnregRcCv_.notify_one();
         }
         else if (msg.message == WM_DESTROY)
         {
@@ -72,12 +75,15 @@ int RegisterGHMPrivateWin::registerHotkeyImpl(const KeyCombination& kc, bool aut
     // lParam store the value of native key code.
     LPARAM lParam = keyToNativeKey(kc.key());
 
-    regUnregRc_ = -1;
+    {
+        std::lock_guard<std::mutex> locker(regUnregRcMtx_);
+        regUnregRc_ = -1;
+    }
+
     if (PostThreadMessageA(workerThreadId_, WM_REGISTER_HOTKEY, wParam, lParam) != 0)
     {
-        std::mutex dummyMtx;
-        std::unique_lock<std::mutex> dummyLocker(dummyMtx);
-        cvRegUnregRc_.wait(dummyLocker, [this]() { return regUnregRc_ != -1; });
+        std::unique_lock<std::mutex> locker(regUnregRcMtx_);
+        regUnregRcCv_.wait(locker, [this]() { return regUnregRc_ != -1; });
         return regUnregRc_;
     }
     return static_cast<int>(GetLastError());
@@ -90,12 +96,15 @@ int RegisterGHMPrivateWin::unregisterHotkeyImpl(const KeyCombination& kc)
     // lParam store the value of native key code.
     LPARAM lParam = keyToNativeKey(kc.key());
 
-    regUnregRc_ = -1;
+    {
+        std::lock_guard<std::mutex> locker(regUnregRcMtx_);
+        regUnregRc_ = -1;
+    }
+
     if (PostThreadMessageA(workerThreadId_, WM_UNREGISTER_HOTKEY, wParam, lParam) != 0)
     {
-        std::mutex dummyMtx;
-        std::unique_lock<std::mutex> dummyLocker(dummyMtx);
-        cvRegUnregRc_.wait(dummyLocker, [this]() { return regUnregRc_ != -1; });
+        std::unique_lock<std::mutex> locker(regUnregRcMtx_);
+        regUnregRcCv_.wait(locker, [this]() { return regUnregRc_ != -1; });
         return regUnregRc_;
     }
     return static_cast<int>(GetLastError());
@@ -103,7 +112,7 @@ int RegisterGHMPrivateWin::unregisterHotkeyImpl(const KeyCombination& kc)
 
 int RegisterGHMPrivateWin::nativeRegisterHotkey(WPARAM wParam, LPARAM lParam)
 {
-    int hotkeyId = (freeHotkeyIds_.empty() ? maxHotkeyId_.load() : freeHotkeyIds_.back());
+    int hotkeyId = (freeHotkeyIds_.empty() ? maxHotkeyId_ : freeHotkeyIds_.back());
     if (RegisterHotKey(nullptr, hotkeyId, wParam, lParam) != 0)
     {
         Modifiers mod = modifiersFromNativeModifiers(wParam);

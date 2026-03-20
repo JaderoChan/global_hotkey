@@ -3,6 +3,8 @@
 
 #include "register_ghm_private.hpp"
 
+#include <list>
+
 #include <X11/Xlib.h>
 
 namespace gbhk
@@ -21,8 +23,7 @@ private:
     static XErrorHandler prevXErrorHandler_;
 };
 
-// 8 byte for `write()` and `read()` of the fd created by `eventfd()`.
-enum EventType : uint64_t
+enum EventType
 {
     ET_EXIT = 1,
     ET_REGISTER,
@@ -50,10 +51,14 @@ private:
     int nativeUnregisterHotkey(Display* display);
     void tryInvoke(const KeyCombination& prevKc, const KeyCombination& currKc) const;
 
-    std::condition_variable cvRegUnregRc_;
-    std::atomic<int> regUnregRc_;
-    std::atomic<KeyCombination> regUnregKc_;
+    int regUnregRc_ = -2;
+    KeyCombination regUnregKc_;
+    mutable std::mutex regUnregRcKcMtx_;
+    std::condition_variable regUnregRcCv_;
+
     int eventFd_ = -1;
+    std::list<EventType> events_;
+    mutable std::mutex eventsMtx;
 };
 
 } // namespace gbhk

@@ -34,10 +34,7 @@ int ErrorHandler::handleError(Display* display, XErrorEvent* error)
 
 std::unordered_map<int, int> RegisterGHMPrivateX11::keycodeToKeysym_;
 
-RegisterGHMPrivateX11::RegisterGHMPrivateX11() :
-    regUnregRc_(0),
-    regUnregKc_(KeyCombination())
-{}
+RegisterGHMPrivateX11::RegisterGHMPrivateX11() {}
 
 RegisterGHMPrivateX11::~RegisterGHMPrivateX11() { stop(); }
 
@@ -51,10 +48,19 @@ int RegisterGHMPrivateX11::initialize()
 
 int RegisterGHMPrivateX11::stopWork()
 {
-    EventType et = ET_EXIT;
-    auto wsize = write(eventFd_, &et, 8);
+    {
+        std::lock_guard<std::mutex> locker(eventsMtx);
+        events_.push_back(ET_EXIT);
+    }
+
+    uint64_t wakeup = 1;
+    auto wsize = write(eventFd_, &wakeup, 8);
     if (wsize != 8)
+    {
+        std::lock_guard<std::mutex> locker(eventsMtx);
+        events_.pop_back();
         return errno;
+    }
     return RC_SUCCESS;
 }
 
@@ -80,7 +86,9 @@ void RegisterGHMPrivateX11::work()
     KeyCombination prevKc;
     KeyCombination currKc;
     XEvent event = {0};
-    while (true)
+
+    bool shouldClose = false;
+    while (!shouldClose)
     {
         int ret = poll(pollFds, 2, -1);
         if (ret == -1)
@@ -111,64 +119,109 @@ void RegisterGHMPrivateX11::work()
         // Custom event was detected.
         if (pollFds[1].revents & POLLIN)
         {
-            EventType et;
-            auto rsize = read(eventFd_, &et, 8);
-            if (rsize != 8)
-                continue;
+            uint64_t counting;
+            ssize_t rsize = read(eventFd_, &counting, 8);
+            if (rsize == 8)
+            {
+                for (uint64_t i = 0; i < counting && !shouldClose; ++i)
+                {
+                    EventType et;
+                    {
+                        std::lock_guard<std::mutex> locker(eventsMtx);
+                        if (events_.empty())
+                            break;
+                        et = events_.front();
+                        events_.pop_front();
+                    }
 
-            if (et == ET_EXIT)
-            {
-                break;
-            }
-            else if (et == ET_REGISTER)
-            {
-                regUnregRc_ = nativeRegisterHotkey(display);
-                cvRegUnregRc_.notify_one();
-            }
-            else if (et == ET_UNREGISTER)
-            {
-                regUnregRc_ = nativeUnregisterHotkey(display);
-                cvRegUnregRc_.notify_one();
+                    switch (et)
+                    {
+                        case ET_EXIT:
+                            shouldClose = true;
+                            break;
+                        case ET_REGISTER:
+                        {
+                            std::lock_guard<std::mutex> locker(regUnregRcKcMtx_);
+                            regUnregRc_ = nativeRegisterHotkey(display);
+                        }
+                            regUnregRcCv_.notify_one();
+                            break;
+                        case ET_UNREGISTER:
+                        {
+                            std::lock_guard<std::mutex> locker(regUnregRcKcMtx_);
+                            regUnregRc_ = nativeUnregisterHotkey(display);
+                        }
+                            regUnregRcCv_.notify_one();
+                            break;
+                    }
+                }
             }
         }
     }
 
     XCloseDisplay(display);
+
     close(eventFd_);
+    eventFd_ = -1;
+    events_.clear();
 
     ErrorHandler::ec = RC_SUCCESS;
-    regUnregRc_ = 0;
+
+    regUnregRc_ = -2;
     regUnregKc_ = KeyCombination();
-    eventFd_ = -1;
 }
 
 int RegisterGHMPrivateX11::registerHotkeyImpl(const KeyCombination& kc, bool autoRepeat)
 {
-    regUnregRc_ = -1;
-    regUnregKc_ = kc;
-    EventType et = ET_REGISTER;
-    auto wsize = write(eventFd_, &et, 8);
-    if (wsize != 8)
-        return errno;
+    {
+        std::lock_guard<std::mutex> locker(regUnregRcKcMtx_);
+        regUnregRc_ = -1;
+        regUnregKc_ = kc;
+    }
 
-    std::mutex dummyMtx;
-    std::unique_lock<std::mutex> dummyLocker(dummyMtx);
-    cvRegUnregRc_.wait(dummyLocker, [this]() { return regUnregRc_ != -1; });
+    {
+        std::lock_guard<std::mutex> locker(eventsMtx);
+        events_.push_back(ET_REGISTER);
+    }
+
+    uint64_t wakeup = 1;
+    auto wsize = write(eventFd_, &wakeup, 8);
+    if (wsize != 8)
+    {
+        std::lock_guard<std::mutex> locker(eventsMtx);
+        events_.pop_back();
+        return errno;
+    }
+
+    std::unique_lock<std::mutex> locker(regUnregRcKcMtx_);
+    regUnregRcCv_.wait(locker, [this]() { return regUnregRc_ != -1; });
     return regUnregRc_;
 }
 
 int RegisterGHMPrivateX11::unregisterHotkeyImpl(const KeyCombination& kc)
 {
-    regUnregRc_ = -1;
-    regUnregKc_ = kc;
-    EventType et = ET_UNREGISTER;
-    auto wsize = write(eventFd_, &et, 8);
-    if (wsize != 8)
-        return errno;
+    {
+        std::lock_guard<std::mutex> locker(regUnregRcKcMtx_);
+        regUnregRc_ = -1;
+        regUnregKc_ = kc;
+    }
 
-    std::mutex dummyMtx;
-    std::unique_lock<std::mutex> dummyLocker(dummyMtx);
-    cvRegUnregRc_.wait(dummyLocker, [this]() { return regUnregRc_ != -1; });
+    {
+        std::lock_guard<std::mutex> locker(eventsMtx);
+        events_.push_back(ET_UNREGISTER);
+    }
+
+    uint64_t wakeup = 1;
+    auto wsize = write(eventFd_, &wakeup, 8);
+    if (wsize != 8)
+    {
+        std::lock_guard<std::mutex> locker(eventsMtx);
+        events_.pop_back();
+        return errno;
+    }
+
+    std::unique_lock<std::mutex> locker(regUnregRcKcMtx_);
+    regUnregRcCv_.wait(locker, [this]() { return regUnregRc_ != -1; });
     return regUnregRc_;
 }
 
@@ -176,10 +229,10 @@ int RegisterGHMPrivateX11::nativeRegisterHotkey(Display* display)
 {
     ErrorHandler eh;
 
-    auto keysym = keyToX11Keysym(regUnregKc_.load().key());
+    auto keysym = keyToX11Keysym(regUnregKc_.key());
     auto keycode = XKeysymToKeycode(display, keysym);
     keycodeToKeysym_[keycode] = keysym;
-    auto mod = modifiersTox11Modifiers(regUnregKc_.load().modifiers());
+    auto mod = modifiersTox11Modifiers(regUnregKc_.modifiers());
     XGrabKey(display, keycode, mod, DefaultRootWindow(display), True, GrabModeAsync, GrabModeAsync);
     XSync(display, False);
 
@@ -190,9 +243,10 @@ int RegisterGHMPrivateX11::nativeUnregisterHotkey(Display* display)
 {
     ErrorHandler eh;
 
-    auto keysym = keyToX11Keysym(regUnregKc_.load().key());
+    auto keysym = keyToX11Keysym(regUnregKc_.key());
     auto keycode = XKeysymToKeycode(display, keysym);
-    auto mod = modifiersTox11Modifiers(regUnregKc_.load().modifiers());
+    keycodeToKeysym_.erase(keycode);
+    auto mod = modifiersTox11Modifiers(regUnregKc_.modifiers());
     XUngrabKey(display, keycode, mod, DefaultRootWindow(display));
     XSync(display, False);
 
