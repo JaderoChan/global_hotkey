@@ -79,8 +79,8 @@ void RegisterGHMPrivateX11::work()
 
     int x11Fd = ConnectionNumber(display);
     struct pollfd pollFds[2] = {0};
-    pollFds[0] = struct pollfd{x11Fd, POLLIN};
-    pollFds[1] = struct pollfd{eventFd_, POLLIN};
+    pollFds[0] = pollfd{x11Fd, POLLIN};
+    pollFds[1] = pollfd{eventFd_, POLLIN};
 
     setRunSuccess();
     KeyCombination prevKc;
@@ -232,7 +232,7 @@ int RegisterGHMPrivateX11::nativeRegisterHotkey(Display* display)
     auto keysym = keyToX11Keysym(regUnregKc_.key());
     auto keycode = XKeysymToKeycode(display, keysym);
     keycodeToKeysym_[keycode] = keysym;
-    auto mod = modifiersTox11Modifiers(regUnregKc_.modifiers());
+    auto mod = modifiersToX11Modifiers(regUnregKc_.modifiers());
     XGrabKey(display, keycode, mod, DefaultRootWindow(display), True, GrabModeAsync, GrabModeAsync);
     XSync(display, False);
 
@@ -246,7 +246,7 @@ int RegisterGHMPrivateX11::nativeUnregisterHotkey(Display* display)
     auto keysym = keyToX11Keysym(regUnregKc_.key());
     auto keycode = XKeysymToKeycode(display, keysym);
     keycodeToKeysym_.erase(keycode);
-    auto mod = modifiersTox11Modifiers(regUnregKc_.modifiers());
+    auto mod = modifiersToX11Modifiers(regUnregKc_.modifiers());
     XUngrabKey(display, keycode, mod, DefaultRootWindow(display));
     XSync(display, False);
 
