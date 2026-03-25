@@ -20,7 +20,8 @@ int GHMPrivate::run()
         return rc;
 
     // Start the worker thread.
-    workerThread_ = std::thread([this]() {
+    workerThread_ = std::thread([this]()
+    {
         {
             std::lock_guard<std::mutex> workerThreadIdLocker(workThreadIdMtx_);
             workerThreadId_ = std::this_thread::get_id();
