@@ -3,7 +3,7 @@
 include(CMakeFindDependencyMacro)
 find_dependency(Threads REQUIRED)
 if(NOT @GLOBAL_HOTKEY_DISABLE_HOOK@)
-    find_dependency(kbdt REQUIRED)
+    find_dependency(kbt REQUIRED)
 endif()
 if(APPLE)
     find_dependency(Carbon CoreFoundation REQUIRED)

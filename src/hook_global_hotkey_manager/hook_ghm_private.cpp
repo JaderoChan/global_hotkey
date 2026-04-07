@@ -10,7 +10,7 @@ std::queue<Event> HookGHMPrivate::eventQueue_;
 std::mutex HookGHMPrivate::eventQueueMtx_;
 std::condition_variable HookGHMPrivate::eventQueueCv_;
 
-HookGHMPrivate::HookGHMPrivate() : kbdtMgr_(kbdt::KeyboardToolsManager::getInstance()) {}
+HookGHMPrivate::HookGHMPrivate() : eventHookService_(kbt::EventHookService::getInstance()) {}
 
 HookGHMPrivate::~HookGHMPrivate() { stop(); }
 
@@ -24,18 +24,18 @@ int HookGHMPrivate::initialize()
 {
     clearEventQueue();
 
-    int rc = kbdtMgr_.run();
-    if (rc != KBDT_RC_SUCCESS)
+    int rc = eventHookService_.run();
+    if (rc != KBT_RC_SUCCESS)
         return rc;
-    kbdtMgr_.setEventHandler(&kbdtEventHandler);
+    eventHookService_.setEventHandler(&kbtEventHandler);
     return RC_SUCCESS;
 }
 
 int HookGHMPrivate::stopWork()
 {
     pushEvent({ET_EXIT});
-    int rc = kbdtMgr_.stop();
-    if (rc != KBDT_RC_SUCCESS)
+    int rc = eventHookService_.stop();
+    if (rc != KBT_RC_SUCCESS)
         return rc;
     return RC_SUCCESS;
 }
@@ -174,10 +174,10 @@ void HookGHMPrivate::clearEventQueue()
         eventQueue_.pop();
 }
 
-bool HookGHMPrivate::kbdtEventHandler(kbdt::KeyEvent event)
+bool HookGHMPrivate::kbtEventHandler(kbt::KeyEvent event)
 {
     auto key = keyFromNativeKey(event.nativeKey);
-    auto et = (event.type == kbdt::KET_PRESSED ? ET_KEY_PRESSED : ET_KEY_RELEASED);
+    auto et = (event.type == kbt::KET_PRESSED ? ET_KEY_PRESSED : ET_KEY_RELEASED);
     pushEvent({et, key});
     return true;
 }

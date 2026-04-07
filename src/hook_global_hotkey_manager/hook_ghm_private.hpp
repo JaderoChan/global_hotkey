@@ -49,9 +49,9 @@ private:
     static Event takeEvent();
     static void pushEvent(const Event& event);
     static void clearEventQueue();
-    static bool kbdtEventHandler(kbdt::KeyEvent event);
+    static bool kbtEventHandler(kbt::KeyEvent event);
 
-    kbdt::KeyboardToolsManager& kbdtMgr_;
+    kbt::EventHookService& eventHookService_;
 };
 
 } // namespace gbhk
