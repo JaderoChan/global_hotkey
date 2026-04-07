@@ -1,7 +1,7 @@
 #ifndef GLOBAL_HOTKEY_GLOBAL_HOTKEY_HPP
 #define GLOBAL_HOTKEY_GLOBAL_HOTKEY_HPP
 
-// Repository : https://github.com/JaderoChan/global_hotkey
+// Repository: https://github.com/JaderoChan/global_hotkey
 // Author: 頔珞JaderoChan
 
 // MIT License
