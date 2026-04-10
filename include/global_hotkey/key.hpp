@@ -219,12 +219,12 @@ public:
     constexpr Modifiers() noexcept {}
     constexpr Modifiers(ModifierFlag modifier) noexcept : data_(modifier) {}
     constexpr Modifiers(uint32_t modifiers) noexcept : data_(modifiers) {}
-    constexpr Modifiers(const std::initializer_list<ModifierFlag>& modifiers) noexcept :
-        data_(initializerListHelper(modifiers.begin(), modifiers.end())) {}
+    constexpr Modifiers(const std::initializer_list<ModifierFlag>& modifiers) noexcept
+        : data_(initializerListHelper(modifiers.begin(), modifiers.end())) {}
     Modifiers(const std::string& str, char connector = '+') noexcept
     { *this = std::move(fromString(str, connector)); }
-    Modifiers(const char* str, char connector = '+') noexcept :
-        Modifiers(std::string(str), connector) {}
+    Modifiers(const char* str, char connector = '+') noexcept
+        : Modifiers(std::string(str), connector) {}
 
     static Modifiers fromString(const std::string& str, char connector = '+') noexcept;
     std::string toString(ModifierTextFormat format = MOD_TEXT_FORMAT_PORTABLE, char connector = '+') const noexcept;

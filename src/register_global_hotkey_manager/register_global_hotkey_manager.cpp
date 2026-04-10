@@ -11,8 +11,8 @@ RegisterGlobalHotkeyManager& RegisterGlobalHotkeyManager::getInstance()
     return instance;
 }
 
-RegisterGlobalHotkeyManager::RegisterGlobalHotkeyManager() :
-    GlobalHotkeyManager(RegisterGHMPrivate::getInstance())
+RegisterGlobalHotkeyManager::RegisterGlobalHotkeyManager()
+    : GlobalHotkeyManager(RegisterGHMPrivate::getInstance())
 {}
 
 RegisterGlobalHotkeyManager::~RegisterGlobalHotkeyManager() = default;

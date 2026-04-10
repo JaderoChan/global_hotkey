@@ -11,8 +11,8 @@ HookGlobalHotkeyManager& HookGlobalHotkeyManager::getInstance()
     return instance;
 }
 
-HookGlobalHotkeyManager::HookGlobalHotkeyManager() :
-    GlobalHotkeyManager(HookGHMPrivate::getInstance())
+HookGlobalHotkeyManager::HookGlobalHotkeyManager()
+    : GlobalHotkeyManager(HookGHMPrivate::getInstance())
 {}
 
 HookGlobalHotkeyManager::~HookGlobalHotkeyManager() = default;
