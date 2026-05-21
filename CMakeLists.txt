@@ -5,6 +5,8 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(GLOBAL_HOTKEY_MSG_PREFIX "[Global Hotkey]")
 
+set(global_hotkey_VERSION ${PROJECT_VERSION} CACHE STRING "global_hotkey version" FORCE)
+
 # Set the default CMAKE_BUILD_TYPE to Release.
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
@@ -120,15 +122,6 @@ set(GLOBAL_HOTKEY_SHARED ${GLOBAL_HOTKEY_BUILD_SHARED})
 # Configure target #
 ####################
 
-option(
-    GLOBAL_HOTKEY_OPTIMIZE_SYSTEM_RESERVE_HOTKEY
-    "This option is only for Hook GHM on the Windows platform. If this option is enabled, when the hotkeys 'Ctrl+Shift+ESC' and 'Ctrl+Alt+Delete' are triggered, some tricks will be used to try to prevent abnormal program behavior."
-    ON
-)
-if(GLOBAL_HOTKEY_OPTIMIZE_SYSTEM_RESERVE_HOTKEY)
-    target_compile_definitions(${PROJECT_NAME} PRIVATE GLOBAL_HOTKEY_OPTIMIZE_SYSTEM_RESERVE_HOTKEY)
-endif()
-
 set_target_properties(${PROJECT_NAME} PROPERTIES DEBUG_POSTFIX d)
 
 ########################
@@ -161,6 +154,19 @@ if(NOT GLOBAL_HOTKEY_DISABLE_HOOK)
     set(KEYBOARD_TOOLS_WITH_KEYUTIL OFF)
     FetchContent_MakeAvailable(keyboard_tools)
     message(STATUS "${GLOBAL_HOTKEY_MSG_PREFIX} Configure the 'keyboard tools' library successfully.")
+
+    # Keyboard Tools 3.0.3 is support get key state.
+    if(WIN32 AND keyboard_tools_VERSION VERSION_LESS "3.0.3")
+        message(STATUS "${GLOBAL_HOTKEY_MSG_PREFIX} Keyboard tools version is less than 3.0.3, the getKeyState() is unavailable.")
+        option(
+            GLOBAL_HOTKEY_OPTIMIZE_SYSTEM_RESERVE_HOTKEY
+            "This option is only for Hook GHM on the Windows platform. If this option is enabled, when the hotkeys 'Ctrl+Shift+ESC' and 'Ctrl+Alt+Delete' are triggered, some tricks will be used to try to prevent abnormal program behavior."
+            ON
+        )
+    endif()
+    if(GLOBAL_HOTKEY_OPTIMIZE_SYSTEM_RESERVE_HOTKEY)
+        target_compile_definitions(${PROJECT_NAME} PRIVATE GLOBAL_HOTKEY_OPTIMIZE_SYSTEM_RESERVE_HOTKEY)
+    endif()
 endif()
 
 if(APPLE)
