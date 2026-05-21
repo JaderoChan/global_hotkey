@@ -148,11 +148,16 @@ if(NOT GLOBAL_HOTKEY_DISABLE_HOOK)
     FetchContent_Declare(
         keyboard_tools
         SOURCE_DIR ${THIRDPARTY_DIR}/keyboard_tools
-        OVERRIDE_FIND_PACKAGE
     )
     set(KEYBOARD_TOOLS_WITH_KEYUTIL OFF)
+    FetchContent_MakeAvailable(keyboard_tools)
+    message(STATUS "${GLOBAL_HOTKEY_MSG_PREFIX} Configure the 'keyboard tools' library successfully.")
 
-    find_package(keyboard_tools REQUIRED)
+    # Dump Keyboard Tools version.
+    file(STRINGS "${THIRDPARTY_DIR}/keyboard_tools/CMakeLists.txt" _kbt_ver_line
+        REGEX "^project\\(keyboard_tools VERSION")
+    string(REGEX MATCH "[0-9]+\\.[0-9]+\\.[0-9]+" keyboard_tools_VERSION "${_kbt_ver_line}")
+    unset(_kbt_ver_line)
 
     # Keyboard Tools 3.0.3 is support get key state.
     if(WIN32 AND keyboard_tools_VERSION VERSION_LESS "3.0.3")
