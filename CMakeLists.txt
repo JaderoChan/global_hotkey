@@ -5,8 +5,6 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(GLOBAL_HOTKEY_MSG_PREFIX "[Global Hotkey]")
 
-set(global_hotkey_VERSION ${PROJECT_VERSION} CACHE STRING "global_hotkey version" FORCE)
-
 # Set the default CMAKE_BUILD_TYPE to Release.
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
@@ -150,10 +148,11 @@ if(NOT GLOBAL_HOTKEY_DISABLE_HOOK)
     FetchContent_Declare(
         keyboard_tools
         SOURCE_DIR ${THIRDPARTY_DIR}/keyboard_tools
+        OVERRIDE_FIND_PACKAGE
     )
     set(KEYBOARD_TOOLS_WITH_KEYUTIL OFF)
-    FetchContent_MakeAvailable(keyboard_tools)
-    message(STATUS "${GLOBAL_HOTKEY_MSG_PREFIX} Configure the 'keyboard tools' library successfully.")
+
+    find_package(keyboard_tools REQUIRED)
 
     # Keyboard Tools 3.0.3 is support get key state.
     if(WIN32 AND keyboard_tools_VERSION VERSION_LESS "3.0.3")
