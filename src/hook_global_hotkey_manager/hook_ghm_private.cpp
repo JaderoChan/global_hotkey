@@ -74,9 +74,9 @@ static inline bool isModifierKey(Key key)
     return isMetaKey(key) || isCtrlKey(key) || isAltKey(key) || isShiftKey(key);
 }
 
-static inline bool isPressedKey(uint32_t nativeKey)
+static inline bool isPressedKey(int32_t nativeKey)
 {
-    return kbt::getKeyState(nativeKey) == kbt::KS_PRESSED;
+    return nativeKey < 0 ? false : kbt::getKeyState(nativeKey) == kbt::KS_PRESSED;
 }
 
 static inline Modifiers getCurrentModifiers()
