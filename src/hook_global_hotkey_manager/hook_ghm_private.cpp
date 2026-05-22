@@ -94,9 +94,9 @@ static inline Modifiers getCurrentModifiers()
     static const auto shiftLKey     = keyToNativeKey(Key_Mod_Shift_Left);
     static const auto shiftRKey     = keyToNativeKey(Key_Mod_Shift_Right);
 
-    bool hasMeta = isPressedKey(metaKey) || isPressedKey(metaLKey) || isPressedKey(metaRKey);
-    bool hasCtrl = isPressedKey(ctrlKey) || isPressedKey(ctrlLKey) || isPressedKey(ctrlRKey);
-    bool hasAlt = isPressedKey(altKey) || isPressedKey(altLKey) || isPressedKey(altRKey);
+    bool hasMeta  = isPressedKey(metaKey)  || isPressedKey(metaLKey)  || isPressedKey(metaRKey);
+    bool hasCtrl  = isPressedKey(ctrlKey)  || isPressedKey(ctrlLKey)  || isPressedKey(ctrlRKey);
+    bool hasAlt   = isPressedKey(altKey)   || isPressedKey(altLKey)   || isPressedKey(altRKey);
     bool hasShift = isPressedKey(shiftKey) || isPressedKey(shiftLKey) || isPressedKey(shiftRKey);
 
     return Modifiers(
@@ -106,7 +106,8 @@ static inline Modifiers getCurrentModifiers()
         (hasShift ? SHIFT : 0));
 }
 
-#ifdef GET_KEY_STATE_AVAILABLE
+// Get key state function performace is poor on Linux, so use old work().
+#if defined(GET_KEY_STATE_AVAILABLE) && !defined(GLOBAL_HOTKEY_LINUX)
 void HookGHMPrivate::work()
 {
     setRunSuccess();
