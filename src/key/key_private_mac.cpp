@@ -5,9 +5,9 @@
 namespace gbhk
 {
 
-uint32_t modifiersToNativeModifiers(const Modifiers& modifiers) noexcept
+int32_t modifiersToNativeModifiers(const Modifiers& modifiers) noexcept
 {
-    uint32_t mod = 0;
+    int32_t mod = 0;
     if (modifiers.has(META))
         mod |= cmdKey;
     if (modifiers.has(CTRL))
@@ -19,7 +19,7 @@ uint32_t modifiersToNativeModifiers(const Modifiers& modifiers) noexcept
     return mod;
 }
 
-uint32_t keyToNativeKey(const Key& key) noexcept
+int32_t keyToNativeKey(const Key& key) noexcept
 {
     switch (key)
     {
@@ -80,7 +80,7 @@ uint32_t keyToNativeKey(const Key& key) noexcept
 
         // Editing keys
         case Key_Backspace:         return kVK_Delete;
-        case Key_Insert:            return 0;   // Not supported
+        case Key_Insert:            return -1;  // Not supported
         case Key_Delete:            return kVK_ForwardDelete;
         case Key_Clear:             return kVK_ANSI_KeypadClear;
 
@@ -124,7 +124,7 @@ uint32_t keyToNativeKey(const Key& key) noexcept
         case Key_Numpad_Multiply:   return kVK_ANSI_KeypadMultiply;
         case Key_Numpad_Divide:     return kVK_ANSI_KeypadDivide;
         case Key_Numpad_Decimal:    return kVK_ANSI_KeypadDecimal;
-        case Key_Numpad_Separator:  return 0;   // Not supported
+        case Key_Numpad_Separator:  return -1;  // Not supported
         case Key_Numpad_Equal:      return kVK_ANSI_KeypadEquals;
         case Key_Numpad_Enter:      return kVK_ANSI_KeypadEnter;
 
@@ -157,27 +157,27 @@ uint32_t keyToNativeKey(const Key& key) noexcept
         case Key_Period:            return kVK_ANSI_Period;
         case Key_Slash:             return kVK_ANSI_Slash;
         case Key_Backslash:         return kVK_ANSI_Backslash;
-        case Key_Angle_Bracket:     return 0;   // Not supported
+        case Key_Angle_Bracket:     return -1;  // Not supported
 
         // Modifiers keys
         case Key_Mod_Meta:          return kVK_Command;
-        case Key_Mod_Meta_Left:     return 0;   // Not supported
+        case Key_Mod_Meta_Left:     return -1;  // Not supported
         case Key_Mod_Meta_Right:    return kVK_RightCommand;
         case Key_Mod_Ctrl:          return kVK_Control;
-        case Key_Mod_Ctrl_Left:     return 0;   // Not supported
+        case Key_Mod_Ctrl_Left:     return -1;  // Not supported
         case Key_Mod_Ctrl_Right:    return kVK_RightControl;
         case Key_Mod_Alt:           return kVK_Option;
-        case Key_Mod_Alt_Left:      return 0;   // Not supported
+        case Key_Mod_Alt_Left:      return -1;  // Not supported
         case Key_Mod_Alt_Right:     return kVK_RightOption;
         case Key_Mod_Shift:         return kVK_Shift;
-        case Key_Mod_Shift_Left:    return 0;   // Not supported
+        case Key_Mod_Shift_Left:    return -1;  // Not supported
         case Key_Mod_Shift_Right:   return kVK_RightShift;
 
-        default:                    return 0;
+        default:                    return -1;
     }
 }
 
-Modifiers modifiersFromNativeModifiers(uint32_t nativeModifiers) noexcept
+Modifiers modifiersFromNativeModifiers(int32_t nativeModifiers) noexcept
 {
     Modifiers mod;
     if (nativeModifiers & cmdKey)
@@ -191,7 +191,7 @@ Modifiers modifiersFromNativeModifiers(uint32_t nativeModifiers) noexcept
     return mod;
 }
 
-Key keyFromNativeKey(uint32_t nativeKey) noexcept
+Key keyFromNativeKey(int32_t nativeKey) noexcept
 {
     switch (nativeKey)
     {

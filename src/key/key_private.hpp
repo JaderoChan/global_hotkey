@@ -6,13 +6,13 @@
 namespace gbhk
 {
 
-uint32_t modifiersToNativeModifiers(const Modifiers& modifiers) noexcept;
+int32_t modifiersToNativeModifiers(const Modifiers& modifiers) noexcept;
 
-uint32_t keyToNativeKey(const Key& key) noexcept;
+int32_t keyToNativeKey(const Key& key) noexcept;
 
-Modifiers modifiersFromNativeModifiers(uint32_t nativeModifiers) noexcept;
+Modifiers modifiersFromNativeModifiers(int32_t nativeModifiers) noexcept;
 
-Key keyFromNativeKey(uint32_t nativeKey) noexcept;
+Key keyFromNativeKey(int32_t nativeKey) noexcept;
 
 } // namespace gbhk
 

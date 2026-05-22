@@ -5,9 +5,9 @@
 namespace gbhk
 {
 
-uint32_t modifiersToNativeModifiers(const Modifiers& modifiers) noexcept
+int32_t modifiersToNativeModifiers(const Modifiers& modifiers) noexcept
 {
-    uint32_t mod = 0;
+    int32_t mod = 0;
     if (modifiers.has(META))
         mod |= MOD_WIN;
     if (modifiers.has(CTRL))
@@ -19,7 +19,7 @@ uint32_t modifiersToNativeModifiers(const Modifiers& modifiers) noexcept
     return mod;
 }
 
-uint32_t keyToNativeKey(const Key& key) noexcept
+int32_t keyToNativeKey(const Key& key) noexcept
 {
     if ((key >= Key_0 && key <= Key_9) || (key >= Key_A && key <= Key_Z))
         return key;
@@ -139,7 +139,7 @@ uint32_t keyToNativeKey(const Key& key) noexcept
         case Key_Angle_Bracket:     return VK_OEM_102;
 
         // Modifier keys
-        case Key_Mod_Meta:          return 0;   // Not supported
+        case Key_Mod_Meta:          return -1;  // Not supported
         case Key_Mod_Meta_Left:     return VK_LWIN;
         case Key_Mod_Meta_Right:    return VK_RWIN;
         case Key_Mod_Ctrl:          return VK_CONTROL;
@@ -152,11 +152,11 @@ uint32_t keyToNativeKey(const Key& key) noexcept
         case Key_Mod_Shift_Left:    return VK_LSHIFT;
         case Key_Mod_Shift_Right:   return VK_RSHIFT;
 
-        default:                    return 0;
+        default:                    return -1;
     }
 }
 
-Modifiers modifiersFromNativeModifiers(uint32_t nativeModifiers) noexcept
+Modifiers modifiersFromNativeModifiers(int32_t nativeModifiers) noexcept
 {
     Modifiers mod;
     if (nativeModifiers & MOD_WIN)
@@ -170,10 +170,10 @@ Modifiers modifiersFromNativeModifiers(uint32_t nativeModifiers) noexcept
     return mod;
 }
 
-Key keyFromNativeKey(uint32_t nativeKey) noexcept
+Key keyFromNativeKey(int32_t nativeKey) noexcept
 {
     if ((nativeKey >= '0' && nativeKey <= '9') || (nativeKey >= 'A' && nativeKey <= 'Z'))
-        return Key(nativeKey);
+        return Key(static_cast<uint32_t>(nativeKey));
 
     switch (nativeKey)
     {

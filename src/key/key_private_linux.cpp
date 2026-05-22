@@ -5,13 +5,13 @@
 namespace gbhk
 {
 
-uint32_t modifiersToNativeModifiers(const Modifiers& modifiers) noexcept
+int32_t modifiersToNativeModifiers(const Modifiers& modifiers) noexcept
 {
     // Not supported for native Linux.
-    return 0;
+    return -1;
 }
 
-uint32_t keyToNativeKey(const Key& key) noexcept
+int32_t keyToNativeKey(const Key& key) noexcept
 {
     switch (key)
     {
@@ -168,31 +168,31 @@ uint32_t keyToNativeKey(const Key& key) noexcept
         case Key_Angle_Bracket:     return KEY_102ND;     // Need to check
 
         // Modifier keys
-        case Key_Mod_Meta:          return 0;   // Not supported
+        case Key_Mod_Meta:          return -1;  // Not supported
         case Key_Mod_Meta_Left:     return KEY_LEFTMETA;
         case Key_Mod_Meta_Right:    return KEY_RIGHTMETA;
-        case Key_Mod_Ctrl:          return 0;   // Not supported
+        case Key_Mod_Ctrl:          return -1;  // Not supported
         case Key_Mod_Ctrl_Left:     return KEY_LEFTCTRL;
         case Key_Mod_Ctrl_Right:    return KEY_RIGHTCTRL;
-        case Key_Mod_Alt:           return 0;   // Not supported
+        case Key_Mod_Alt:           return -1;  // Not supported
         case Key_Mod_Alt_Left:      return KEY_LEFTALT;
         case Key_Mod_Alt_Right:     return KEY_RIGHTALT;
-        case Key_Mod_Shift:         return 0;   // Not supported
+        case Key_Mod_Shift:         return -1;  // Not supported
         case Key_Mod_Shift_Left:    return KEY_LEFTSHIFT;
         case Key_Mod_Shift_Right:   return KEY_RIGHTSHIFT;
 
-        default:                    return 0;
+        default:                    return -1;
     }
 }
 
-Modifiers modifiersFromNativeModifiers(uint32_t nativeModifiers) noexcept
+Modifiers modifiersFromNativeModifiers(int32_t nativeModifiers) noexcept
 {
     // Not supported for native Linux.
     return Modifiers();
 }
 
 /// @ref https://github.com/torvalds/linux/blob/master/include/uapi/linux/input-event-codes.h
-Key keyFromNativeKey(uint32_t nativeKey) noexcept
+Key keyFromNativeKey(int32_t nativeKey) noexcept
 {
     switch (nativeKey)
     {

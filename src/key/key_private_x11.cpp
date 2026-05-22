@@ -6,9 +6,9 @@
 namespace gbhk
 {
 
-uint32_t modifiersToX11Modifiers(const Modifiers& modifiers) noexcept
+int32_t modifiersToX11Modifiers(const Modifiers& modifiers) noexcept
 {
-    uint32_t mod = 0;
+    int32_t mod = 0;
     if (modifiers.has(META))
         mod |= Mod4Mask;
     if (modifiers.has(CTRL))
@@ -20,7 +20,7 @@ uint32_t modifiersToX11Modifiers(const Modifiers& modifiers) noexcept
     return mod;
 }
 
-uint32_t keyToX11Keysym(const Key& key) noexcept
+int32_t keyToX11Keysym(const Key& key) noexcept
 {
     switch (key)
     {
@@ -136,7 +136,7 @@ uint32_t keyToX11Keysym(const Key& key) noexcept
         // Application keys
         case Key_Escape:            return XK_Escape;
         case Key_Pause:             return XK_Pause;
-        case Key_Play:              return 0;   // Not supported
+        case Key_Play:              return -1;  // Not supported
         case Key_Help:              return XK_Help;
         case Key_Menu:              return XK_Menu;
 
@@ -147,7 +147,7 @@ uint32_t keyToX11Keysym(const Key& key) noexcept
 
         // Device keys
         case Key_Print_Screen:      return XK_Print;
-        case Key_Sleep:             return 0;   // Not supported
+        case Key_Sleep:             return -1;  // Not supported
 
         // OEM (Original Equipment Manufacturer) keys
         // The specific values of the following keys may vary on different devices.
@@ -166,24 +166,24 @@ uint32_t keyToX11Keysym(const Key& key) noexcept
         case Key_Angle_Bracket:     return XK_less; // Need to check
 
         // Modifier keys
-        case Key_Mod_Meta:          return 0;   // Not supported
+        case Key_Mod_Meta:          return -1;  // Not supported
         case Key_Mod_Meta_Left:     return XK_Meta_L;
         case Key_Mod_Meta_Right:    return XK_Meta_R;
-        case Key_Mod_Ctrl:          return 0;   // Not supported
+        case Key_Mod_Ctrl:          return -1;  // Not supported
         case Key_Mod_Ctrl_Left:     return XK_Control_L;
         case Key_Mod_Ctrl_Right:    return XK_Control_R;
-        case Key_Mod_Alt:           return 0;   // Not supported
+        case Key_Mod_Alt:           return -1;  // Not supported
         case Key_Mod_Alt_Left:      return XK_Alt_L;
         case Key_Mod_Alt_Right:     return XK_Alt_R;
-        case Key_Mod_Shift:         return 0;   // Not supported
+        case Key_Mod_Shift:         return -1;  // Not supported
         case Key_Mod_Shift_Left:    return XK_Shift_L;
         case Key_Mod_Shift_Right:   return XK_Shift_R;
 
-        default:                    return 0;
+        default:                    return -1;
     }
 }
 
-Modifiers modifiersFromX11Modifiers(uint32_t x11Modifiers) noexcept
+Modifiers modifiersFromX11Modifiers(int32_t x11Modifiers) noexcept
 {
     Modifiers mod;
     if (x11Modifiers & Mod4Mask)
@@ -197,7 +197,7 @@ Modifiers modifiersFromX11Modifiers(uint32_t x11Modifiers) noexcept
     return mod;
 }
 
-Key keyFromX11Keysym(uint32_t x11Keysym) noexcept
+Key keyFromX11Keysym(int32_t x11Keysym) noexcept
 {
     switch (x11Keysym)
     {

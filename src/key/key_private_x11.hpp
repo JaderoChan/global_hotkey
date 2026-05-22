@@ -6,13 +6,13 @@
 namespace gbhk
 {
 
-uint32_t modifiersToX11Modifiers(const Modifiers& modifiers) noexcept;
+int32_t modifiersToX11Modifiers(const Modifiers& modifiers) noexcept;
 
-uint32_t keyToX11Keysym(const Key& key) noexcept;
+int32_t keyToX11Keysym(const Key& key) noexcept;
 
-Modifiers modifiersFromX11Modifiers(uint32_t x11Modifiers) noexcept;
+Modifiers modifiersFromX11Modifiers(int32_t x11Modifiers) noexcept;
 
-Key keyFromX11Keysym(uint32_t x11Keysym) noexcept;
+Key keyFromX11Keysym(int32_t x11Keysym) noexcept;
 
 }
 
