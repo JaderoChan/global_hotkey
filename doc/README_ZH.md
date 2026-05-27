@@ -28,6 +28,10 @@
 
     多平台支持；不受全局唯一性限制。
 
+- C 和 Python 绑定!
+
+    [Global Hotkey bindings](https://github.com/JaderoChan/global_hotkey_bindings)
+
 ## 依赖
 
 [Keyboard Tools](https://github.com/JaderoChan/keyboard_tools)
