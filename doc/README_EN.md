@@ -28,7 +28,7 @@
 
     Multi-platform support; not limited by global uniqueness.
 
-- C And Python Bindings!
+- C and Python bindings!
 
     [Global Hotkey bindings](https://github.com/JaderoChan/global_hotkey_bindings)
 
