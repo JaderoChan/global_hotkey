@@ -106,7 +106,6 @@ static inline Modifiers getCurrentModifiers()
         (hasShift ? SHIFT : 0));
 }
 
-// Get key state function performace is poor on Linux, so use old work().
 #if defined(GET_KEY_STATE_AVAILABLE) && !defined(GLOBAL_HOTKEY_LINUX)
 void HookGHMPrivate::work()
 {
@@ -138,7 +137,7 @@ void HookGHMPrivate::work()
         }
     }
 }
-#else
+#else // Get key state function performace is poor on Linux, so use old work().
 void HookGHMPrivate::work()
 {
     setRunSuccess();
@@ -176,16 +175,6 @@ void HookGHMPrivate::work()
                 }
                 else
                 {
-                #if defined(GLOBAL_HOTKEY_WIN) && defined(GLOBAL_HOTKEY_OPTIMIZE_SYSTEM_RESERVE_HOTKEY)
-                    bool isCtrlShiftEsc = (pressedMod == (CTRL | SHIFT) && key == Key_Esc);
-                    bool isCtrlAltDel = (pressedMod == (CTRL | ALT) && key == Key_Delete);
-                    if (isCtrlShiftEsc || isCtrlAltDel)
-                    {
-                        pressedMod = 0U;
-                        break;
-                    }
-                #endif
-
                     KeyCombination currKc(pressedMod, key);
                     tryInvoke(prevKc, currKc);
                     prevKc = currKc;
@@ -211,7 +200,7 @@ void HookGHMPrivate::work()
         }
     }
 }
-#endif // GET_KEY_STATE_AVAILABLE
+#endif // GET_KEY_STATE_AVAILABLE && !GLOBAL_HOTKEY_LINUX
 
 int HookGHMPrivate::registerHotkeyImpl(const KeyCombination& kc, bool autoRepeat)
 { return RC_SUCCESS; }
