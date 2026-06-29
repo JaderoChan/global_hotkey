@@ -159,7 +159,7 @@ No. On **Linux**, `Register GHM` depends on **X11**.
 
 ## 🔔 Notes
 
-- An event loop must be running on the main thread for `Register GHM` on **MacOS**.
+- An event loop must be running on the main thread for `Register GHM` on **macOS**.
 
 - Stopping the GHM service, registering, unregistering, and replacing hotkeys must only be performed when the GHM is running.
 

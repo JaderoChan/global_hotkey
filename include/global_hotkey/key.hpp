@@ -21,7 +21,7 @@ enum ModifierFlag : uint32_t
     WIN         = META,
     COMMAND     = META,
     SUPER       = META,
-    OPTION      = ALT   // The Alt key on MacOS
+    OPTION      = ALT   // The Alt key on macOS
 };
 
 // For avoid conflicts with macro definitions, the `KeyFlag` naming style different from other enums in this library.

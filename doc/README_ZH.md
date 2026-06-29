@@ -14,7 +14,7 @@
 
 - 跨平台！
 
-    **Windows**、**MacOS**、**Linux**（*Ubuntu* 与 *Debian* 已测试）不在话下！
+    **Windows**、**macOS**、**Linux**（*Ubuntu* 与 *Debian* 已测试）不在话下！
 
 - 广泛兼容！
 
@@ -159,7 +159,7 @@ ghm.stop(); // 释放热键管理器。
 
 ## 🔔 注意
 
-- **MacOS** 系统下的 `Register GHM` 需要使用者在主循环中创建事件循环。
+- **macOS** 系统下的 `Register GHM` 需要使用者在主循环中创建事件循环。
 
 - 中止 `GHM` 服务、注册热键、注销热键和替换热键等操作，必须在对应的 `GHM` 运行之后才可进行！
 
