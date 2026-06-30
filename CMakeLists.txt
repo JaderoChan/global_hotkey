@@ -151,6 +151,9 @@ if(NOT GLOBAL_HOTKEY_DISABLE_HOOK)
     )
     set(KEYBOARD_TOOLS_WITH_KEYUTIL OFF)
     FetchContent_MakeAvailable(keyboard_tools)
+    if(GLOBAL_HOTKEY_BUILD_SHARED)
+        set_target_properties(keyboard_tools PROPERTIES POSITION_INDEPENDENT_CODE ON)
+    endif()
     message(STATUS "${GLOBAL_HOTKEY_MSG_PREFIX} Configure the 'keyboard tools' library successfully.")
 
     # Dump Keyboard Tools version.
