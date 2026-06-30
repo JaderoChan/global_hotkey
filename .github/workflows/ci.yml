@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    name: Build (${{ matrix.os }}, ${{ matrix.config.name }})
+    permissions:
+      contents: read
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+        config:
+          - name: default
+            cmake_flags: ""
+          - name: disable-register
+            cmake_flags: -DGLOBAL_HOTKEY_DISABLE_REGISTER=ON -DGLOBAL_HOTKEY_BUILD_EXAMPLE_USE_HOOK=ON
+          - name: disable-hook
+            cmake_flags: -DGLOBAL_HOTKEY_DISABLE_HOOK=ON
+          - name: shared
+            cmake_flags: -DGLOBAL_HOTKEY_BUILD_SHARED=ON
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install X11 (Linux, required for Register Global Hotkey Manager)
+        if: runner.os == 'Linux' && matrix.config.name != 'disable-register'
+        run: sudo apt-get update -qq && sudo apt-get install -y libx11-dev
+
+      - name: Configure
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Release ${{ matrix.config.cmake_flags }}
+
+      - name: Build
+        run: cmake --build build --config Release -j
