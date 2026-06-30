@@ -28,7 +28,7 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Install X11 (Linux, requires Register GHM)
+      - name: Install X11 (Linux, required for Register Global Hotkey Manager)
         if: runner.os == 'Linux' && matrix.config.name != 'disable-register'
         run: sudo apt-get update -qq && sudo apt-get install -y libx11-dev
 
