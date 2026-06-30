@@ -16,7 +16,7 @@ jobs:
           - name: default
             cmake_flags: ""
           - name: disable-register
-            cmake_flags: -DGLOBAL_HOTKEY_DISABLE_REGISTER=ON
+            cmake_flags: -DGLOBAL_HOTKEY_DISABLE_REGISTER=ON -DGLOBAL_HOTKEY_BUILD_EXAMPLE_USE_HOOK=ON
           - name: disable-hook
             cmake_flags: -DGLOBAL_HOTKEY_DISABLE_HOOK=ON
           - name: shared
