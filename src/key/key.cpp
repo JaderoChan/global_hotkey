@@ -1,5 +1,5 @@
-#include <cctype>   // isspace, isalnum, toupper
-#include <cstddef>  // size_t
+#include <ctype.h>  // isspace, isalnum, toupper
+#include <stddef.h> // size_t
 #include <sstream>  // stringstream
 
 #include <global_hotkey/key.hpp>

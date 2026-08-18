@@ -1,6 +1,6 @@
 #include "register_ghm_private_x11.hpp"
 
-#include <cstdint>
+#include <stdint.h>
 #include <poll.h>           // poll
 #include <sys/eventfd.h>    // eventfd
 #include <unistd.h>         // read, write, close
