@@ -28,10 +28,6 @@
 
     Multi-platform support; not limited by global uniqueness.
 
-- C and Python bindings!
-
-    [Global Hotkey bindings](https://github.com/JaderoChan/global_hotkey_bindings)
-
 ## Dependencies
 
 [Keyboard Tools](https://github.com/JaderoChan/keyboard_tools)
